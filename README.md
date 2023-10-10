@@ -14,6 +14,9 @@ Fall 2023
 - Jalena Austin
 - Maureen Dunn
 
+## Troubleshooting
+- 
+
 ## Quick Links
 - [Team Google Drive](https://drive.google.com/drive/u/1/folders/0AAFjRPp2RlSrUk9PVA)
 - [Guide: Front-End Setup](https://www.freecodecamp.org/news/react-budget-tracker-app/)
