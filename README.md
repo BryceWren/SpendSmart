@@ -14,8 +14,9 @@ Fall 2023
 - Jalena Austin
 - Maureen Dunn
 
-## Troubleshooting
-- 
+## Comments
+- On each pull, run `npm install` from client and server folders to get all proper node modules installed.
+- Place dotenv file inside server folder (this allows us to talk to the DB!)
 
 ## Quick Links
 - [Team Google Drive](https://drive.google.com/drive/u/1/folders/0AAFjRPp2RlSrUk9PVA)
