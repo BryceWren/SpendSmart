@@ -1,5 +1,4 @@
 # SpendSmart: A Personal Finance App
-Tester
 Developed for CSCI 362: Software Engineering at the College of Charleston \
 Fall 2023
 
