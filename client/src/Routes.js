@@ -5,6 +5,7 @@ import { LandingPage } from './pages/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { TransactionPage } from './pages/TransactionPage';
 import { BudgetPage } from './pages/BudgetPage';
+import { SettingsPage } from './pages/SettingsPage';
 
 
 export const AppRoutes = () => {
@@ -17,6 +18,7 @@ export const AppRoutes = () => {
                 <Route path="/home" element={<DashboardPage />} />
                 <Route path="/transactions" element={<TransactionPage />} />
                 <Route path="/budget" element={<BudgetPage />} />
+                <Route path="/settings" element={<SettingsPage />}/>
             </Routes>
         </Router>
     )

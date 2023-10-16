@@ -21,6 +21,11 @@ export const BudgetPage = () => {
                         <Remaining />
                     </div>
                 </div>
+                <div class='row'>
+                    <div class='col-4 mx-auto text-center'>
+                        <img src='piechart.png'  alt="PieChart"></img>
+                    </div>
+                </div>
             </div>
         </div>
     )

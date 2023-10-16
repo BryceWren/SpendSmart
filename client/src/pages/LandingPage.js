@@ -1,18 +1,16 @@
-// import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const LandingPage = () => {
-  
-  // const navigate = useNavigate(); 
-
     return (
-      <div className='container'>
-        <h1 className='mt-3'>Welcome to SpendSmart</h1>
-        <br />
-        <Link to="/login" className="btn btn-success">Login</Link>
-        <Link to="/register" className="btn btn-outline-success">Register</Link>
-        {/* <button className="btn btn-success" onClick={() => navigate('/login')}>Login</button> */}
-        {/* <button className="btn btn-outline-success" onClick={() => navigate('/register')}>Register</button> */}
-      </div>
+        <div className='text-center'>
+          <h1 className='mt-3'>Welcome to SpendSmart!</h1>
+          <p className="mt-3">A comfortable platform to see all your transactions and financial presentations through one place.</p>
+          
+          <div className="ms-auto">
+            <Link to="/login" className="btn btn-success">Login</Link>
+            <Link to="/register" className="btn btn-outline-success">Register</Link>
+          </div>
+        </div>
     )
 }
