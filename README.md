@@ -1,5 +1,5 @@
 # SpendSmart: A Personal Finance App
-# this is a test to commit
+Tester# this is a test to commit
 
 Developed for CSCI 362: Software Engineering at the College of Charleston \
 Fall 2023
