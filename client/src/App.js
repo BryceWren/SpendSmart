@@ -1,17 +1,6 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './navigation/Navbar';
 import { AppRoutes } from './Routes';
-
-
-// const App = () => {
-//   return (
-//       <div>
-//         <Navbar />
-//         <AppRoutes />
-//       </div>
-//   )
-// };
 
 
 class App extends Component {
@@ -24,7 +13,6 @@ class App extends Component {
         .then(res => this.setState({ data: res.express }))
         .catch(err => console.log(err));
     }
-      // fetching the GET route from the Express server which matches the GET route from server.js
     callBackendAPI = async () => {
       const response = await fetch('/');
       const body = await response.json();
@@ -38,7 +26,6 @@ class App extends Component {
     render() {
       return (
         <div>
-          <Navbar />
           <AppRoutes />
         </div>
       );

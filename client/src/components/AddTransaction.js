@@ -18,12 +18,12 @@ const AddTransaction = () => {
 					></input>
 				</div>
                 <div className='col-sm'>
-					<label for='vendor'>Vendor</label>
+					<label for='desc'>Description</label>
 					<input
 						required='required'
 						type='text'
 						className='form-control'
-						id='vendor'
+						id='desc'
 					></input>
 				</div>
 				<div className='col-sm'>
