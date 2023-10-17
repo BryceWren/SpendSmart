@@ -2,6 +2,7 @@ import Income from '../components/Income';
 import Expenses from '../components/Expenses';
 import Remaining from '../components/Remaining';
 import Navbar from '../components/Navbar';
+import PieChartBudgetTab from '../components/PieChartBudgetTab';
 
 export const BudgetPage = () => {
     return (
@@ -21,10 +22,8 @@ export const BudgetPage = () => {
                         <Remaining />
                     </div>
                 </div>
-                <div class='row'>
-                    <div class='col-4 mx-auto text-center'>
-                        <img src='piechart.png'  alt="PieChart"></img>
-                    </div>
+                <div>
+                    <PieChartBudgetTab/>
                 </div>
             </div>
         </div>
