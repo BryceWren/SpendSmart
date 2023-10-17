@@ -37,6 +37,11 @@ const Navbar = () => {
               Budget
             </a>
           </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/calendar">
+              Calendar
+            </a>
+          </li>
         </ul>
 
         <ul class="navbar-nav ms-auto">
