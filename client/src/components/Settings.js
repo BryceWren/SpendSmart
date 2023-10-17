@@ -18,7 +18,7 @@ const Profile = () => {
     <>
 
       {/* // handling button click to go to login page */}
-      <div className="ms-auto">
+      {/* <div className="ms-auto">
         <Link
           className="btn btn-secondary"
           role="button"
@@ -26,7 +26,7 @@ const Profile = () => {
         >
           Logout
         </Link>
-      </div>
+      </div> */}
 
       <div className="text-left fw-bold">
         Full Name:
