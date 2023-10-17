@@ -9,6 +9,7 @@ export const TransactionPage = () => {
     const [desc, setDesc] = useState('');
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('');
+    const [note, setNote] = useState('');
     const [data, setData] = useState([])
 
     useEffect(() => { Axios.get("http://localhost:3001/transactions").then(json => setData(json.data)) }, [])
@@ -20,7 +21,8 @@ export const TransactionPage = () => {
                 date: date,
                 desc: desc,
                 amount: amount,
-				category: category
+				category: category,
+                note: note
             });
             console.log(response);
             window.location.reload(false);
@@ -36,7 +38,8 @@ export const TransactionPage = () => {
                 <td>{new Date(t.date).toLocaleDateString()}</td>
                 <td>{t.description}</td>
                 <td>{t.category}</td> 
-                <td>{t.amount}</td> 
+                <td>{t.amount}</td>
+                <td>{t.note}</td> 
                 {/* TODO: edit and delete functions */}
                 <td><a href="/transactions">edit</a></td>
                 <td><a href="/transactions">delete</a></td> 
@@ -100,6 +103,16 @@ export const TransactionPage = () => {
                                         id='category'
                                     ></input>
                                 </div>
+                                <div className='col-sm'>
+                                    <label for='note'>Note</label>
+                                    <input
+                                        type='text'
+                                        className='form-control'
+                                        value={note}
+                                        onChange={(e) => setNote(e.target.value)}
+                                        id='note'
+                                    ></input>
+                                </div>
 
                                 <div className='col-sm'>
                                     <button type='submit' className='btn btn-success mt-3'>
@@ -121,6 +134,7 @@ export const TransactionPage = () => {
                                     <th>Description</th>
                                     <th>Category</th>
                                     <th>Amount</th>
+                                    <th>Note</th>
                                     <th />
                                 </tr>
                             </thead>
