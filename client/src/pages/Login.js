@@ -37,7 +37,7 @@ export const Login = () => {
             </div>
             <div className="auth-form-container">
                 <div className="text-center">
-                    <img src="logoNav.png" style={{width: '150px'}} alt="logo"></img>
+                    <img src="logowname.png" style={{width: '150px'}} alt="logoTitle"></img>
                 </div>
                 <h2>Log in</h2>
                 <form className="login-form" onSubmit={handleSubmit}>

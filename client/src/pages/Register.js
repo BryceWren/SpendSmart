@@ -42,7 +42,7 @@ export const Register = () => {
             </div>
             <div className="auth-form-container-register">
                 <div className="text-center">
-                    <img src="logoNav.png" style={{width: '150px'}} alt="logo"></img>
+                    <img src="logowname.png" style={{width: '150px'}} alt="logoTitle"></img>
                 </div>
                 <h2>Register</h2>
                 <form className="register-form" onSubmit={handleSubmit}>
