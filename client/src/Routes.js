@@ -6,7 +6,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { TransactionPage } from './pages/TransactionPage';
 import { BudgetPage } from './pages/BudgetPage';
 import { SettingsPage } from './pages/SettingsPage';
-import { CalendarPage } from './pages/CalendarPage';
+// import { CalendarPage } from './pages/CalendarPage';
 
 
 export const AppRoutes = () => {
@@ -20,7 +20,7 @@ export const AppRoutes = () => {
                 <Route path="/transactions" element={<TransactionPage />} />
                 <Route path="/budget" element={<BudgetPage />} />
                 <Route path="/settings" element={<SettingsPage />}/>
-                <Route path='/calendar' element={<CalendarPage />}/>
+                {/* <Route path='/calendar' element={<CalendarPage />}/> */}
             </Routes>
         </Router>
     )
