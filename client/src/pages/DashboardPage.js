@@ -1,5 +1,4 @@
 import Navbar from "../components/Navbar"
-import CalendarComp from "../components/CalendarComp"
 
 export const DashboardPage = () => {
     return (
@@ -10,9 +9,7 @@ export const DashboardPage = () => {
 
           <h1 className='mt-3'>Welcome back!</h1>
 
-          <p> This is your dashboard. Here you will find an overview of your spending habits this month. </p>
-          
-          <CalendarComp/>
+          <p> This is your dashboard. Here is a quick overview of some important things. </p>
 
         </div>
       </div>
