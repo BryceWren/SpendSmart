@@ -6,7 +6,7 @@
     "configurations": [
 
         {
-            "name": "Debug SpendSmart Client",
+            "name": "Debug Client",
             "type": "chrome",
             "request": "launch",
             "url": "http://localhost:3000",
@@ -14,7 +14,7 @@
         },
 
         {
-            "name": "Debug Node Server",
+            "name": "Debug Server",
             "type": "node",
             "request": "launch",
             "program": "${workspaceFolder}/server/index.js"
