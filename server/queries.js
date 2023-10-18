@@ -1,4 +1,4 @@
-const { randomInt } = require('crypto') // temp soln for transactionID
+// const { randomInt } = require('crypto') // temp soln for transactionID
 require ('dotenv').config()
 
 const Pool = require('pg').Pool
@@ -107,15 +107,12 @@ const verifyLogin = (request, response) => {
         throw error
       }
       //response.status(200).json(results.rows)
-      if (results.rows.length > 0){
+      if (results.rows.length > 0 && results.rows[0]['password'] == pass){
         console.log("you are logged in :)")
-        response.status(200).json(results.rows)
-        //if (bcrypt.compare(pass, result[0].pass) = true){ would like to use this to compare passwords
-        //  console.log("login was successful")
-        //}
+        response.status(200).json(results.rows[0])
       } else {
         console.log("you suck buddy, you messed something up") //this means email or password was either wrong or doesnt exist
-        response.status(200).json(results.rows)
+        response.status(201).json(results.rows)
       }
     })
 

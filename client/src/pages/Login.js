@@ -2,8 +2,12 @@ import React, { useState } from "react"
 import './CSS/LogRegisterSet.css';
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
+import { useCookies } from 'react-cookie';
+
 
 export const Login = () => {
+
+    const [cookies, setCookie] = useCookies(['userID', 'firstName', 'lastName', 'email', 'password']);
 
     const navigate = useNavigate();
 
@@ -12,8 +16,6 @@ export const Login = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(email);
-        navigate('/home');
     }
 
     const login = async () => {
@@ -22,10 +24,17 @@ export const Login = () => {
                 backEmail: email,
                 backPassword: pass
             });
-            console.log(response);
-            //setLoginStatus(response.data); // Assuming that you want to log the response data
+
+            setCookie('userID', response.data['id'], { path: '/' });
+            setCookie('firstName', response.data['firstName'], { path: '/' });
+            setCookie('lastName', response.data['lastName'], { path: '/' });
+            setCookie('email', response.data['email'], { path: '/' });
+            setCookie('password', response.data['password'], { path: '/' });
+
+            console.log('Successfully logged in ' + email);
+            navigate('/home');
+
         } catch (error) {
-            // Handle any errors that might occur during the request
             console.error('An error occurred:', error);
         }
     };
@@ -44,8 +53,6 @@ export const Login = () => {
                     <label for="email">Email</label>
                     <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email Address" id="email" name="email"/>
                     <label for="password">Password</label>
-                    {/* hiding the password */}
-                    {/* <input value={pass} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" id="password" name="password"/> */}
                     <input type={pass? 'password' : 'text'}
                         name="password"
                         id='password'

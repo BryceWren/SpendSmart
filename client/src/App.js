@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { AppRoutes } from './Routes';
+import { withCookies } from 'react-cookie';
 
 
 class App extends Component {
-  state = {
+  constructor(props) {
+    super(props);
+    this.state = {
       data: null
     };
+  }
   
     componentDidMount() {
       this.callBackendAPI()
@@ -32,4 +36,4 @@ class App extends Component {
     }
   }
 
-export default App;
+export default withCookies(App);
