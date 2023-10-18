@@ -18,10 +18,10 @@ const PieChartTransactions = () => {
       chartInst.current = new Chart(theChartRef, {
           type:"pie",
           data: {
-              labels: ["Rent", "Shopping"],
+              labels: ["Groceries", "Shopping"],
               datasets: [
                   {
-                      data: [1400, 500],
+                      data: [80, 100],
                       backgroundColor: [
                           'rgb(16, 227, 125)',
                           'rgb(143, 16, 227)'
