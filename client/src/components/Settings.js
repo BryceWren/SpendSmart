@@ -37,9 +37,9 @@ const Profile = () => {
       </div>
       <p className="font-weight-normal">test@email.com</p>
       <div className="text-left fw-bold">
+        Password: 
       </div>
-      Password: <p className="font-weight-normal">********</p>
-
+      <p className="font-weight-normal">********</p>
 
       {/* // dealing with pop up to delete account */}
       <div className="mt-auto">
