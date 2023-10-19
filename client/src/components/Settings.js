@@ -31,12 +31,14 @@ const Profile = () => {
       <div className="text-left fw-bold">
         Full Name:
       </div>
+      <p className="font-weight-normal">John Doe</p>
       <div className="text-left fw-bold">
         Email:
       </div>
+      <p className="font-weight-normal">test@email.com</p>
       <div className="text-left fw-bold">
-        Password:
       </div>
+      Password: <p className="font-weight-normal">********</p>
 
 
       {/* // dealing with pop up to delete account */}
