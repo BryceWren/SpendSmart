@@ -6,6 +6,12 @@ import { Modal } from "react-bootstrap";
 
 
 export const TransactionPage = () => {
+    // handling Modal prior to trans deletions
+    const [showDeleteM, setShowDeleteM] = useState(false);
+
+    const handleCloseDeleteM = () => setShowDeleteM(false);
+    const handleShow = () => setShowDeleteM(true);
+    // end of handling Modal prior to trans deletion
 
     const [data, setData] = useState([])
 
