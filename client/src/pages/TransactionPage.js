@@ -3,15 +3,13 @@ import Axios from 'axios'
 import React, { useState, useEffect } from "react"
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
+import { useCookies } from 'react-cookie';
 
 
 export const TransactionPage = () => {
-    // handling Modal prior to trans deletions
-    const [showDeleteM, setShowDeleteM] = useState(false);
 
-    const handleCloseDeleteM = () => setShowDeleteM(false);
-    const handleShow = () => setShowDeleteM(true);
-    // end of handling Modal prior to trans deletion
+    const [cookies, setCookie] = useCookies(['userID']);
+    const userID = cookies.userID;
 
     const [data, setData] = useState([])
 
@@ -23,9 +21,10 @@ export const TransactionPage = () => {
     const [note, setNote] = useState('')
 
     const [showAdd, setShowAdd] = useState(false)
-    const [showEdit, setShowEdit] = useState(false)
     const handleCloseAdd = () => setShowAdd(false)
     const handleShowAdd = () => setShowAdd(true)
+
+    const [showEdit, setShowEdit] = useState(false)
     const handleCloseEdit = () => setShowEdit(false)
     const handleShowEdit = (editID, editDate, editDesc, editAmt, editCat, editNote) => {
         setId(editID)
@@ -37,13 +36,20 @@ export const TransactionPage = () => {
         setShowEdit(true)
     }
 
-    useEffect(() => { Axios.get("http://localhost:3001/transactions").then(json => setData(json.data)) }, [])
+    const [showDelete, setShowDelete] = useState(false);
+    const handleCloseDelete = () => setShowDelete(false);
+    const handleShowDelete = (deleteID) => {
+        setId(deleteID)
+        setShowDelete(true)
+    }
+
+    useEffect(() => { Axios.get("http://localhost:3001/transactions/"+userID).then(json => setData(json.data)) }, [userID])
 
     // BACKEND SERVER CALLS
     const addTransaction = async () => {
         try {
             const response = await Axios.post("http://localhost:3001/addtransaction", {
-                userID: 999,
+                userID: userID,
                 date: date,
                 desc: desc,
                 amount: amount,
@@ -51,7 +57,7 @@ export const TransactionPage = () => {
                 note: note
             })
             console.log(response)
-            window.location.reload(false)
+            window.location.reload(true)
         } catch (error) {
             console.error('An error occurred:', error)
         }
@@ -68,7 +74,7 @@ export const TransactionPage = () => {
                 note: note
             })
             console.log(response)
-            window.location.reload(false)
+            window.location.reload(true)
         } catch (error) {
             console.error('An error occurred:', error)
         }
@@ -77,10 +83,10 @@ export const TransactionPage = () => {
     const deleteTransaction = async (transactionID) => {
         try {
             const response = await Axios.post("http://localhost:3001/deletetransaction", {
-                transactionID: transactionID //TODO
+                transactionID: transactionID
             })
             console.log(response)
-            window.location.reload(false)
+            window.location.reload(true)
         } catch (error) {
             console.error('An error occurred:', error)
         }
@@ -99,7 +105,7 @@ export const TransactionPage = () => {
                 <td>
                     <span>
                         <BsFillPencilFill className="edit-btn" onClick={() => handleShowEdit(t.transactionID, new Date(t.date).toLocaleDateString('en-CA'), t.description, t.amount, t.category, t.notes)} />
-                        <BsFillTrashFill className="delete-btn" onClick={() => deleteTransaction(t.transactionID)} />
+                        <BsFillTrashFill className="delete-btn" onClick={() => handleShowDelete(t.transactionID)} />
                     </span>
                 </td>
             </tr>
@@ -221,6 +227,23 @@ export const TransactionPage = () => {
                         <button className="btn btn-success" onClick={editTransaction}>Save</button>
                     </Modal.Footer>
                 </Modal> 
+
+                {/* Pop Up to Confirm Transaction Deletion */}
+                <Modal show={showDelete} onHide={handleCloseDelete} backdrop="static" keyboard={false}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Deleting Transaction</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        Deleting this transaction will remove it from our database. This action can not be undone.
+                    </Modal.Body>
+
+
+                    <Modal.Footer>
+                        <button className="btn btn-warning-outline" onClick={handleCloseDelete}>No, Cancel</button>
+                        <button className="btn btn-warning" onClick={() => deleteTransaction(id)}>Yes, Delete</button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         </div>
     )

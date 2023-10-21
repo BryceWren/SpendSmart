@@ -14,7 +14,8 @@ const pool = new Pool({
 // TRANSACTIONS
 
 const getTransactions = (request, response) => {
-    pool.query('SELECT * FROM transactions ORDER BY date desc', (error, results) => {
+  const userID = parseInt(request.params.userID)
+    pool.query('SELECT * FROM transactions WHERE "userID" = $1 ORDER BY date desc', [userID], (error, results) => {
       if (error) {
         throw error
       }
@@ -23,7 +24,7 @@ const getTransactions = (request, response) => {
   }
 
 const addTransaction = (request, response) => {
-    // const transactionID = request.body.userID + randomInt(99).toString() // TODO: fix how its creating this
+    const userID = request.body.userID
     const date = request.body.date
     const desc = request.body.desc
     const amount = request.body.amount
@@ -31,7 +32,7 @@ const addTransaction = (request, response) => {
     const note = request.body.note
 
      
-    pool.query('INSERT INTO transactions (description, amount, date, category, notes) VALUES ($1, $2, $3, $4, $5)', [desc, amount, date, category, note], (error, results) => {
+    pool.query('INSERT INTO transactions (description, amount, date, category, notes, "userID") VALUES ($1, $2, $3, $4, $5, $6)', [desc, amount, date, category, note, userID], (error, results) => {
     if (error) {
         throw error
     }

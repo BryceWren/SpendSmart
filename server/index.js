@@ -28,10 +28,10 @@ app.get('/', (request, response) => {
 })
 
 // QUERIES
-app.get('/transactions', db.getTransactions)
+app.get('/transactions/:userID', db.getTransactions)
 app.post('/addtransaction', db.addTransaction)
-app.post('/edittransaction', db.editTransaction)
-app.post('/deletetransaction', db.deleteTransaction)
+app.put('/edittransaction', db.editTransaction)
+app.delete('/deletetransaction', db.deleteTransaction)
 app.post('/register', db.registerUser)
 app.post('/login', db.verifyLogin)
 // app.put('/users/:id', db.updateUser)
