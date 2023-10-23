@@ -1,0 +1,5 @@
+DB_USER="rnuxfqia"
+DB_PASSWORD="QnH8xYFzhRKvIMTwdDDnkEcWjpGES1_A"
+DB_HOST="castor.db.elephantsql.com"
+DB_PORT=5432
+DB="rnuxfqia"

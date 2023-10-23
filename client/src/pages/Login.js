@@ -16,6 +16,15 @@ export const Login = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!email) {
+            alert('Please enter your email.');
+        } else if (!pass) {
+            alert('Please enter your password.');
+        }  else if (!email || !pass) {
+            alert('Please enter your email and password.');
+        } else {
+            login();
+        }
     }
 
     const login = async () => {
