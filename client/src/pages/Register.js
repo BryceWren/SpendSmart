@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-// import './CSS/RegisterSet.css'
 import './CSS/LogRegisterSet.css';
 
 import { useNavigate } from "react-router-dom";
