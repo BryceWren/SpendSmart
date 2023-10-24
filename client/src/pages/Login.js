@@ -14,6 +14,7 @@ export const Login = () => {
     const [email, setEmail] = useState('');
     const [pass, setPassword] = useState('');
     
+    //handle individual and combined submission fails
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!email) {
