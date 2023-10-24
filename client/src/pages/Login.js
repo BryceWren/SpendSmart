@@ -21,7 +21,7 @@ export const Login = () => {
             alert('Please enter your email.');
         } else if (!pass) {
             alert('Please enter your password.');
-        }  else if (!email || !pass) {
+        }  else if (!email && !pass) {
             alert('Please enter your email and password.');
         } else {
             login();
