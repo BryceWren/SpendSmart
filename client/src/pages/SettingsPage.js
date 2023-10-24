@@ -23,12 +23,12 @@ export const SettingsPage = () => {
       <div className="nav-bar">
         <Navbar/>
         <div className="container">
-          <h1 className="mt-3">Check out your account!</h1>
+          <h1 className="mt-3">Check out your account, {fName}!</h1>
           <div className="col-sm">
-          <div className="text-left fw-bold">
+          <p className="text-left fw-bold">
             Full Name:
-          </div>
             <p className="font-weight-normal">{fName} {lName}</p>
+          </p>
           <div className="text-left fw-bold">
             Email:
           </div>
