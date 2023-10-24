@@ -17,12 +17,12 @@ export const Login = () => {
     //handle individual and combined submission fails
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!email) {
-            alert('Please enter your email.');
+        if (!email && !pass) {
+            alert('Please enter your email and password.');
         } else if (!pass) {
             alert('Please enter your password.');
-        }  else if (!email && !pass) {
-            alert('Please enter your email and password.');
+        }  else if (!email) {
+            alert('Please enter your email.');
         } else {
             login();
         }
