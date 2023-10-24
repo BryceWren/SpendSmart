@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import Navbar from "../components/Navbar";
+import { useCookies } from "react-cookie";
 
 export const SettingsPage = () => {
   
@@ -10,6 +11,12 @@ export const SettingsPage = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [cookies, setCookie] = useCookies(['firstName, lastName, email, password']);
+  const fName = cookies.firstName;
+  const lName = cookies.lastName;
+  const userEmail = cookies.email;
+  const userPass = cookies.password;
 
   return (
     <>
@@ -21,15 +28,15 @@ export const SettingsPage = () => {
           <div className="text-left fw-bold">
             Full Name:
           </div>
-            <p className="font-weight-normal">John Doe</p>
+            <p className="font-weight-normal">{fName} {lName}</p>
           <div className="text-left fw-bold">
             Email:
           </div>
-            <p className="font-weight-normal">test@email.com</p>
+            <p className="font-weight-normal">{userEmail}</p>
           <div className="text-left fw-bold">
             Password: 
           </div>
-            <p className="font-weight-normal">********</p>
+            <p className="font-weight-normal">{userPass}</p>
 
           {/* // dealing with pop up to delete account */}
           <div className="mt-auto">
