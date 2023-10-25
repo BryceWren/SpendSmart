@@ -45,16 +45,17 @@ input {
 }
 
 button {
-  border: none;
-  background-color: #18cf89;
   padding: 20px;
   border-radius: 10px;
   cursor: pointer;
 }
 
-/* edit so that it is a button not a link */
+.login-btn, .register-btn {
+  background-color: #18cf89;
+  border: none;
+}
+
 .link-btn {
   background: none;
-  color: blue;
-  text-decoration: underline;
+  color: balck;
 }
