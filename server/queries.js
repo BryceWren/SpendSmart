@@ -120,6 +120,34 @@ const verifyLogin = (request, response) => {
     
   }
 
+  const getCategories = (request, response) => {
+    const userID = parseInt(request.params.userID)
+    const query = 'select c."categoryID", c."categoryName", t."typeDesc", d."durationDesc" from public.category c ' 
+    + 'join public."categoryTypes" t on c.type = t.type '
+    + 'join public."categoryDuration" d on c.duration = d.duration '
+    + 'where c."userID" = ' + userID
+    + ' order by c.type, c."categoryID"'
+
+    try {
+    pool.query(query, (error, results) => {
+      if (error) {
+        // throw error
+        console.error(error)
+        response.status(201).json(error)
+      }
+      else {
+        response.status(200).json(results.rows)
+      }
+    })
+  }
+  catch (e) {
+    console.log(e)
+    response.status(202).json(e)
+
+  }
+
+    
+  }
 
 // EXPORT
 module.exports = {
@@ -129,4 +157,5 @@ module.exports = {
     deleteTransaction,
     registerUser,
     verifyLogin,
+    getCategories,
   }
