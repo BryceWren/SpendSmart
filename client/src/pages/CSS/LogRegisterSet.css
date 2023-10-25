@@ -52,7 +52,7 @@ button {
   cursor: pointer;
 }
 
-
+/* edit so that it is a button not a link */
 .link-btn {
   background: none;
   color: blue;
