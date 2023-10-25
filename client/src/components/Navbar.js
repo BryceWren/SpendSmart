@@ -47,7 +47,7 @@ const Navbar = () => {
         <ul class="navbar-nav ms-auto">
             <li className="nav-item">
               <a className="nav-link" href="/settings">
-                Settings
+                Account
               </a>
             </li>            
             <li className="nav-item">
