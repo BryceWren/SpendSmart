@@ -59,3 +59,85 @@ button {
   background: none;
   color: balck;
 }
+
+
+.forgot-password {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+}
+
+.auth-form-container-forgot {
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  margin-top: 20px;
+  width: 400px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+img {
+  width: 150px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.forgot-form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+input {
+  margin-bottom: 20px;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.forgot-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.forgot-btn:hover {
+  background-color: #45a049;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+}
+
+.link-btn span {
+  text-decoration: underline;
+}
+
+.link-btn:hover {
+  color: #0056b3;
+}
