@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 
 export const DashboardPage = () => {
 
-  const [cookies, setCookie] = useCookies(['firstName']);
+  const [cookies] = useCookies(['firstName']);
   const name = cookies.firstName;
 
     return (

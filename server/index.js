@@ -28,11 +28,21 @@ app.get('/', (request, response) => {
 })
 
 // QUERIES
+
+// transactions
 app.get('/transactions/:userID', db.getTransactions)
 app.post('/addtransaction', db.addTransaction)
 app.put('/edittransaction', db.editTransaction)
 app.delete('/deletetransaction', db.deleteTransaction)
-app.post('/register', db.registerUser)
+
+// users
 app.post('/login', db.verifyLogin)
-// app.put('/users/:id', db.updateUser)
-// app.delete('/users/:id', db.deleteUser)
+app.post('/register', db.registerUser)
+// app.put('/edit', db.updateUser)
+// app.delete('/delete', db.deleteUser)
+
+// categories
+app.get('/categories/:userID', db.getCategories)
+// app.post('/addcategory', db.addCategory)
+// app.put('/editcategory', db.editCategory)
+// app.delete('/deletecategory', db.deleteCategory)

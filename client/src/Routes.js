@@ -6,6 +6,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { TransactionPage } from './pages/TransactionPage';
 import { BudgetPage } from './pages/BudgetPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { ForgotPassword } from './pages/ForgotPassword';
 // import { CalendarPage } from './pages/CalendarPage';
 
 
@@ -20,6 +21,7 @@ export const AppRoutes = () => {
                 <Route path="/transactions" element={<TransactionPage />} />
                 <Route path="/budget" element={<BudgetPage />} />
                 <Route path="/settings" element={<SettingsPage />}/>
+                <Route path="/forgotpassword" element={<ForgotPassword />}/>
                 {/* <Route path='/calendar' element={<CalendarPage />}/> */}
             </Routes>
         </Router>

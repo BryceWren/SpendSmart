@@ -8,10 +8,11 @@ import { useCookies } from 'react-cookie';
 
 export const TransactionPage = () => {
 
-    const [cookies, setCookie] = useCookies(['userID']);
+    const [cookies] = useCookies(['userID']);
     const userID = cookies.userID;
 
     const [data, setData] = useState([])
+    const [categories, setCategories] = useState([])
 
     const [id, setId] = useState('')
     const [date, setDate] = useState('')
@@ -43,11 +44,15 @@ export const TransactionPage = () => {
         setShowDelete(true)
     }
 
-    useEffect(() => { Axios.get("http://localhost:3001/transactions/"+userID).then(json => setData(json.data)) }, [userID])
+    useEffect(() => { 
+        Axios.get("http://localhost:3001/transactions/"+userID).then(json => setData(json.data)) 
+        Axios.get("http://localhost:3001/categories/"+userID).then(json => setCategories(json.data))
+    }, [userID])
 
     // BACKEND SERVER CALLS
     const addTransaction = async () => {
         try {
+            //console.log(category)
             const response = await Axios.post("http://localhost:3001/addtransaction", {
                 userID: userID,
                 date: date,
@@ -100,7 +105,7 @@ export const TransactionPage = () => {
                 <td>{new Date(t.date).toLocaleDateString()}</td>
                 <td>{t.description}</td>
                 <td>{t.amount}</td>
-                <td>{t.category}</td> 
+                <td>{t.categoryName}</td> 
                 <td>{t.notes}</td> 
                 <td>
                     <span>
@@ -110,6 +115,20 @@ export const TransactionPage = () => {
                 </td>
             </tr>
           )
+        })
+    }
+
+    const renderCategories = () => {
+        return categories.map(c => {
+            if (c.categoryID === category) {
+          return (
+            <option value={c.categoryID} selected>{c.categoryName}</option>
+          )
+            } else {
+                return (
+                    <option value={c.categoryID}>{c.categoryName}</option>
+                  )
+            }
         })
     }
 
@@ -166,8 +185,10 @@ export const TransactionPage = () => {
                                     </div>
                                     <div className='col-sm'>
                                         <label for='category'>Category</label>
-                                        <input required='required' type='text' className='form-control'
-                                            value={category} onChange={(e) => setCategory(e.target.value)} id='category'></input>
+                                        <br />
+                                        <select for='category' name='category' onChange={(e) => setCategory(e.target.value)} id='category'>
+                                            {renderCategories()}
+                                        </select>
                                     </div>
                                     <div className='col-sm'>
                                         <label for='note'>Note</label>
@@ -210,8 +231,13 @@ export const TransactionPage = () => {
                                     </div>
                                     <div className='col-sm'>
                                         <label for='category'>Category</label>
+                                        <br />
+                                        <select for='category' name='category' onChange={(e) => setCategory(e.target.value)} id='category'>
+                                            {renderCategories()}
+                                        </select>
+                                        {/* <label for='category'>Category</label>
                                         <input required='required' type='text' className='form-control'
-                                            value={category} onChange={(e) => setCategory(e.target.value)} id='category'></input>
+                                            value={category} onChange={(e) => setCategory(e.target.value)} id='category'></input> */}
                                     </div>
                                     <div className='col-sm'>
                                         <label for='note'>Note</label>
