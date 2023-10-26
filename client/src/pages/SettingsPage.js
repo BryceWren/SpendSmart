@@ -203,10 +203,8 @@ export const SettingsPage = () => {
               </Modal.Footer>
             </Modal>
           </div>
-
         </div>
-        </div>
-      {/* </div> */}
+      </div>
     </>
   )
 }
