@@ -72,6 +72,7 @@ export const Login = () => {
                     />
                     <button className='login-btn' onClick={login}>Login</button>
                 </form>
+                <button className='link-btn' onClick={() => navigate('/forgotpassword')}>Forgot Password?</button>
                 <button className='link-btn' onClick={() => navigate('/register')}>Don't have an account? Register Here</button>
             </div>
         </div>
