@@ -7,7 +7,7 @@ import { useCookies } from 'react-cookie';
 
 export const Login = () => {
 
-    const [cookies, setCookie] = useCookies(['userID', 'firstName', 'lastName', 'email', 'password']);
+    const [, setCookie] = useCookies(['userID', 'firstName', 'lastName', 'email', 'password']);
 
     const navigate = useNavigate();
 
@@ -35,15 +35,19 @@ export const Login = () => {
                 backPassword: pass
             });
 
-            setCookie('userID', response.data['id'], { path: '/' });
-            setCookie('firstName', response.data['firstName'], { path: '/' });
-            setCookie('lastName', response.data['lastName'], { path: '/' });
-            setCookie('email', response.data['email'], { path: '/' });
-            setCookie('password', response.data['password'], { path: '/' });
+            if (response.status === 200)
+            {
+                setCookie('userID', response.data['id'], { path: '/' });
+                setCookie('firstName', response.data['firstName'], { path: '/' });
+                setCookie('lastName', response.data['lastName'], { path: '/' });
+                setCookie('email', response.data['email'], { path: '/' });
+                setCookie('password', response.data['password'], { path: '/' });
 
-            console.log('Successfully logged in ' + email);
-            navigate('/home');
-
+                console.log('Successfully logged in ' + email);
+                navigate('/home');
+            } else {
+                // TODO : incorrect login
+            }
         } catch (error) {
             console.error('An error occurred:', error);
         }
