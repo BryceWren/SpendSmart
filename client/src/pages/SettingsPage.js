@@ -29,6 +29,10 @@ export const SettingsPage = () => {
   const handleEmailClose = () => setEmailShow(false);
   const handleEmailShow = () => setEmailShow(true);
 
+  const [newEmail, setNewEmail] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [newPassConf, setNewPassConf] = useState('');
+
   const [cookies, setCookie] = useCookies(['firstName, lastName, email, password']);
 
   const fName = cookies.firstName;
@@ -55,20 +59,6 @@ export const SettingsPage = () => {
         <Navbar/>
         <div className="container">
           <h1 className="mt-5">Check out your account, {fName}!</h1>
-          
-          {/* <div className="col-sm"> */}
-          {/* <p className="text-left fw-medium">
-            Full Name:
-            <p className="fw-light">{fName} {lName}</p>
-          </p>
-          <div className="text-left fw-medium">
-            Email:
-          </div>
-            <p className="fw-light">{userEmail}</p>
-          <div className="text-left fw-medium">
-            Password: 
-          </div> */}
-
           <form>
             <p></p>
             <div className="form-group">
@@ -82,10 +72,6 @@ export const SettingsPage = () => {
                 <p className="fw-light">{userEmail}</p>
             </div>
             <div className="form-group">
-              {/* <button className="btn btn-outline-primary float-right"
-                  type="submit">
-                    Change Email
-                  </button> */}
                   <Button variant="outline-primary" onClick={handleEmailShow}>
                     Change Email
                   </Button>
@@ -101,22 +87,23 @@ export const SettingsPage = () => {
                     </Modal.Header>
 
                     <Modal.Body>
-                      Use the below text fields to insert your new email address that you would like to use for your account. To successfully complete
+                      Use the below text field to insert your new email address that you would like to use for your account. To successfully complete
                       changes click "Save Changes."
                     </Modal.Body>
 
                     <Modal.Body>
-                      <label for="">Enter Your Email Address:</label>
-                      <input className="form-control"
-                        type="text"
+                      <p className="label">Email</p>
+                      <input 
+                        value={newEmail}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                        type="newEmail"
+                        name="newEmail"
                         placeholder="New Email Address"
-                      >
-
-                      </input>
+                      />
                     </Modal.Body>
 
                   <Modal.Footer>
-                    {/* <Button variant="danger" onClick={to="/"}>Permenantly Delete Account</Button> */}
+                    {/* Needs to save changes */}
                     <Button variant="outline-success" onClick={handleEmailClose}>
                       Save Changes
                     </Button>
@@ -130,10 +117,6 @@ export const SettingsPage = () => {
                 <p className="fw-light">{userPass}</p>
             </div>
             <div className="form-group">
-              {/* <button className="btn btn-outline-primary float-right"
-                  type="submit">
-                    Change Password
-                  </button> */}
                   <Button variant="outline-primary" onClick={handlePassShow}>
                     Change Password
                   </Button>
@@ -154,27 +137,29 @@ export const SettingsPage = () => {
                     </Modal.Body>
 
                     <Modal.Body>
-                      <label for="">Enter Your Password:</label>
-                      <input className="form-control"
-                        type="text"
+                      <p className="label">Password</p>
+                      <input 
+                        type={newPass? 'password':'text'}
+                        name="password"
                         placeholder="New Password"
-                      >
-
-                      </input>
+                        value={newPass}
+                        onChange={(e) => setNewPass(e.target.value)}
+                      />
                     </Modal.Body>
 
                     <Modal.Body>
-                      <label for="">Re-Enter New Password:</label>
-                      <input className="form-control"
-                        type="text"
-                        placeholder="Re-Enter Password"
-                      >
-
-                      </input>
+                    <p className="label">Confirm Password</p>
+                      <input 
+                        type={newPassConf? 'password':'text'}
+                        name="password"
+                        placeholder="Re-Enter New Password"
+                        value={newPassConf}
+                        onChange={(e) => setNewPassConf(e.target.value)}
+                      />
                     </Modal.Body>
-
                   <Modal.Footer>
-                    {/* <Button variant="danger" onClick={to="/"}>Permenantly Delete Account</Button> */}
+
+                    {/* Needs to save changes */}
                     <Button variant="outline-success" onClick={handlePassClose}>
                       Save Changes
                     </Button>
@@ -220,10 +205,8 @@ export const SettingsPage = () => {
               </Modal.Footer>
             </Modal>
           </div>
-
         </div>
-        </div>
-      {/* </div> */}
+      </div>
     </>
   )
 }

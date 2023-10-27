@@ -15,7 +15,7 @@
     width: 600px;
     height: 700px;
     padding: 5rem;
-    border: 3px solid #18cf89;
+    border: 3px solid #45a049;
     border-radius: 10px;
     border-width: 5px;
     margin: auto;
@@ -23,9 +23,9 @@
 
 .auth-form-container-register {
     width: 600px;
-    height: 850px;
+    height: 870px;
     padding: 5rem;
-    border: 3px solid #18cf89;
+    border: 3px solid #45a049;
     border-radius: 10px;
     border-width: 5px;
     margin: auto;
@@ -51,7 +51,8 @@ button {
 }
 
 .login-btn, .register-btn {
-  background-color: #18cf89;
+  background-color: #45a049;
+  color: white;
   border: none;
 }
 
