@@ -4,9 +4,11 @@ import { Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import { useCookies } from "react-cookie";
+import Axios from 'axios';
 
 // need to be able to save new password, email changes to acccount
 // deletion???
+
 
 // work more on password field and recognition of the same password being entered
 
@@ -28,11 +30,25 @@ export const SettingsPage = () => {
   const handleEmailShow = () => setEmailShow(true);
 
   const [cookies, setCookie] = useCookies(['firstName, lastName, email, password']);
+
   const fName = cookies.firstName;
   const lName = cookies.lastName;
   const userEmail = cookies.email;
   const userPass = cookies.password;
-
+/*
+  const deleteUser = async () => {
+    try {
+        const response = await Axios.post("http://localhost:3001/delete", {
+            email: showEmail,
+            pass: showPass
+        })
+        console.log(response)
+        
+    } catch (error) {
+        console.error('An error occurred:', error)
+    }
+}
+*/
   return (
     <>
       <div className="nav-bar">
@@ -193,6 +209,7 @@ export const SettingsPage = () => {
                 <Link
                   className="btn btn-outline-danger"
                   role="button"
+                  //onClick={deleteUser} //***********added this line to see if it would work* ***********
                   to="/"
                 >
                   Yes, Delete Account
