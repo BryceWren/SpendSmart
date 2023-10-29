@@ -43,6 +43,7 @@ app.post('/register', db.registerUser)
 
 // categories
 app.get('/categories/:userID', db.getCategories)
+app.get('/loadChart/:userID', db.loadChartByCategory)
 // app.post('/addcategory', db.addCategory)
 // app.put('/editcategory', db.editCategory)
 // app.delete('/deletecategory', db.deleteCategory)

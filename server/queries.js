@@ -139,6 +139,18 @@ const getCategories = (request, response) => {
   })
 }
 
+const loadChartByCategory = (request, response) => {
+  const userID = parseInt(request.params.userID)
+
+  pool.query('SELECT c."categoryName" as label, SUM(t.amount) as value FROM public.transactions t JOIN "categoryDesc" c on c."categoryID" = t."categoryID" WHERE t."userID" = $1 GROUP BY t."userID", c."categoryName"', [userID], (error, results) => {
+    if (error) {
+      console.error(error)
+      response.status(500).json(error) // 500: internal server error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
 
 // EXPORT
 
@@ -150,4 +162,5 @@ module.exports = {
   registerUser,
   verifyLogin,
   getCategories,
+  loadChartByCategory,
 }
