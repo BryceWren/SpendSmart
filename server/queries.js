@@ -123,6 +123,23 @@ const verifyLogin = (request, response) => {
   })
 }
 
+/*
+const deleteUser = (request, response) => {
+  const email = request.body.showEmail
+  const pass = request.body.showPass
+
+  pool.query('DELETE FROM users WHERE email = $1 AND password = $2', [email, pass], (error, results) => {
+    if (error) {
+      console.error(error)
+      response.status(500).json(error) // 500: internal server error
+      }
+      response.status(200).send(`Deleted User`)
+    }
+  )
+}
+*/
+
+
 
 // categories
 
@@ -163,4 +180,5 @@ module.exports = {
   verifyLogin,
   getCategories,
   loadChartByCategory,
+  //deleteUser, //commented this because still working
 }
