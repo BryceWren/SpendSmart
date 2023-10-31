@@ -1,30 +1,24 @@
-// DB CONNECTION
-require('dotenv').config()
-const Pool = require('pg').Pool
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB,
-})
-
-
 // TRANSACTIONS
 
-const getTransactions = (request, response) => {
+const getTransactions = async (request, response) => {
   const userID = parseInt(request.params.userID)
 
-  pool.query('SELECT * FROM transactions t join category c on t."categoryID" = c."categoryID" WHERE t."userID" = $1 ORDER BY date desc', [userID], (error, results) => {
-    if (error) {
-      console.error(error)
-      response.status(500).json(error) // 500: internal server error
-    }
-    response.status(200).json(results.rows)
-  })
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'SELECT * FROM transactions t join category c on t."categoryID" = c."categoryID" WHERE t."userID" = $1 ORDER BY date desc', 
+      [userID])
+    console.log('returned ' + result.rows.length + ' transactions')
+    response.status(200).json(result.rows)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
 }
 
-const addTransaction = (request, response) => {
+const addTransaction = async (request, response) => {
   const userID = parseInt(request.body.userID)
   const date = request.body.date
   const desc = request.body.desc
@@ -33,16 +27,22 @@ const addTransaction = (request, response) => {
   const note = request.body.note
 
 
-  pool.query('INSERT INTO transactions (description, amount, date, "categoryID", notes, "userID") VALUES ($1, $2, $3, $4, $5, $6)', [desc, amount, date, category, note, userID], (error, results) => {
-    if (error) {
-      console.error(error)
-      response.status(500).json(error) // 500: internal server error
-    }
-    response.status(200).send(`Added transaction ${results.transactionID}`)
-  })
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'INSERT INTO transactions (description, amount, date, "categoryID", notes, "userID") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "transactionID"', 
+      [desc, amount, date, category, note, userID])
+    console.log('added transaction ' + result.rows[0][0])
+    response.status(200).send('added transaction ' + result.rows[0][0])
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
 }
 
-const editTransaction = (request, response) => {
+const editTransaction = async (request, response) => {
   const transactionID = parseInt(request.body.transactionID)
   const desc = request.body.desc
   const amount = parseInt(request.body.amount)
@@ -50,125 +50,155 @@ const editTransaction = (request, response) => {
   const category = parseInt(request.body.category)
   const notes = request.body.note
 
-  pool.query('UPDATE transactions SET description=$1, amount=$2, date=$3, "categoryID"=$4, notes=$5 WHERE "transactionID"=$6', [desc, amount, date, category, notes, transactionID], (error, results) => {
-    if (error) {
-      console.error(error)
-      response.status(500).json(error) // 500: internal server error
-    }
-    response.status(200).send(`Updated transaction ${results.transactionID}`)
-  })
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'UPDATE transactions SET description=$1, amount=$2, date=$3, "categoryID"=$4, notes=$5 WHERE "transactionID"=$6', 
+      [desc, amount, date, category, notes, transactionID])
+    console.log('updated transaction ' + transactionID)
+    response.status(200).send('updated transaction ' + transactionID)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
 }
 
-const deleteTransaction = (request, response) => {
+const deleteTransaction = async (request, response) => {
   const transactionID = parseInt(request.body.transactionID)
 
-  pool.query('DELETE FROM transactions WHERE "transactionID"=$1', [transactionID], (error, results) => {
-    if (error) {
-      console.error(error)
-      response.status(500).json(error) // 500: internal server error
-    }
-    response.status(200).send(`Deleted transaction ${results.transactionID}`)
-  })
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'DELETE FROM transactions WHERE "transactionID"=$1', 
+      [transactionID])
+    console.log('deleted transaction ' + transactionID)
+    response.status(200).send('deleted transaction ' + transactionID)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
 }
 
 
 // USERS
 
-const registerUser = (request, response) => {
+const registerUser = async (request, response) => {
   const first = request.body.backFirst
   const last = request.body.backLast
   const email = request.body.backEmail
   const pass = request.body.backPassword
   //const hashPass = bcrypt.hash(pass, 10) //would like to use this later in order to hash passwords available in our database
 
-  pool.query("SELECT * FROM users WHERE email = $1", [email], (error, results) => {
-    if (error) {
-      console.error(error)
-      response.status(500).json(error) // 500: internal server error
-    }
-
-    if (results.rows.length > 0) {
-      console.log("Email already registered.")
-      response.status(401).json(results.rows) // 401: unauthorized
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'SELECT * FROM users WHERE email = $1', 
+      [email])
+    if (result.rows.length > 0) {
+      console.log("email already registered")
+      response.status(401).json(result.rows) // 401: unauthorized
     } else {
-      pool.query('CALL register_user($1, $2, $3, $4)', [first, last, email, pass], (error, results) => {
-        if (error) {
-          console.error(error)
-          response.status(500).json(error) // 500: internal server error
-        }
-
+      const result = client.query(
+        'CALL register_user($1, $2, $3, $4)', 
+        [first, last, email, pass])
+        console.log('user registered successfully')
         response.status(200).send('User registered successfully.')
-      })
     }
-  })
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
 }
 
-const verifyLogin = (request, response) => {
+const verifyLogin = async (request, response) => {
   const email = request.body.backEmail
   const pass = request.body.backPassword
 
-  pool.query('SELECT * FROM users WHERE email = $1 AND password = $2', [email, pass], (error, results) => {
-    if (error) {
-      console.error(error)
-      response.status(500).json(error) // 500: internal server error
-    }
-
-    if (results.rows.length > 0) {
-      console.log("you are logged in :)")
-      response.status(200).json(results.rows[0])
-    } else {
-      console.log("you suck buddy, you messed something up") //this means email or password was either wrong or doesnt exist
-      response.status(401).json(results.rows) // 401: unauthorized
-    }
-  })
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'SELECT * FROM users WHERE email = $1 AND password = $2', 
+      [email, pass])
+      if (result.rows.length > 0) {
+        console.log("you are logged in :)")
+        response.status(200).json(result.rows[0])
+      } else {
+        console.log("you suck buddy, you messed something up") //this means email or password was either wrong or doesnt exist
+        response.status(401).json(result.rows) // 401: unauthorized
+      }
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
 }
 
 
-const deleteUser = (request, response) => {
+const deleteUser = async (request, response) => {
   const userID = parseInt(request.body.userID)
 
-  pool.query('CALL delete_user($1)', [userID], (error, results) => {
-    if (error) {
-      console.error(error)
-      response.status(500).json(error) // 500: internal server error
-      }
-      response.status(200).send(`Deleted User`)
-    }
-  )
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'CALL delete_user($1)', 
+      [userID])
+    console.log('deleted user ' + userID)
+    response.status(200).send('deleted user ' + userID)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
 }
 
 
 
 // categories
 
-const getCategories = (request, response) => {
+const getCategories = async (request, response) => {
   const userID = parseInt(request.params.userID)
 
-  pool.query('SELECT * FROM "categoryDesc" c WHERE c."userID" = $1', [userID], (error, results) => {
-    if (error) {
-      console.error(error)
-      response.status(500).json(error) // 500: internal server error
-    } else {
-      response.status(200).json(results.rows)
-    }
-  })
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'SELECT * FROM "categoryDesc" c WHERE c."userID" = $1', 
+      [userID])
+    response.status(200).json(result.rows)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
 }
 
-const loadChartByCategory = (request, response) => {
+const loadChartByCategory = async (request, response) => {
   const userID = parseInt(request.params.userID)
 
-  pool.query('SELECT c."categoryName" as label, SUM(t.amount) as value FROM public.transactions t JOIN "categoryDesc" c on c."categoryID" = t."categoryID" WHERE t."userID" = $1 GROUP BY t."userID", c."categoryName"', [userID], (error, results) => {
-    if (error) {
-      console.error(error)
-      response.status(500).json(error) // 500: internal server error
-    }
-    response.status(200).json(results.rows)
-  })
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'SELECT c."categoryName" as label, SUM(t.amount) as value FROM public.transactions t JOIN "categoryDesc" c on c."categoryID" = t."categoryID" WHERE t."userID" = $1 GROUP BY t."userID", c."categoryName"',
+      [userID])
+    response.status(200).json(result.rows)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
 }
 
 
 // EXPORT
-
 module.exports = {
   getTransactions,
   addTransaction,

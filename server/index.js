@@ -1,9 +1,39 @@
+// DEPENDENCIES
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+const env = require('dotenv').config()
+const Pool = require('pg').Pool
 const db = require('./queries')
-const PORT = process.env.PORT || 3001
+const PORT = env.PORT || 3001
 
+// DB CONNECTION
+const pool = new Pool({
+  user: env.DB_USER,
+  host: env.DB_HOST,
+  port: env.DB_PORT,
+  password: env.DB_PASSWORD,
+  database: env.DB,
+})
+
+// FREE DB ON EXIT
+process.on('exit', () => {
+  console.log('Closing database connections...')
+  pool.end((err) => {
+      if (err) {
+          console.error('Error closing database connections:', err)
+      } else {
+          console.log('Database connections closed.')
+      }
+  })
+})
+
+process.on('SIGINT', () => {
+  console.log('\nShutting down server...')
+  process.exit(0)
+})
+
+// BACKEND API SETUP
 const allowCrossDomain = (req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
@@ -24,8 +54,9 @@ app.listen(PORT, () =>{
 })
 
 app.get('/', (request, response) => {
-  response.json({ info: 'Node.js, Express, and Postgres API' })
+  response.json({ info: 'SpendSmart Backend API: Powered by Node.js, Express, and Postgres' })
 })
+
 
 // QUERIES
 
@@ -39,7 +70,7 @@ app.delete('/deletetransaction', db.deleteTransaction)
 app.post('/login', db.verifyLogin)
 app.post('/register', db.registerUser)
 // app.put('/edit', db.updateUser)
-app.delete('/delete', db.deleteUser) //wonder if we need to change '/delete' to '/settings'?
+app.delete('/delete', db.deleteUser)
 
 // categories
 app.get('/categories/:userID', db.getCategories)
