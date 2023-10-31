@@ -8,24 +8,26 @@ export const DashboardPage = () => {
   const [cookies] = useCookies(['firstName']);
   const name = cookies.firstName;
 
-    return (
-      <div>
-        <Navbar />
-        
-          <div className='container'>
+  return (
+    <div>
+      <Navbar />
 
-            <h1 className='mt-3'>Welcome back, {name}!</h1>
+      <div className='container'>
 
-            <p> This is your dashboard. Here is a quick overview of some important things. </p>
+        <h1 className='mt-3'>Welcome back, {name}!</h1>
+
+        <p> This is your dashboard. Here is a quick overview of some important things. </p>
+
+        <div style={{ display: 'flex' }}>
+          <div style={{ flex: 2 }}>
+            <PieChartTransactions />
           </div>
-          <div style={{display: 'flex'}}>
-            <div style={{flex: 1}}>
-              <PieChartTransactions/>
-            </div>
-          <div style={{flex: 1}}>
-            <CalendarComp/>
+          <div style={{ flex: 1 }}>
+            <CalendarComp />
           </div>
         </div>
+
       </div>
-    )
+    </div>
+  )
 }

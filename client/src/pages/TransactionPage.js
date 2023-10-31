@@ -18,7 +18,7 @@ export const TransactionPage = () => {
     const [date, setDate] = useState('')
     const [desc, setDesc] = useState('')
     const [amount, setAmount] = useState('')
-    const [category, setCategory] = useState('')
+    const [category, setCategory] = useState(0)
     const [note, setNote] = useState('')
 
     const [showAdd, setShowAdd] = useState(false)
@@ -70,7 +70,7 @@ export const TransactionPage = () => {
 
     const editTransaction = async () => {
         try {
-            const response = await Axios.post("http://localhost:3001/edittransaction", {
+            const response = await Axios.put("http://localhost:3001/edittransaction", {
                 transactionID: id,
                 date: date,
                 desc: desc,
@@ -87,8 +87,8 @@ export const TransactionPage = () => {
 
     const deleteTransaction = async (transactionID) => {
         try {
-            const response = await Axios.post("http://localhost:3001/deletetransaction", {
-                transactionID: transactionID
+            const response = await Axios.delete("http://localhost:3001/deletetransaction", {
+                data: { transactionID: transactionID }
             })
             console.log(response)
             window.location.reload(true)
@@ -109,7 +109,7 @@ export const TransactionPage = () => {
                 <td>{t.notes}</td> 
                 <td>
                     <span>
-                        <BsFillPencilFill className="edit-btn" onClick={() => handleShowEdit(t.transactionID, new Date(t.date).toLocaleDateString('en-CA'), t.description, t.amount, t.category, t.notes)} />
+                        <BsFillPencilFill className="edit-btn" onClick={() => handleShowEdit(t.transactionID, new Date(t.date).toLocaleDateString('en-CA'), t.description, t.amount, t.categoryID, t.notes)} />
                         <BsFillTrashFill className="delete-btn" onClick={() => handleShowDelete(t.transactionID)} />
                     </span>
                 </td>
@@ -121,13 +121,9 @@ export const TransactionPage = () => {
     const renderCategories = () => {
         return categories.map(c => {
             if (c.categoryID === category) {
-          return (
-            <option value={c.categoryID} selected>{c.categoryName}</option>
-          )
+                return ( <option value={c.categoryID} selected>{c.categoryName}</option> )
             } else {
-                return (
-                    <option value={c.categoryID}>{c.categoryName}</option>
-                  )
+                return ( <option value={c.categoryID}>{c.categoryName}</option> )
             }
         })
     }
@@ -235,9 +231,6 @@ export const TransactionPage = () => {
                                         <select for='category' name='category' onChange={(e) => setCategory(e.target.value)} id='category'>
                                             {renderCategories()}
                                         </select>
-                                        {/* <label for='category'>Category</label>
-                                        <input required='required' type='text' className='form-control'
-                                            value={category} onChange={(e) => setCategory(e.target.value)} id='category'></input> */}
                                     </div>
                                     <div className='col-sm'>
                                         <label for='note'>Note</label>

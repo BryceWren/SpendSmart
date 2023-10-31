@@ -70,9 +70,9 @@ button {
   height: 100vh;
 }
 
-.container {
+/* .container {
   text-align: center;
-}
+} */
 
 .auth-form-container-forgot {
   width: 600px;
@@ -88,7 +88,7 @@ button {
   text-align: center;
 }
 
-img {
+.wideImg {
   width: 150px;
 }
 
