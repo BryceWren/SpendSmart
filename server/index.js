@@ -39,7 +39,7 @@ app.delete('/deletetransaction', db.deleteTransaction)
 app.post('/login', db.verifyLogin)
 app.post('/register', db.registerUser)
 // app.put('/edit', db.updateUser)
-//app.delete('/delete', db.deleteUser) //wonder if we need to change '/delete' to '/settings'?
+app.delete('/delete', db.deleteUser) //wonder if we need to change '/delete' to '/settings'?
 
 // categories
 app.get('/categories/:userID', db.getCategories)

@@ -91,7 +91,7 @@ const registerUser = (request, response) => {
       console.log("Email already registered.")
       response.status(401).json(results.rows) // 401: unauthorized
     } else {
-      pool.query('call register_user($1, $2, $3, $4)', [first, last, email, pass], (error, results) => {
+      pool.query('CALL register_user($1, $2, $3, $4)', [first, last, email, pass], (error, results) => {
         if (error) {
           console.error(error)
           response.status(500).json(error) // 500: internal server error
@@ -123,12 +123,11 @@ const verifyLogin = (request, response) => {
   })
 }
 
-/*
-const deleteUser = (request, response) => {
-  const email = request.body.showEmail
-  const pass = request.body.showPass
 
-  pool.query('DELETE FROM users WHERE email = $1 AND password = $2', [email, pass], (error, results) => {
+const deleteUser = (request, response) => {
+  const userID = parseInt(request.body.userID)
+
+  pool.query('CALL delete_user($1)', [userID], (error, results) => {
     if (error) {
       console.error(error)
       response.status(500).json(error) // 500: internal server error
@@ -137,7 +136,6 @@ const deleteUser = (request, response) => {
     }
   )
 }
-*/
 
 
 
@@ -180,5 +178,5 @@ module.exports = {
   verifyLogin,
   getCategories,
   loadChartByCategory,
-  //deleteUser, //commented this because still working
+  deleteUser,
 }

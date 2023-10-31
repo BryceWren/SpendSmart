@@ -33,18 +33,19 @@ export const SettingsPage = () => {
   const [newPass, setNewPass] = useState('');
   const [newPassConf, setNewPassConf] = useState('');
 
-  const [cookies, setCookie] = useCookies(['firstName, lastName, email, password']);
+  const [cookies, setCookie] = useCookies(['userID, firstName, lastName, email, password']);
 
   const fName = cookies.firstName;
   const lName = cookies.lastName;
   const userEmail = cookies.email;
   const userPass = cookies.password;
-/*
+  const userID = cookies.userID
+
+
   const deleteUser = async () => {
     try {
-        const response = await Axios.post("http://localhost:3001/delete", {
-            email: showEmail,
-            pass: showPass
+        const response = await Axios.delete("http://localhost:3001/delete", {
+          data: { userID: userID }
         })
         console.log(response)
         
@@ -52,7 +53,7 @@ export const SettingsPage = () => {
         console.error('An error occurred:', error)
     }
 }
-*/
+
   return (
     <>
       <div className="nav-bar">
@@ -194,7 +195,7 @@ export const SettingsPage = () => {
                 <Link
                   className="btn btn-outline-danger"
                   role="button"
-                  //onClick={deleteUser} //***********added this line to see if it would work* ***********
+                  onClick={deleteUser} //***********added this line to see if it would work* ***********
                   to="/"
                 >
                   Yes, Delete Account
