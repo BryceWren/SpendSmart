@@ -5,6 +5,8 @@ const app = express()
 require('dotenv').config()
 const db = require('./queries')
 const PORT = process.env.PORT || 3001
+const pool = require('./postgres')
+
 
 // LOGGING/ERROR HANDLING
 process.on('exit', () => { // frees the db connection on exit of server
