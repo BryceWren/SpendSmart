@@ -1,3 +1,6 @@
+const pool = require('./postgres')
+
+
 // TRANSACTIONS
 
 const getTransactions = async (request, response) => {

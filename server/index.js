@@ -2,22 +2,12 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const env = require('dotenv').config()
-const Pool = require('pg').Pool
+require('dotenv').config()
 const db = require('./queries')
-const PORT = env.PORT || 3001
+const PORT = process.env.PORT || 3001
 
-// DB CONNECTION
-const pool = new Pool({
-  user: env.DB_USER,
-  host: env.DB_HOST,
-  port: env.DB_PORT,
-  password: env.DB_PASSWORD,
-  database: env.DB,
-})
-
-// FREE DB ON EXIT
-process.on('exit', () => {
+// LOGGING/ERROR HANDLING
+process.on('exit', () => { // frees the db connection on exit of server
   console.log('Closing database connections...')
   pool.end((err) => {
       if (err) {
@@ -28,10 +18,14 @@ process.on('exit', () => {
   })
 })
 
-process.on('SIGINT', () => {
+process.on('SIGINT', () => { // checks for ctrl-c to shut down server
   console.log('\nShutting down server...')
   process.exit(0)
 })
+
+process.on('unhandledRejection', (reason, promise) => { // catches issues from api calls
+  console.error('Unhandled Promise Rejection:', reason);
+});
 
 // BACKEND API SETUP
 const allowCrossDomain = (req, res, next) => {
