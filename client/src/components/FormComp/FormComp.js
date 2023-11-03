@@ -46,6 +46,7 @@ const FormComp = ({ handleAddEvent }) => {
                     value={eventDescription}
                     onChange={handleEventDescriptionChange}
                 ></textarea>
+                <button type="submit">Add Event</button>
             </form>
             {errorMsg && <p className="error-msg">{errorMsg}</p>}
         </div>
