@@ -1,4 +1,4 @@
-import CalendarComp from "../components/CalendarComp"
+import CalendarComp from "../components/CalendarComp/CalendarComp"
 import Navbar from "../components/Navbar"
 import PieChartTransactions from "../components/PieChartTransactions"
 import { useCookies } from 'react-cookie';
