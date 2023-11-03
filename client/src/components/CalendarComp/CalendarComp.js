@@ -95,16 +95,4 @@ const CalendarComp = () => {
     );
 };
 export default CalendarComp;
-// export default function CalendarComp() {
-//     const [value, onChange] = useState(new Date());
- 
-//     return (
-//         <div>
-//             <Calendar
-//                 onChange={onChange}
-//                 value={value}
-//             />
-//         </div>
-//     );
-// }
 
