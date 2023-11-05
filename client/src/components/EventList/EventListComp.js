@@ -1,4 +1,6 @@
 import "./EventListComp.css";
+import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
+
 
 const EventListComp = ({ events }) => {
     return(
@@ -17,6 +19,11 @@ const EventListComp = ({ events }) => {
                             <p>
                                 <strong>Description:</strong> {event.description}
                             </p>
+                            <span>
+                                <BsFillPencilFill className="editEvent-btn"/>
+                                <p></p>
+                                <BsFillTrashFill className="deleteEvent-btn"/>
+                            </span>
                         </li>
                     ))}
                 </ul>
