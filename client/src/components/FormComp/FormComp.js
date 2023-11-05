@@ -20,7 +20,7 @@ const FormComp = ({ handleAddEvent }) => {
         e.preventDefault();
 
         if (eventTitle.trim() === "" || eventDescription.trim() === "") {
-            setErrorMsg("Please enter a title or description for this event");
+            setErrorMsg("Please enter a title and description");
             return;
         }
 

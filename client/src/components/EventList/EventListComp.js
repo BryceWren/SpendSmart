@@ -1,4 +1,3 @@
-import React from "react";
 import "./EventListComp.css";
 
 const EventListComp = ({ events }) => {
@@ -10,7 +9,7 @@ const EventListComp = ({ events }) => {
                     {events.map((event, index) => (
                         <li key={index}>
                             <p>
-                                <strong>Date:</strong> {event.date.toLocaleDataString()}
+                                <strong>Date:</strong> {event.date.toLocaleDateString()}
                             </p>
                             <p>
                                 <strong>Title:</strong> {event.title}
