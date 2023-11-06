@@ -37,12 +37,14 @@ const FormComp = ({ handleAddEvent }) => {
                 <input
                     type="text"
                     id="eventTitle"
+                    placeholder="Enter event title here"
                     value={eventTitle}
                     onChange={handleEventTitleChange}
                 />
                 <label htmlFor="eventDescription">Event Description:</label>
                 <textarea
                     id="eventDescription"
+                    placeholder="Enter description for event"
                     value={eventDescription}
                     onChange={handleEventDescriptionChange}
                 ></textarea>
