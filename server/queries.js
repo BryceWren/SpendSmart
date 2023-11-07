@@ -1,4 +1,5 @@
 const pool = require('./postgres')
+const nodemailer = require('nodemailer')
 
 
 // TRANSACTIONS
@@ -89,11 +90,46 @@ const deleteTransaction = async (request, response) => {
 
 // USERS
 
+
+const emailVerify   = async (email, request, response) =>{
+  let testAccount = await nodemailer.createTestAccount();//creating a test account to use as the email hosting service as well to send the email to client
+  const domain = email.split('@')[1]
+  const realDomain = domain.split('.')[0] //this finds the domain name in case we need to change per email
+  const transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email", //  ethereal is a domain that shows the emails sending and i have it outputting once it sends
+    port: 587, //465 = true, 587 = false
+    secure: false,
+    auth: {
+      // TODO: replace `user` and `pass` values from <https://forwardemail.net>
+      user: testAccount.user, // STORE IN ENV (where we would put our email domain)
+      pass: testAccount.pass, //STORE IN ENV (if using gmail (only) we would need to 2fa our email)
+    }
+  });
+  let mailOptions = {
+    from: testAccount.user,//testing purposes STORE IN ENV
+    to: email, //testing purposes would use variable email here for user email
+    subject: 'Account Confirmation',
+    text: 'Please confirm your account' //need to add a jwt with our local host address to confirm users email
+  }
+    await transporter.sendMail(mailOptions, (error, info) => {
+    if (error){
+      console.log(error);
+      console.log('this is where there is an error ' + email)
+
+    }else {
+      console.log(email)
+      console.log('email sent: ' + info.response);
+      console.log('preview url: %s', nodemailer.getTestMessageUrl(info));
+    }
+  })
+}
+
 const registerUser = async (request, response) => {
   const first = request.body.backFirst
   const last = request.body.backLast
   const email = request.body.backEmail
   const pass = request.body.backPassword
+  
   //const hashPass = bcrypt.hash(pass, 10) //would like to use this later in order to hash passwords available in our database
 
   const client = await pool.connect()
@@ -101,10 +137,11 @@ const registerUser = async (request, response) => {
     const result = await client.query(
       'SELECT * FROM users WHERE email = $1', 
       [email])
-    if (result.rows.length > 0) {
-      console.log("email already registered")
+    if (result.rows.length > 0) { //this is where you will send a message to the user to confirm their email
+      console.log("email already registered or has not been confirmed")
       response.status(401).json(result.rows) // 401: unauthorized
-    } else {
+    } else { //once email has been confirmed flip a "false statement to true to allow access once user clicks on link"
+      //emailVerify(email) //add my emailVerify funciton grabbing both email and password 
       const result = client.query(
         'CALL register_user($1, $2, $3, $4)', 
         [first, last, email, pass])
@@ -119,6 +156,8 @@ const registerUser = async (request, response) => {
   }
 }
 
+
+
 const verifyLogin = async (request, response) => {
   const email = request.body.backEmail
   const pass = request.body.backPassword
@@ -131,6 +170,7 @@ const verifyLogin = async (request, response) => {
       if (result.rows.length > 0) {
         console.log("you are logged in :)")
         response.status(200).json(result.rows[0])
+        //emailVerify(email)// testing purposes
       } else {
         console.log("you suck buddy, you messed something up") //this means email or password was either wrong or doesnt exist
         response.status(401).json(result.rows) // 401: unauthorized
