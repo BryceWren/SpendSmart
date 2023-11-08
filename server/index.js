@@ -67,6 +67,7 @@ app.post('/login', db.verifyLogin)
 app.post('/register', db.registerUser)
 // app.put('/edit', db.updateUser)
 app.delete('/delete', db.deleteUser)
+//app.post('/confirm', db.confirmation) //using this as a confirmation link later to be added in queries
 
 // categories
 app.get('/categories/:userID', db.getCategories)

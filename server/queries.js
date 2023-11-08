@@ -98,7 +98,7 @@ const emailVerify   = async (email, request, response) =>{
   const transporter = nodemailer.createTransport({
     host: "smtp.ethereal.email", //  ethereal is a domain that shows the emails sending and i have it outputting once it sends
     port: 587, //465 = true, 587 = false
-    secure: false,
+    secure: false, //change to true or false
     auth: {
       // TODO: replace `user` and `pass` values from <https://forwardemail.net>
       user: testAccount.user, // STORE IN ENV (where we would put our email domain)
