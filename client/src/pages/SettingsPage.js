@@ -97,7 +97,7 @@ export const SettingsPage = () => {
                       <input 
                         value={newEmail}
                         onChange={(e) => setNewEmail(e.target.value)}
-                        type="newEmail"
+                        type="email"
                         name="newEmail"
                         placeholder="New Email Address"
                       />
