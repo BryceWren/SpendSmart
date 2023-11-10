@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 export const LandingPage = () => {
   return (
     <div>
@@ -34,9 +35,13 @@ export const LandingPage = () => {
           </ul>
       </nav>
 
-      <div className='text-center'>
-        <img src="/logowname.png" width="60%" alt="SpendSmart Logo"/>
+      
+       <div id ="header"><img src="/logowname.png" width="50%" height="50%" alt="SpendSmart Logo"/></div> 
+
+        <div className='text-center'>
         <h1 className="mt-3">Making budgeting simple, so you can spend smarter!</h1>
+        
+        
         <div style={{"background-color": "#00BF63"}}>
           <h5 className="mt-3" style={{"color": "white"}}><img height="150" src="/assets/cards.png" alt="credit cards"/>Track all your accounts into one place.</h5>
         </div>

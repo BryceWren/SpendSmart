@@ -143,3 +143,7 @@ input {
 .link-btn:hover {
   color: #0056b3;
 }
+
+#header {
+  text-align: center;
+}
