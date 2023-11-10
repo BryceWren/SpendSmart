@@ -1,5 +1,6 @@
 const pool = require('./postgres')
 const nodemailer = require('nodemailer')
+const smtp = require('./emails')
 
 
 // TRANSACTIONS
@@ -170,7 +171,7 @@ const verifyLogin = async (request, response) => {
       if (result.rows.length > 0) {
         console.log("you are logged in :)")
         response.status(200).json(result.rows[0])
-        //emailVerify(email)// testing purposes
+        emailVerify(email)// testing purposes
       } else {
         console.log("you suck buddy, you messed something up") //this means email or password was either wrong or doesnt exist
         response.status(401).json(result.rows) // 401: unauthorized
