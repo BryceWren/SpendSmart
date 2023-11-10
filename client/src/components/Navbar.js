@@ -3,7 +3,7 @@ import React from "react";
 const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <img src="/logoNav.png" width="40" height="40" class="d-inline-block align-top" alt="" />
+        <img src="/assets/iconNavLogo.png" width="40" height="40" class="d-inline-block align-top" alt="" />
 
       <span class="navbar-brand mb-0 h1">
         SpendSmart
@@ -37,11 +37,6 @@ const Navbar = () => {
               Budget
             </a>
           </li>
-          {/* <li className="nav-item">
-            <a className="nav-link" href="/calendar">
-              Calendar
-            </a>
-          </li> */}
         </ul>
 
         <ul class="navbar-nav ms-auto">

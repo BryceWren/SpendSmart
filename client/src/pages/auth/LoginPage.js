@@ -1,5 +1,6 @@
 import React, { useState } from "react"
-import './CSS/LogRegisterSet.css';
+import '../../style/auth.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
 import { useCookies } from 'react-cookie';
@@ -54,36 +55,46 @@ export const Login = () => {
     };
 
     return (
-        <div className="login">
-            <div className='container'>
-                <h1 className='mt-3 text-center'>Welcome to SpendSmart</h1>
-            </div>
-            <div className="auth-form-container">
+        <div className="auth-page">
+            <div className="auth-form">
                 <div className="text-center">
-                    <img className='wideImg' src="logowname.png" alt="logoTitle"></img>
+                    <img style={{ width: 200 }} src="/assets/horizontalLogo.png" alt="logoTitle"></img>
+                    <h2>Log In</h2>
                 </div>
-                <h2>Log in</h2>
-                <form className="login-form" onSubmit={handleSubmit}>
-                    <label for="email">Email</label>
-                    <input value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        type="email" 
-                        placeholder="Email Address" 
-                        id="email" 
-                        name="email"
-                    />
-                    <label for="password">Password</label>
-                    <input type={pass? 'password' : 'text'}
-                        name="password"
-                        id='password'
-                        placeholder="Password"
-                        value={pass}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <button className='login-btn' onClick={login}>Login</button>
+                
+
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group row">
+                        <label for="email">Email</label>
+                        <input id="email" type="email" value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email Address"
+                            className="form-control"
+                        />
+                    </div>
+
+                    <br/>
+
+                    <div className="form-group row">
+                        <label for="password">Password</label>
+                        <input id='password' type={pass ? 'password' : 'text'} value={pass}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Password"
+                            className="form-control"
+                        />
+                    </div>
+
+                    <br/>
+
+                    <div className="form-group row">
+                        <button className='btn btn-success btn-block' onClick={login}>Login</button>
+                    </div>
                 </form>
-                <button className='link-btn' onClick={() => navigate('/forgotpassword')}>Forgot Password?</button>
-                <button className='link-btn' onClick={() => navigate('/register')}>Don't have an account? Register Here</button>
+
+                <div className="text-center">
+                    <button className='btn btn-link' onClick={() => navigate('/forgotpassword')}>Forgot Password?</button>
+                    <button className='btn btn-link' onClick={() => navigate('/register')}>Don't have an account? Register Here</button>
+                </div>
             </div>
         </div>
     )

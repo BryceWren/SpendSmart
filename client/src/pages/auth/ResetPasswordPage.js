@@ -1,0 +1,78 @@
+import React, { useState } from "react"
+import '../../style/auth.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from "react-router-dom";
+import Axios from 'axios'
+
+export const Reset = () => {
+    const email = "testing@email.com"; //TODO: pull from url or something
+    const [pass, setPass] = useState('');
+    const [confPass, setConfPass] = useState('');
+    const navigate = useNavigate();
+
+    const handleSubmit = (e) => {
+        //TO DO
+    };
+
+    const resetPassword = async () => {
+        try {
+            const response = await Axios.post("http://localhost:3001/resetpassword", {
+                email: email,
+                pass: pass
+            });
+            console.log(response); // Log the response data
+            navigate('/login'); // Redirect to the login page after submitting the form
+        } catch (error) {
+            // Handle any errors that might occur during the request
+            console.error('An error occurred:', error);
+        }
+    };
+
+    return (
+        <div className="auth-page">
+            <div className="auth-form">
+                <div className="text-center">
+                    <img style={{ width: 200 }} src="/assets/horizontalLogo.png" alt="logoTitle"></img>
+                    <h2>Reset Password</h2>
+                </div>
+
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group row">
+                        <label for="email">Email: </label>
+                        <input id="email" type="email" value={email}
+                            className="form-control-plaintext text-center"
+                        />
+                    </div>
+
+                    <br/>
+
+                    <div className="form-group row">
+                        <label for="pass">New Password</label>
+                        <input id='pass' type={pass ? 'password' : 'text'} value={pass}
+                            onChange={(e) => setPass(e.target.value)}
+                            placeholder="Enter New Password"
+                            className="form-control"
+                        />
+                    </div>
+
+                    <br/>
+
+                    <div className="form-group row">
+                        <label for="conf">Confirm Password</label>
+                        <input id='conf' type={pass ? 'password' : 'text'} value={confPass}
+                            onChange={(e) => setConfPass(e.target.value)}
+                            placeholder="Reenter New Password"
+                            className="form-control"
+                        />
+                    </div>
+
+                    <br/>
+
+                    <div className="form-group row">
+                        <button className='btn btn-success btn-block' onClick={resetPassword}>Reset Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
