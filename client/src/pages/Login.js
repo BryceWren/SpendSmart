@@ -3,6 +3,8 @@ import './CSS/LogRegisterSet.css';
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
 import { useCookies } from 'react-cookie';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 
 export const Login = () => {
@@ -13,20 +15,22 @@ export const Login = () => {
 
     const [email, setEmail] = useState('');
     const [pass, setPassword] = useState('');
+    const[showPassword, setShowPassword] = useState(false);
+    const [error, setError]=useState(null);
     
     //handle individual and combined submission fails
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!email && !pass) {
-            alert('Please enter your email and password.');
-        } else if (!pass) {
-            alert('Please enter your password.');
-        }  else if (!email) {
-            alert('Please enter your email.');
-        } else {
+     const handleSubmit = (e) => {
+         e.preventDefault();
+         if (!email && !pass) {
+             alert('Please enter your email and password.');
+         } else if (!pass) {
+             alert('Please enter your password.');
+         }  else if (!email) {
+             alert('Please enter your email.');
+         } else {
             login();
-        }
-    }
+         }
+     }
 
     const login = async () => {
         try {
@@ -62,7 +66,7 @@ export const Login = () => {
                 <div className="text-center">
                     <img className='wideImg' src="logowname.png" alt="logoTitle"></img>
                 </div>
-                <h2>Log in</h2>
+                <h2>Login</h2>
                 <form className="login-form" onSubmit={handleSubmit}>
                     <label for="email">Email</label>
                     <input value={email} 
@@ -73,13 +77,28 @@ export const Login = () => {
                         name="email"
                     />
                     <label for="password">Password</label>
-                    <input type={pass? 'password' : 'text'}
+                    <input type={showPassword ? "text" : "password"}
                         name="password"
                         id='password'
                         placeholder="Password"
                         value={pass}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                     <FontAwesomeIcon
+                            icon={showPassword ? faEyeSlash : faEye}
+                            style={{
+                                position: "absolute",
+                                left: "1175px",
+                                top: "55%",
+                                transform: "translateY(105%)",
+                                cursor: "pointer"
+                            }}
+                            onClick={() => setShowPassword(!showPassword)}
+                        />
+                        
+                    
+
+
                     <button className='login-btn' onClick={login}>Login</button>
                 </form>
                 <button className='link-btn' onClick={() => navigate('/forgotpassword')}>Forgot Password?</button>

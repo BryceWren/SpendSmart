@@ -1,5 +1,7 @@
 import React, { useState } from "react"
 import './CSS/LogRegisterSet.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
@@ -10,13 +12,19 @@ export const Register = () => {
     const [pass, setPassword] = useState('');
     const [firstname, setFirstName] = useState('');
     const [lastname, setLastName] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [error, setError]=useState(null);
 
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(email);
-    }
+       if (!email || !pass || !firstname || !lastname) {
+        console.error("Please fill out all fields.");
+       } else {
+        register();
+       }
+    };
 
     const register = async () => {
         try {
@@ -31,7 +39,7 @@ export const Register = () => {
         } catch (error) {
             // Handle any errors that might occur during the request
             console.error('An error occurred:', error);
-        }
+        };
     };
 
     return (
@@ -52,7 +60,25 @@ export const Register = () => {
                     <label for="email">Email</label>
                     <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Enter email address" id="email" name="Email"/>
                     <label for="password">Password</label>
-                    <input value={pass} onChange={(e) => setPassword(e.target.value)} type="pass" placeholder="Enter password" id="password" name="Password"/>
+                  
+                    <input type={showPassword ? "text" : "password"}
+                        name="password"
+                        id='password'
+                        placeholder="Password"
+                        value={pass}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                     <FontAwesomeIcon
+                            icon={showPassword ? faEyeSlash : faEye}
+                            style={{
+                                position: "absolute",
+                                left: "1165px",
+                                top: "55%",
+                                transform: "translateY(1575%)",
+                                cursor: "pointer"
+                            }}
+                            onClick={() => setShowPassword(!showPassword)}
+                        />
 
                     <button className='register-btn' onClick={register}>Register Account</button>
                 </form>
