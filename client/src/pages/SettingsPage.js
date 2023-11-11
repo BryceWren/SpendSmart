@@ -5,6 +5,7 @@ import { Button, Modal } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import { useCookies } from "react-cookie";
 import Axios from 'axios';
+import './CSS/Settings.css';
 
 // need to be able to save new password, email changes to acccount
 // deletion???
@@ -61,16 +62,17 @@ export const SettingsPage = () => {
         <div className="container">
           <h1 className="mt-5">Check out your account, {fName}!</h1>
           <form>
+            <span className="form-control rounded border border-secondary">
             <p></p>
             <div className="form-group">
               <label for="">Full Name:</label>
-                <p className="fw-light">{fName} {lName}</p>
+                  <p className="form-control border-secondary fw-light">{fName} {lName}</p>
             </div>
             <p></p>
             <p></p>
             <div className="form-group">
               <label for="">Email:</label>
-                <p className="fw-light">{userEmail}</p>
+                <p className="form-control border-secondary fw-light">{userEmail}</p>
             </div>
             <div className="form-group">
                   <Button variant="outline-primary" onClick={handleEmailShow}>
@@ -115,7 +117,7 @@ export const SettingsPage = () => {
             <p></p>
             <div className="form-group">
               <label for="">Password:</label>
-                <p className="fw-light">{userPass}</p>
+                <p className="form-control border-dark fw-light">{userPass}</p>
             </div>
             <div className="form-group">
                   <Button variant="outline-primary" onClick={handlePassShow}>
@@ -167,6 +169,7 @@ export const SettingsPage = () => {
                   </Modal.Footer>
                 </Modal>
             </div>
+            </span>
           </form>
             
 
