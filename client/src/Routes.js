@@ -1,13 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
 import { LandingPage } from './pages/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { TransactionPage } from './pages/TransactionPage';
 import { BudgetPage } from './pages/BudgetPage';
 import { SettingsPage } from './pages/SettingsPage';
-import { ForgotPassword } from './pages/ForgotPassword';
-// import { CalendarPage } from './pages/CalendarPage';
+import { Login } from './pages/auth/LoginPage';
+import { Register } from './pages/auth/RegisterPage';
+import { ForgotPassword } from './pages/auth/ForgotPasswordPage';
+import { Reset } from './pages/auth/ResetPasswordPage';
 
 
 export const AppRoutes = () => {
@@ -22,7 +22,7 @@ export const AppRoutes = () => {
                 <Route path="/budget" element={<BudgetPage />} />
                 <Route path="/settings" element={<SettingsPage />}/>
                 <Route path="/forgotpassword" element={<ForgotPassword />}/>
-                {/* <Route path='/calendar' element={<CalendarPage />}/> */}
+                <Route path="/reset" element={<Reset />}/>
             </Routes>
         </Router>
     )
