@@ -10,46 +10,6 @@ const CalendarComp = () => {
     const [events, setEvents] = useState([]);
     const [showForm, setShowForm] = useState(false);
 
-    // const [title, setTitle] = useState('');
-    // const [description, setDescription] = useState('');
-
-// placeholder to see if functional
-    // const handleDateChange = (date) => {
-    //     setSelectDate(date);
-    // };
-
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
-
-    // const fetchData = async () => {
-    //     try {
-    //         const response = await fetch(
-    //             "https://jsonplaceholder.typicode.com/posts?_limit=7"
-    //         );
-
-    //         const datas = await response.json();
-
-    //         const transformedEvents = datas.map(({ title, body: description }) => {
-    //             const generatedRandomDate = new Date(`
-    //                 ${new Date().toLocaleDateString("en-US", {month: "short"})}
-    //                 ${Math.floor(Math.random() * 28) + 1}
-    //                 ${new Date().getFullYear()}
-    //                 ${new Date().toTimeString()}
-    //             `);
-    //             return {
-    //                 date: generatedRandomDate,
-    //                 title,
-    //                 description
-    //             };
-    //         });
-            
-    //         setEvents(transformedEvents);
-    //     } catch (error) {
-    //         console.error("API fetch error:", error);
-    //     }
-    // };
-
     const handleDateChange = (date) => {
         setSelectDate(date);
     };
