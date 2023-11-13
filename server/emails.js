@@ -30,4 +30,8 @@ const sendMail = (email, subject, body) => {
     });
 }
 
-sendMail("addirm@yahoo.com", "test sub", "body of email")
+
+//sendMail("addirm@yahoo.com", "test sub", "body of email")
+module.exports = {
+    sendMail
+}

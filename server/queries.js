@@ -1,6 +1,6 @@
 const pool = require('./postgres')
-const nodemailer = require('nodemailer')
 const smtp = require('./emails')
+const { response } = require('express')
 
 
 // TRANSACTIONS
@@ -91,38 +91,8 @@ const deleteTransaction = async (request, response) => {
 
 // USERS
 
-
-const emailVerify   = async (email, request, response) =>{
-  let testAccount = await nodemailer.createTestAccount();//creating a test account to use as the email hosting service as well to send the email to client
-  const domain = email.split('@')[1]
-  const realDomain = domain.split('.')[0] //this finds the domain name in case we need to change per email
-  const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email", //  ethereal is a domain that shows the emails sending and i have it outputting once it sends
-    port: 587, //465 = true, 587 = false
-    secure: false, //change to true or false
-    auth: {
-      // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-      user: testAccount.user, // STORE IN ENV (where we would put our email domain)
-      pass: testAccount.pass, //STORE IN ENV (if using gmail (only) we would need to 2fa our email)
-    }
-  });
-  let mailOptions = {
-    from: testAccount.user,//testing purposes STORE IN ENV
-    to: email, //testing purposes would use variable email here for user email
-    subject: 'Account Confirmation',
-    text: 'Please confirm your account' //need to add a jwt with our local host address to confirm users email
-  }
-    await transporter.sendMail(mailOptions, (error, info) => {
-    if (error){
-      console.log(error);
-      console.log('this is where there is an error ' + email)
-
-    }else {
-      console.log(email)
-      console.log('email sent: ' + info.response);
-      console.log('preview url: %s', nodemailer.getTestMessageUrl(info));
-    }
-  })
+const generateToken = () => {
+  return Math.random().toString(36).substring(2,15);
 }
 
 const registerUser = async (request, response) => {
@@ -143,9 +113,15 @@ const registerUser = async (request, response) => {
       response.status(401).json(result.rows) // 401: unauthorized
     } else { //once email has been confirmed flip a "false statement to true to allow access once user clicks on link"
       //emailVerify(email) //add my emailVerify funciton grabbing both email and password 
+      token = generateToken()
       const result = client.query(
         'CALL register_user($1, $2, $3, $4)', 
         [first, last, email, pass])
+        /*
+        'CALL register_user($1, $2, $3, $4, $5)', 
+        [first, last, email, pass, token]) 
+        i am messing with stored procedures need addison to mess with 
+        */
         console.log('user registered successfully')
         response.status(200).send('User registered successfully.')
     }
@@ -171,7 +147,9 @@ const verifyLogin = async (request, response) => {
       if (result.rows.length > 0) {
         console.log("you are logged in :)")
         response.status(200).json(result.rows[0])
-        emailVerify(email)// testing purposes
+        token = generateToken();
+        smtp.sendMail(email, "Account Registration", "http://localhost:3001/confrimation?token=${token}"); //on login to test 
+        //console.log(generateToken())
       } else {
         console.log("you suck buddy, you messed something up") //this means email or password was either wrong or doesnt exist
         response.status(401).json(result.rows) // 401: unauthorized
@@ -183,8 +161,21 @@ const verifyLogin = async (request, response) => {
     client.release()
   }
 }
+/*
+const confirm = async (request, response) => { 
+    await client.query(
+      'SELECT * FROM users WHERE email = $1 AND token = $2', [email, token]
+    )
+    if (result.rows.length > 0) {
+      await client.query(
+        'UPDATE users SET confirmation = $1', [1]
+      )
+      console.log("your email has been confirmed ")
+    }
 
-
+}
+^^^ this is a rough draft on the backend server call to change the confirmation number from a 0 (when an email is not confirmed) to a 1 (an email is confirmed)
+*/ 
 const deleteUser = async (request, response) => {
   const userID = parseInt(request.body.userID)
 
