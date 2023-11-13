@@ -62,6 +62,11 @@ app.post('/addtransaction', db.addTransaction)
 app.put('/edittransaction', db.editTransaction)
 app.delete('/deletetransaction', db.deleteTransaction)
 
+app.get('/calendar/all/:userID', db.getCalendarTransactions)
+app.post('/calendar/add', db.addCalendarTransaction)
+app.put('/calendar/edit', db.editCalendarTransaction)
+app.delete('/calendar/delete', db.deleteCalendarTransaction)
+
 // users
 app.post('/login', db.verifyLogin)
 app.post('/register', db.registerUser)
