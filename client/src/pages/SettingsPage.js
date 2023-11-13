@@ -5,8 +5,6 @@ import { Button, Modal } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import { useCookies } from "react-cookie";
 import Axios from 'axios';
-import './CSS/Settings.css';
-
 // need to be able to save new password, email changes to acccount
 // deletion???
 
@@ -62,11 +60,10 @@ export const SettingsPage = () => {
         <div className="container">
           <h1 className="mt-5">Check out your account, {fName}!</h1>
           <form>
-            <span className="form-control rounded border border-secondary">
             <p></p>
             <div className="form-group">
               <label for="">Full Name:</label>
-                  <p className="form-control border-secondary fw-light">{fName} {lName}</p>
+                  <p className="form-control border-secondary .bg-secondary">{fName} {lName}</p>
             </div>
             <p></p>
             <p></p>
@@ -102,6 +99,7 @@ export const SettingsPage = () => {
                         type="email"
                         name="newEmail"
                         placeholder="New Email Address"
+                        className="form-control border-secondary fw-light"
                       />
                     </Modal.Body>
 
@@ -147,6 +145,7 @@ export const SettingsPage = () => {
                         placeholder="New Password"
                         value={newPass}
                         onChange={(e) => setNewPass(e.target.value)}
+                        className="form-control border-secondary fw-light"
                       />
                     </Modal.Body>
 
@@ -158,6 +157,7 @@ export const SettingsPage = () => {
                         placeholder="Re-Enter New Password"
                         value={newPassConf}
                         onChange={(e) => setNewPassConf(e.target.value)}
+                        className="form-control border-secondary fw-light"
                       />
                     </Modal.Body>
                   <Modal.Footer>
@@ -169,7 +169,6 @@ export const SettingsPage = () => {
                   </Modal.Footer>
                 </Modal>
             </div>
-            </span>
           </form>
             
 
