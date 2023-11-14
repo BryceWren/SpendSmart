@@ -1,4 +1,4 @@
-// DEPENDENCIES
+// #region DEPENDENCIES
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
@@ -7,8 +7,9 @@ const db = require('./queries')
 const PORT = process.env.PORT || 3001
 const pool = require('./postgres')
 
+// #endregion
 
-// LOGGING/ERROR HANDLING
+// #region LOGGING/ERROR HANDLING
 process.on('exit', () => { // frees the db connection on exit of server
   console.log('Closing database connections...')
   pool.end((err) => {
@@ -29,7 +30,9 @@ process.on('unhandledRejection', (reason, promise) => { // catches issues from a
   console.error('Unhandled Promise Rejection:', reason);
 });
 
-// BACKEND API SETUP
+// #endregion
+
+// #region BACKEND API SETUP
 const allowCrossDomain = (req, res, next) => {
   res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
@@ -52,9 +55,9 @@ app.listen(PORT, () =>{
 app.get('/', (request, response) => {
   response.json({ info: 'SpendSmart Backend API: Powered by Node.js, Express, and Postgres' })
 })
+// #endregion
 
-
-// QUERIES
+// #region QUERIES
 
 // transactions
 app.get('/transactions/:userID', db.getTransactions)
@@ -83,3 +86,5 @@ app.get('/categories/duration', db.getCategoryDurations)
 app.post('/categories/add', db.addCategory)
 app.put('/categories/edit', db.editCategory)
 app.delete('/categories/delete', db.deleteCategory)
+
+// #endregion

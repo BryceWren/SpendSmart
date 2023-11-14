@@ -1,7 +1,9 @@
+//#region DEPENDENCIES
 const pool = require('./postgres')
 const smtp = require('./emails')
 const { response } = require('express')
 
+// #endregion
 
 //#region TRANSACTIONS
 const getTransactions = async (request, response) => {
