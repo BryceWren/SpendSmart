@@ -3,8 +3,7 @@ const smtp = require('./emails')
 const { response } = require('express')
 
 
-// TRANSACTIONS
-
+//#region TRANSACTIONS
 const getTransactions = async (request, response) => {
   const userID = parseInt(request.params.userID)
 
@@ -87,8 +86,9 @@ const deleteTransaction = async (request, response) => {
     client.release()
   }
 }
+//#endregion
 
-
+//#region CALENDAR
 const getCalendarTransactions = async (request, response) => {
   const userID = parseInt(request.params.userID)
 
@@ -173,10 +173,9 @@ const deleteCalendarTransaction = async (request, response) => {
     client.release()
   }
 }
+//#endregion
 
-
-// USERS
-
+//#region USERS
 const generateToken = () => {
   return Math.random().toString(36).substring(2,15);
 }
@@ -219,8 +218,6 @@ const registerUser = async (request, response) => {
   }
 }
 
-
-
 const verifyLogin = async (request, response) => {
   const email = request.body.backEmail
   const pass = request.body.backPassword
@@ -247,6 +244,7 @@ const verifyLogin = async (request, response) => {
     client.release()
   }
 }
+
 /*
 const confirm = async (request, response) => { 
     await client.query(
@@ -262,6 +260,45 @@ const confirm = async (request, response) => {
 }
 ^^^ this is a rough draft on the backend server call to change the confirmation number from a 0 (when an email is not confirmed) to a 1 (an email is confirmed)
 */ 
+
+const editEmail = async (request, response) => {
+  const userID = parseInt(request.body.userID)
+  const email = request.body.email
+
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'UPDATE users SET email=$1 WHERE "userID"=$2', 
+      [email, userID])
+    console.log('updated email for user ' + userID)
+    response.status(200).send('updated email for user ' + userID)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
+}
+
+const editPassword = async (request, response) => {
+  const userID = parseInt(request.body.userID)
+  const pass = request.body.email
+
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'UPDATE users SET pass=$1 WHERE "userID"=$2', 
+      [pass, userID])
+    console.log('updated pass for user ' + userID)
+    response.status(200).send('updated pass for user ' + userID)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
+}
+
 const deleteUser = async (request, response) => {
   const userID = parseInt(request.body.userID)
 
@@ -279,11 +316,10 @@ const deleteUser = async (request, response) => {
     client.release()
   }
 }
+//#endregion
 
-
-
-// categories
-
+//#region CATEGORIES
+  // columns: "userID" (integer),	"categoryID" (integer),	"categoryName" (string),	"amount" (float),	"typeDesc" (string),	"durationDesc" (string)
 const getCategories = async (request, response) => {
   const userID = parseInt(request.params.userID)
 
@@ -292,6 +328,36 @@ const getCategories = async (request, response) => {
     const result = await client.query(
       'SELECT * FROM "categoryDesc" c WHERE c."userID" = $1', 
       [userID])
+    response.status(200).json(result.rows)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
+}
+
+  // columns: type (integer), typeDesc (string)
+  // possible values: 1=income, 2=needs, 3=wants, 4=debts, 5=savings
+const getCategoryTypes = async (request, response) => {
+  const client = await pool.connect()
+  try {
+    const result = await client.query('SELECT * FROM "categoryTypes"')
+    response.status(200).json(result.rows)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
+}
+
+  // columns: duration (integer), durationDesc (string)
+  // possible values: 1=monthly, 2=weekly, 3=bi-weekly, 4=bi=monthly, 5=quarterly, 6=semester, 7=yearly, 8=until date
+const getCategoryDurations = async (request, response) => {
+  const client = await pool.connect()
+  try {
+    const result = await client.query('SELECT * FROM "categoryDuration"')
     response.status(200).json(result.rows)
   } catch (error) {
     console.error(error)
@@ -318,20 +384,98 @@ const loadChartByCategory = async (request, response) => {
   }
 }
 
+const addCategory = async (request, response) => {
+  const userID = parseInt(request.body.userID)
+  const categoryName = request.body.categoryName
+  const type = parseInt(request.body.type) 
+    // possible values: 1=income, 2=needs, 3=wants, 4=debts, 5=savings
+  const duration = parseInt(request.body.duration) 
+    // possible values: 1=monthly, 2=weekly, 3=bi-weekly, 4=bi=monthly, 5=quarterly, 6=semester, 7=yearly, 8=until date
+  const amount = parseFloat(request.body.amount)
+
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'INSERT INTO category ("userID", "categoryName", "type", "duration", "amount") VALUES ($1, $2, $3, $4, $5) RETURNING "categoryID"', 
+      [userID, categoryName, type, duration, amount])
+    console.log('added category ' + result.rows[0][0])
+    response.status(200).send('added category ' + result.rows[0][0])
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
+}
+
+const editCategory = async (request, response) => {
+  const categoryID = parseInt(request.body.categoryID)
+  const categoryName = request.body.categoryName
+  const type = parseInt(request.body.type) 
+    // possible values: 1=income, 2=needs, 3=wants, 4=debts, 5=savings
+  const duration = parseInt(request.body.duration) 
+    // possible values: 1=monthly, 2=weekly, 3=bi-weekly, 4=bi=monthly, 5=quarterly, 6=semester, 7=yearly, 8=until date
+  const amount = parseFloat(request.body.amount)
+
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'UPDATE category SET "categoryName"=$1, type=$2, duration=$3, "amount"=$4 WHERE "categoryID"=$5', 
+      [categoryName, type, duration, amount, categoryID])
+    console.log('updated category ' + categoryID)
+    response.status(200).send('updated category ' + categoryID)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
+}
+
+const deleteCategory = async (request, response) => {
+  const categoryID = parseInt(request.body.categoryID)
+
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'DELETE FROM category WHERE "categoryID"=$1', 
+      [categoryID])
+    console.log('deleted category ' + categoryID)
+    response.status(200).send('deleted category ' + categoryID)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
+}
+//#endregion
+
 
 // EXPORT
 module.exports = {
+  // transactions
   getTransactions,
   addTransaction,
   editTransaction,
   deleteTransaction,
+  // calendar
   getCalendarTransactions,
   addCalendarTransaction,
   editCalendarTransaction,
   deleteCalendarTransaction,
+  // users
   registerUser,
   verifyLogin,
-  getCategories,
-  loadChartByCategory,
+  editEmail,
+  editPassword,
   deleteUser,
+  // categories
+  getCategories,
+  getCategoryTypes,
+  getCategoryDurations,
+  loadChartByCategory,
+  addCategory,
+  editCategory,
+  deleteCategory,
 }

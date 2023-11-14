@@ -70,13 +70,16 @@ app.delete('/calendar/delete', db.deleteCalendarTransaction)
 // users
 app.post('/login', db.verifyLogin)
 app.post('/register', db.registerUser)
-// app.put('/edit', db.updateUser)
+app.put('/user/email', db.editEmail)
+app.put('/user/pass', db.editPassword)
 app.delete('/delete', db.deleteUser)
 //app.post('/confirm', db.confirmation) //using this as a confirmation link later to be added in queries
 
 // categories
 app.get('/categories/:userID', db.getCategories)
+app.get('/categories/types', db.getCategoryTypes)
+app.get('/categories/duration', db.getCategoryDurations)
 app.get('/loadChart/:userID', db.loadChartByCategory)
-// app.post('/addcategory', db.addCategory)
-// app.put('/editcategory', db.editCategory)
-// app.delete('/deletecategory', db.deleteCategory)
+app.post('/categories/add', db.addCategory)
+app.put('/categories/edit', db.editCategory)
+app.delete('/categories/delete', db.deleteCategory)
