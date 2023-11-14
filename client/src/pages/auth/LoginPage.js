@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
 import { useCookies } from 'react-cookie';
 
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
 export const Login = () => {
 
@@ -31,7 +32,7 @@ export const Login = () => {
 
     const login = async () => {
         try {
-            const response = await Axios.post("http://localhost:3001/login", {
+            const response = await Axios.post(API +"/login", {
                 backEmail: email,
                 backPassword: pass
             });

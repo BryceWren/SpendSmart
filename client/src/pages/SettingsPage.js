@@ -8,6 +8,8 @@ import Axios from 'axios';
 // need to be able to save new password, email changes to acccount
 // deletion???
 
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
+
 
 // work more on password field and recognition of the same password being entered
 
@@ -43,7 +45,7 @@ export const SettingsPage = () => {
 
   const deleteUser = async () => {
     try {
-        const response = await Axios.delete("http://localhost:3001/delete", {
+        const response = await Axios.delete(API + "/delete", {
           data: { userID: userID }
         })
         console.log(response)

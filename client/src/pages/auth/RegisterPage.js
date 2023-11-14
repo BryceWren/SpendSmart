@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
 
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
+
 export const Register = () => {
 
     const [email, setEmail] = useState('');
@@ -20,7 +22,7 @@ export const Register = () => {
 
     const register = async () => {
         try {
-            const response = await Axios.post("http://localhost:3001/register", {
+            const response = await Axios.post(API + "/register", {
                 backFirst: firstname,
                 backLast: lastname,
                 backEmail: email,

@@ -5,6 +5,7 @@ import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
 import { useCookies } from 'react-cookie';
 
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
 export const TransactionPage = () => {
 
@@ -45,15 +46,15 @@ export const TransactionPage = () => {
     }
 
     useEffect(() => { 
-        Axios.get("http://localhost:3001/transactions/"+userID).then(json => setData(json.data)) 
-        Axios.get("http://localhost:3001/categories/"+userID).then(json => setCategories(json.data))
+        Axios.get(API + "/transactions/" + userID).then(json => setData(json.data)) 
+        Axios.get(API + "/categories/" + userID).then(json => setCategories(json.data))
     }, [userID])
 
     // BACKEND SERVER CALLS
     const addTransaction = async () => {
         try {
             //console.log(category)
-            const response = await Axios.post("http://localhost:3001/transactions/add", {
+            const response = await Axios.post(API + "/transactions/add", {
                 userID: userID,
                 date: date,
                 desc: desc,
@@ -70,7 +71,7 @@ export const TransactionPage = () => {
 
     const editTransaction = async () => {
         try {
-            const response = await Axios.put("http://localhost:3001/transactions/edit", {
+            const response = await Axios.put(API + "/transactions/edit", {
                 transactionID: id,
                 date: date,
                 desc: desc,
@@ -87,7 +88,7 @@ export const TransactionPage = () => {
 
     const deleteTransaction = async (transactionID) => {
         try {
-            const response = await Axios.delete("http://localhost:3001/transactions/delete", {
+            const response = await Axios.delete(API + "/transactions/delete", {
                 data: { transactionID: transactionID }
             })
             console.log(response)

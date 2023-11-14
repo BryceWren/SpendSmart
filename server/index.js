@@ -34,9 +34,17 @@ process.on('unhandledRejection', (reason, promise) => { // catches issues from a
 
 // #region BACKEND API SETUP
 const allowCrossDomain = (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000')
+  const allowedOrigins = ['http://localhost:3000', 'https://spendsmart.vercel.app'];
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.header('Access-Control-Allow-Origin', origin);
+  }
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
   res.header('Access-Control-Allow-Headers', 'Content-Type')
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
   next()
 }
 

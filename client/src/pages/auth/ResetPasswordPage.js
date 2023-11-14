@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
 
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
+
 export const Reset = () => {
     const email = "testing@email.com"; //TODO: pull from url or something
     const [pass, setPass] = useState('');
@@ -16,7 +18,7 @@ export const Reset = () => {
 
     const resetPassword = async () => {
         try {
-            const response = await Axios.post("http://localhost:3001/resetpassword", {
+            const response = await Axios.post(API + "/resetpassword", {
                 email: email,
                 pass: pass
             });

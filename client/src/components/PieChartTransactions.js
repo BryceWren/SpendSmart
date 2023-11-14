@@ -3,6 +3,8 @@ import Chart from 'chart.js/auto'
 import Axios from 'axios'
 import { useCookies } from 'react-cookie'
 
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
+
 const PieChartTransactions = () => {
   const [cookies] = useCookies(['userID'])
   const userID = cookies.userID
@@ -17,7 +19,7 @@ const PieChartTransactions = () => {
     const ctx = chartRef.current.getContext('2d')
 
     // get data and update if values change
-    Axios.get("http://localhost:3001/loadChart/" + userID)
+    Axios.get(API + "/loadChart/" + userID)
       .then(json => { if (JSON.stringify(json.data) !== JSON.stringify(data)) { setData(json.data) } })
       .catch((error) => { console.error("Error loading data:", error) })
 
