@@ -3,9 +3,9 @@ import React from "react";
 const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <img src="/assets/iconNavLogo.png" width="40" height="40" class="d-inline-block align-top" alt="" />
+        <img src="/assets/iconNavLogo.png" width="40" height="40" className="d-inline-block align-top" alt="" />
 
-      <span class="navbar-brand mb-0 h1">
+      <span className="navbar-brand mb-0 h1">
         SpendSmart
       </span>
       <button
@@ -39,7 +39,7 @@ const Navbar = () => {
           </li>
         </ul>
 
-        <ul class="navbar-nav ms-auto">
+        <ul className="navbar-nav ms-auto">
             <li className="nav-item">
               <a className="nav-link" href="/settings">
                 Account

@@ -64,13 +64,13 @@ export const SettingsPage = () => {
           <form>
             <p></p>
             <div className="form-group">
-              <label for="">Full Name:</label>
+              <label htmlFor="">Full Name:</label>
                   <p className="form-control border-secondary .bg-secondary">{fName} {lName}</p>
             </div>
             <p></p>
             <p></p>
             <div className="form-group">
-              <label for="">Email:</label>
+              <label htmlFor="">Email:</label>
                 <p className="form-control border-secondary fw-light">{userEmail}</p>
             </div>
             <div className="form-group">
@@ -116,7 +116,7 @@ export const SettingsPage = () => {
             <p></p>
             <p></p>
             <div className="form-group">
-              <label for="">Password:</label>
+              <label htmlFor="">Password:</label>
                 <p className="form-control border-dark fw-light">{userPass}</p>
             </div>
             <div className="form-group">

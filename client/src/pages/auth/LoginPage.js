@@ -66,7 +66,7 @@ export const Login = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group row">
-                        <label for="email">Email</label>
+                        <label htmlFor="email">Email</label>
                         <input id="email" type="email" value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Email Address"
@@ -77,7 +77,7 @@ export const Login = () => {
                     <br/>
 
                     <div className="form-group row">
-                        <label for="password">Password</label>
+                        <label htmlFor="password">Password</label>
                         <input id='password' type={pass ? 'password' : 'text'} value={pass}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"

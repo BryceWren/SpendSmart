@@ -166,29 +166,29 @@ export const TransactionPage = () => {
                     <form onSubmit={addTransaction}>
                             <div className='col-sm'>
                                 <div className='col-sm'>
-                                    <label for='date'>Date</label>
+                                    <label htmlFor='date'>Date</label>
                                         <input required='required' type='date' className='form-control'
                                             value={date} onChange={(e) => setDate(e.target.value)} id='date'></input>
                                     </div>
                                     <div className='col-sm'>
-                                        <label for='desc'>Description</label>
+                                        <label htmlFor='desc'>Description</label>
                                         <input required='required' type='text' className='form-control'
                                             value={desc} onChange={(e) => setDesc(e.target.value)} id='desc'></input>
                                     </div>
                                     <div className='col-sm'>
-                                        <label for='amount'>Amount</label>
+                                        <label htmlFor='amount'>Amount</label>
                                         <input required='required' type='text' className='form-control'
                                             value={amount} onChange={(e) => setAmount(e.target.value)} id='amount'></input>
                                     </div>
                                     <div className='col-sm'>
-                                        <label for='category'>Category</label>
+                                        <label htmlFor='category'>Category</label>
                                         <br />
-                                        <select for='category' name='category' onChange={(e) => setCategory(e.target.value)} id='category'>
+                                        <select htmlFor='category' name='category' onChange={(e) => setCategory(e.target.value)} id='category'>
                                             {renderCategories()}
                                         </select>
                                     </div>
                                     <div className='col-sm'>
-                                        <label for='note'>Note</label>
+                                        <label htmlFor='note'>Note</label>
                                         <input type='text' className='form-control' value={note}
                                             onChange={(e) => setNote(e.target.value)} id='note'></input>
                                     </div>
@@ -212,29 +212,29 @@ export const TransactionPage = () => {
                     <form onSubmit={editTransaction}>
                             <div className='col-sm'>
                                 <div className='col-sm'>
-                                    <label for='date'>Date</label>
+                                    <label htmlFor='date'>Date</label>
                                         <input required='required' type='date' className='form-control'
                                             value={date} onChange={(e) => setDate(e.target.value)} id='date'></input>
                                     </div>
                                     <div className='col-sm'>
-                                        <label for='desc'>Description</label>
+                                        <label htmlFor='desc'>Description</label>
                                         <input required='required' type='text' className='form-control'
                                             value={desc} onChange={(e) => setDesc(e.target.value)} id='desc'></input>
                                     </div>
                                     <div className='col-sm'>
-                                        <label for='amount'>Amount</label>
+                                        <label htmlFor='amount'>Amount</label>
                                         <input required='required' type='text' className='form-control'
                                             value={amount} onChange={(e) => setAmount(e.target.value)} id='amount'></input>
                                     </div>
                                     <div className='col-sm'>
-                                        <label for='category'>Category</label>
+                                        <label htmlFor='category'>Category</label>
                                         <br />
-                                        <select for='category' name='category' onChange={(e) => setCategory(e.target.value)} id='category'>
+                                        <select htmlFor='category' name='category' onChange={(e) => setCategory(e.target.value)} id='category'>
                                             {renderCategories()}
                                         </select>
                                     </div>
                                     <div className='col-sm'>
-                                        <label for='note'>Note</label>
+                                        <label htmlFor='note'>Note</label>
                                         <input type='text' className='form-control' value={note}
                                             onChange={(e) => setNote(e.target.value)} id='note'></input>
                                     </div>

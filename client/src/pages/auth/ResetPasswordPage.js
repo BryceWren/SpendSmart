@@ -40,7 +40,7 @@ export const Reset = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group row">
-                        <label for="email">Email: </label>
+                        <label htmlFor="email">Email: </label>
                         <input id="email" type="email" value={email}
                             className="form-control-plaintext text-center"
                         />
@@ -49,7 +49,7 @@ export const Reset = () => {
                     <br/>
 
                     <div className="form-group row">
-                        <label for="pass">New Password</label>
+                        <label htmlFor="pass">New Password</label>
                         <input id='pass' type={pass ? 'password' : 'text'} value={pass}
                             onChange={(e) => setPass(e.target.value)}
                             placeholder="Enter New Password"
@@ -60,7 +60,7 @@ export const Reset = () => {
                     <br/>
 
                     <div className="form-group row">
-                        <label for="conf">Confirm Password</label>
+                        <label htmlFor="conf">Confirm Password</label>
                         <input id='conf' type={pass ? 'password' : 'text'} value={confPass}
                             onChange={(e) => setConfPass(e.target.value)}
                             placeholder="Reenter New Password"

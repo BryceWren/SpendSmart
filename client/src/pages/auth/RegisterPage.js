@@ -46,7 +46,7 @@ export const Register = () => {
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group row">
-                        <label for="firstName">First Name</label>
+                        <label htmlFor="firstName">First Name</label>
                         <input id="firstName" value={firstname} 
                             placeholder="First Name"
                             onChange={(e) => setFirstName(e.target.value)}
@@ -57,7 +57,7 @@ export const Register = () => {
                     <br/>
 
                     <div className="form-group row">
-                        <label for="lastName">Last Name</label>
+                        <label htmlFor="lastName">Last Name</label>
                         <input id="lastName" value={lastname} 
                             placeholder="Last Name"
                             onChange={(e) => setLastName(e.target.value)}
@@ -68,7 +68,7 @@ export const Register = () => {
                     <br/>
 
                     <div className="form-group row">
-                        <label for="email">Email</label>
+                        <label htmlFor="email">Email</label>
                         <input id="email" type="email" value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Email Address"
@@ -79,7 +79,7 @@ export const Register = () => {
                     <br/>
 
                     <div className="form-group row">
-                        <label for="password">Password</label>
+                        <label htmlFor="password">Password</label>
                         <input id='password' type={pass ? 'password' : 'text'} value={pass}
                             name="password"
                             onChange={(e) => setPassword(e.target.value)}
