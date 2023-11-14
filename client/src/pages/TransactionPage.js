@@ -53,7 +53,7 @@ export const TransactionPage = () => {
     const addTransaction = async () => {
         try {
             //console.log(category)
-            const response = await Axios.post("http://localhost:3001/addtransaction", {
+            const response = await Axios.post("http://localhost:3001/transactions/add", {
                 userID: userID,
                 date: date,
                 desc: desc,
@@ -70,7 +70,7 @@ export const TransactionPage = () => {
 
     const editTransaction = async () => {
         try {
-            const response = await Axios.put("http://localhost:3001/edittransaction", {
+            const response = await Axios.put("http://localhost:3001/transactions/edit", {
                 transactionID: id,
                 date: date,
                 desc: desc,
@@ -87,7 +87,7 @@ export const TransactionPage = () => {
 
     const deleteTransaction = async (transactionID) => {
         try {
-            const response = await Axios.delete("http://localhost:3001/deletetransaction", {
+            const response = await Axios.delete("http://localhost:3001/transactions/delete", {
                 data: { transactionID: transactionID }
             })
             console.log(response)

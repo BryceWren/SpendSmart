@@ -58,9 +58,9 @@ app.get('/', (request, response) => {
 
 // transactions
 app.get('/transactions/:userID', db.getTransactions)
-app.post('/addtransaction', db.addTransaction)
-app.put('/edittransaction', db.editTransaction)
-app.delete('/deletetransaction', db.deleteTransaction)
+app.post('/transactions/add', db.addTransaction)
+app.put('/transactions/edit', db.editTransaction)
+app.delete('/transactions/delete', db.deleteTransaction)
 
 app.get('/calendar/all/:userID', db.getCalendarTransactions)
 app.post('/calendar/add', db.addCalendarTransaction)
@@ -76,10 +76,10 @@ app.delete('/delete', db.deleteUser)
 //app.post('/confirm', db.confirmation) //using this as a confirmation link later to be added in queries
 
 // categories
+app.get('/loadChart/:userID', db.loadChartByCategory)
 app.get('/categories/:userID', db.getCategories)
 app.get('/categories/types', db.getCategoryTypes)
 app.get('/categories/duration', db.getCategoryDurations)
-app.get('/loadChart/:userID', db.loadChartByCategory)
 app.post('/categories/add', db.addCategory)
 app.put('/categories/edit', db.editCategory)
 app.delete('/categories/delete', db.deleteCategory)
