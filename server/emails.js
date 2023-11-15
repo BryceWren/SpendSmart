@@ -12,13 +12,22 @@ const transporter = createTransport({
     },
 });
 
-
+/*
 const sendMail = (email, subject, body) => {
     const mailOptions = {
         from: 'do-not-reply@spendsmart.com',
         to: email,
         subject: subject,
-        text: body
+        html: body
+    };
+*/
+const sendMail = (email, subject, id) => {
+    const mailOptions = {
+        from: 'do-not-reply@spendsmart.com',
+        to: email,
+        subject: subject,
+        
+        html: `Please click this email to confirm your email: <a href="http://localhost:3001/confirmation/?token=${id}">Confirmation Link</a>`
     };
 
     transporter.sendMail(mailOptions, function(error, info){

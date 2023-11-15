@@ -206,7 +206,7 @@ const registerUser = async (request, response) => {
         [first, last, email, pass])
         /*
         'CALL register_user($1, $2, $3, $4, $5)', 
-        [first, last, email, pass, token]) 
+        [first, last, email, pass, confirmation]) 
         i am messing with stored procedures need addison to mess with 
         */
         console.log('user registered successfully')
@@ -224,17 +224,17 @@ const verifyLogin = async (request, response) => {
   const email = request.body.backEmail
   const pass = request.body.backPassword
 
+
   const client = await pool.connect()
   try {
     const result = await client.query(
       'SELECT * FROM users WHERE email = $1 AND password = $2', 
       [email, pass])
       if (result.rows.length > 0) {
+        userid = result.rows[0].id;
         console.log("you are logged in :)")
         response.status(200).json(result.rows[0])
-        token = generateToken();
-        smtp.sendMail(email, "Account Registration", "http://localhost:3001/confrimation?token=${token}"); //on login to test 
-        //console.log(generateToken())
+        smtp.sendMail(email, "Account Registration", userid); //this works poggers
       } else {
         console.log("you suck buddy, you messed something up") //this means email or password was either wrong or doesnt exist
         response.status(401).json(result.rows) // 401: unauthorized
@@ -247,21 +247,27 @@ const verifyLogin = async (request, response) => {
   }
 }
 
-/*
-const confirm = async (request, response) => { 
+
+const confirmation = async (request, response) => { 
+  const userID = request.body.userID;
+  const urlToken = request.body.token;
+  console.log(urlToken+" "+userID)
     await client.query(
-      'SELECT * FROM users WHERE email = $1 AND token = $2', [email, token]
+      'SELECT * FROM users WHERE  id = $1', [userID]
     )
-    if (result.rows.length > 0) {
+    console.log(urlToken)
+    if (result.rows[0].id == urlToken) {
       await client.query(
-        'UPDATE users SET confirmation = $1', [1]
+        'UPDATE users SET confirmation = $1', [true]
       )
       console.log("your email has been confirmed ")
+    }else{
+      console.log("help");
     }
 
 }
-^^^ this is a rough draft on the backend server call to change the confirmation number from a 0 (when an email is not confirmed) to a 1 (an email is confirmed)
-*/ 
+//^^^ this is a rough draft on the backend server call to change the confirmation number from a 0 (when an email is not confirmed) to a 1 (an email is confirmed)
+
 
 const editEmail = async (request, response) => {
   const userID = parseInt(request.body.userID)
@@ -472,6 +478,7 @@ module.exports = {
   editEmail,
   editPassword,
   deleteUser,
+  confirmation,
   // categories
   getCategories,
   getCategoryTypes,

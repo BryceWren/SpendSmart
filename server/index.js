@@ -84,7 +84,7 @@ app.post('/register', db.registerUser)
 app.put('/user/email', db.editEmail)
 app.put('/user/pass', db.editPassword)
 app.delete('/delete', db.deleteUser)
-//app.post('/confirm', db.confirmation) //using this as a confirmation link later to be added in queries
+app.post('/confirmation', db.confirmation) //using this as a confirmation link later to be added in queries
 
 // categories
 app.get('/loadChart/:userID', db.loadChartByCategory)
