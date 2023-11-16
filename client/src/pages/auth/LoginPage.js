@@ -15,30 +15,37 @@ export const Login = () => {
 
     const [email, setEmail] = useState('');
     const [pass, setPassword] = useState('');
-    
+
     //handle individual and combined submission fails
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!email && !pass) {
             alert('Please enter your email and password.');
         } else if (!pass) {
             alert('Please enter your password.');
-        }  else if (!email) {
+        } else if (!email) {
             alert('Please enter your email.');
         } else {
-            login();
+            await login();            
         }
     }
 
     const login = async () => {
+        let response = null
+        console.log("start login")
         try {
-            const response = await Axios.post(API +"/login", {
+            response = await Axios.post(API + "/login", {
                 backEmail: email,
                 backPassword: pass
-            });
+            })
+        } catch (error) {
+            response = error.response
+            if (response.status !== 401 && response.status !== 423) {
+                console.error('An error occurred:', error);
+            }
+        }
 
-            if (response.status === 200)
-            {
+            if (response.status === 200) {
                 setCookie('userID', response.data['id'], { path: '/' });
                 setCookie('firstName', response.data['firstName'], { path: '/' });
                 setCookie('lastName', response.data['lastName'], { path: '/' });
@@ -47,12 +54,12 @@ export const Login = () => {
 
                 console.log('Successfully logged in ' + email);
                 navigate('/home');
+            } else if (response.status === 423) {
+                setCookie('email', email, { path: '/' });
+                navigate('/verify');
             } else {
-                // TODO : incorrect login
+                alert("Account not found. Double check your credentials and try again.")
             }
-        } catch (error) {
-            console.error('An error occurred:', error);
-        }
     };
 
     return (
@@ -62,7 +69,7 @@ export const Login = () => {
                     <img style={{ width: 200 }} src="/assets/horizontalLogo.png" alt="logoTitle"></img>
                     <h2>Log In</h2>
                 </div>
-                
+
 
                 <form onSubmit={handleSubmit}>
                     <div className="form-group row">
@@ -74,7 +81,7 @@ export const Login = () => {
                         />
                     </div>
 
-                    <br/>
+                    <br />
 
                     <div className="form-group row">
                         <label htmlFor="password">Password</label>
@@ -85,10 +92,10 @@ export const Login = () => {
                         />
                     </div>
 
-                    <br/>
+                    <br />
 
                     <div className="form-group row">
-                        <button className='btn btn-success btn-block' onClick={login}>Login</button>
+                        <button className='btn btn-success btn-block'>Login</button>
                     </div>
                 </form>
 

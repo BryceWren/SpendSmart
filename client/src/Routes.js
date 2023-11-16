@@ -8,6 +8,8 @@ import { Login } from './pages/auth/LoginPage';
 import { Register } from './pages/auth/RegisterPage';
 import { ForgotPassword } from './pages/auth/ForgotPasswordPage';
 import { Reset } from './pages/auth/ResetPasswordPage';
+import { VerifyEmail } from './pages/auth/VerifyEmailPage';
+import { Confirmation } from './pages/auth/ConfirmedEmailPage';
 
 
 export const AppRoutes = () => {
@@ -17,6 +19,8 @@ export const AppRoutes = () => {
                 <Route path='/' element={<LandingPage />} />
                 <Route path='/login' element={<Login />} />
                 <Route path='/register' element={<Register />} />
+                <Route path='/verify' element={<VerifyEmail />} />
+                <Route path='/confirmation/:token' element={<Confirmation />} />
                 <Route path="/home" element={<DashboardPage />} />
                 <Route path="/transactions" element={<TransactionPage />} />
                 <Route path="/budget" element={<BudgetPage />} />

@@ -29,7 +29,7 @@ export const Register = () => {
                 backPassword: pass
             });
             console.log(response); // Assuming that you want to log the response data
-            navigate('/login');
+            navigate('/verify');
         } catch (error) {
             // Handle any errors that might occur during the request
             console.error('An error occurred:', error);

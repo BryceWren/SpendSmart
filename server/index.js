@@ -89,7 +89,8 @@ app.delete('/delete', db.deleteUser)
   //res.send(req.query.token);
   //res.send('GET request to confirmation route');
 //});
-app.get('/confirmation/', db.confirmUser) //using this as a confirmation link later to be added in queries
+app.post('/resendVerify', db.resendVerify)
+app.put('/confirmation/:token', db.confirmUser) //using this as a confirmation link later to be added in queries
 
 // categories
 app.get('/loadChart/:userID', db.loadChartByCategory)
