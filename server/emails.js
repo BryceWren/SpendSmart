@@ -1,6 +1,7 @@
 // SMTP CONNECTION
 const { createTransport } = require('nodemailer');
 require('dotenv').config();
+const API = process.env.BACKEND_URL || 'http://localhost:3001'
 
 
 const transporter = createTransport({
@@ -19,7 +20,7 @@ const sendMail = (email, subject, id) => {
         to: email,
         subject: subject,
         
-        html: `Please click this email to confirm your email: <a href="http://localhost:3001/confirmation/?token=${id}">Confirmation Link</a>`
+        html: `Please click this email to confirm your email: <a href="${API}/confirmation/?token=${id}">Confirmation Link</a>`
     };
 
     transporter.sendMail(mailOptions, function(error, info){
