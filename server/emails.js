@@ -12,15 +12,7 @@ const transporter = createTransport({
     },
 });
 
-/*
-const sendMail = (email, subject, body) => {
-    const mailOptions = {
-        from: 'do-not-reply@spendsmart.com',
-        to: email,
-        subject: subject,
-        html: body
-    };
-*/
+
 const sendMail = (email, subject, id) => {
     const mailOptions = {
         from: 'do-not-reply@spendsmart.com',

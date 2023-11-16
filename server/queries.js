@@ -178,9 +178,7 @@ const deleteCalendarTransaction = async (request, response) => {
 //#endregion
 
 //#region USERS
-const generateToken = () => {
-  return Math.random().toString(36).substring(2,15);
-}
+
 
 const registerUser = async (request, response) => {
   const first = request.body.backFirst
@@ -195,20 +193,19 @@ const registerUser = async (request, response) => {
     const result = await client.query(
       'SELECT * FROM users WHERE email = $1', 
       [email])
+      
     if (result.rows.length > 0) { //this is where you will send a message to the user to confirm their email
       console.log("email already registered or has not been confirmed")
       response.status(401).json(result.rows) // 401: unauthorized
     } else { //once email has been confirmed flip a "false statement to true to allow access once user clicks on link"
       //emailVerify(email) //add my emailVerify funciton grabbing both email and password 
-      token = generateToken()
-      const result = client.query(
+      client.query(
         'CALL register_user($1, $2, $3, $4)', 
         [first, last, email, pass])
-        /*
-        'CALL register_user($1, $2, $3, $4, $5)', 
-        [first, last, email, pass, confirmation]) 
-        i am messing with stored procedures need addison to mess with 
-        */
+      const result = await client.query(
+        'SELECT * FROM users WHERE email = $1', 
+        [email])
+       smtp.sendMail(email, "Account Registration", result.rows[0].id);
         console.log('user registered successfully')
         response.status(200).send('User registered successfully.')
     }
@@ -230,11 +227,11 @@ const verifyLogin = async (request, response) => {
     const result = await client.query(
       'SELECT * FROM users WHERE email = $1 AND password = $2', 
       [email, pass])
-      if (result.rows.length > 0) {
+      if (result.rows.length > 0 && result.rows[0].verified) {
         userid = result.rows[0].id;
         console.log("you are logged in :)")
         response.status(200).json(result.rows[0])
-        smtp.sendMail(email, "Account Registration", userid); //this works poggers
+        //smtp.sendMail(email, "Account Registration", userid); //this works poggers
       } else {
         console.log("you suck buddy, you messed something up") //this means email or password was either wrong or doesnt exist
         response.status(401).json(result.rows) // 401: unauthorized
@@ -248,19 +245,20 @@ const verifyLogin = async (request, response) => {
 }
 
 
-const confirmation = async (request, response) => { 
-  const userID = request.body.userID;
-  const urlToken = request.body.token;
-  console.log(urlToken+" "+userID)
-    await client.query(
-      'SELECT * FROM users WHERE  id = $1', [userID]
+const confirmUser = async (request, response) => { 
+  const urlToken = request.query.token;
+  client = await pool.connect()
+  const result = await client.query(
+      'SELECT * FROM users WHERE  id = $1', [urlToken]
     )
     console.log(urlToken)
+    console.log(result.rows[0].verified);
     if (result.rows[0].id == urlToken) {
       await client.query(
-        'UPDATE users SET confirmation = $1', [true]
+        'UPDATE users SET verified = $1 WHERE id = $2', [true, urlToken]
       )
       console.log("your email has been confirmed ")
+      client.release()
     }else{
       console.log("help");
     }
@@ -478,7 +476,7 @@ module.exports = {
   editEmail,
   editPassword,
   deleteUser,
-  confirmation,
+  confirmUser,
   // categories
   getCategories,
   getCategoryTypes,
