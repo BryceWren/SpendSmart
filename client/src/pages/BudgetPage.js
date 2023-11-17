@@ -2,7 +2,7 @@ import Income from '../components/Income';
 import Expenses from '../components/Expenses';
 import Remaining from '../components/Remaining';
 import Navbar from '../components/Navbar';
-import PieChartBudgetTab from '../components/PieChartBudgetTab';
+import PieChartTransactions from "../components/PieChartTransactions"
 
 export const BudgetPage = () => {
     return (
@@ -23,7 +23,7 @@ export const BudgetPage = () => {
                     </div>
                 </div>
                 <div>
-                    <PieChartBudgetTab/>
+                    <PieChartTransactions />
                 </div>
             </div>
         </div>
