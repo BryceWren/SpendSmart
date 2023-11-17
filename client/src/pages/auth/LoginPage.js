@@ -77,7 +77,7 @@ export const Login = () => {
                         <input id="email" type="email" value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Email Address"
-                            className="form-control"
+                            className="form-control" required='required'
                         />
                     </div>
 
@@ -88,7 +88,7 @@ export const Login = () => {
                         <input id='password' type={pass ? 'password' : 'text'} value={pass}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Password"
-                            className="form-control"
+                            className="form-control" required='required'
                         />
                     </div>
 
