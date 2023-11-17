@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navigate, BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LandingPage } from './pages/LandingPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { TransactionPage } from './pages/TransactionPage';
@@ -13,6 +13,8 @@ import { Confirmation } from './pages/auth/ConfirmedEmailPage';
 
 
 export const AppRoutes = () => {
+    const cookies = document.cookie.includes('userID')
+
     return (
         <Router>
             <Routes>
@@ -21,12 +23,14 @@ export const AppRoutes = () => {
                 <Route path='/register' element={<Register />} />
                 <Route path='/verify' element={<VerifyEmail />} />
                 <Route path='/confirmation/:token' element={<Confirmation />} />
-                <Route path="/home" element={<DashboardPage />} />
-                <Route path="/transactions" element={<TransactionPage />} />
-                <Route path="/budget" element={<BudgetPage />} />
-                <Route path="/settings" element={<SettingsPage />}/>
                 <Route path="/forgotpassword" element={<ForgotPassword />}/>
                 <Route path="/reset" element={<Reset />}/>
+
+                {/* will reroute to login if user is not logged in */}
+                <Route path="/home" element={cookies ? <DashboardPage /> : <Navigate to="/login" />} />
+                <Route path="/transactions" element={cookies ? <TransactionPage /> : <Navigate to="/login" />} />
+                <Route path="/budget" element={cookies ? <BudgetPage /> : <Navigate to="/login" />} />
+                <Route path="/settings" element={cookies ? <SettingsPage /> : <Navigate to="/login" />} />
             </Routes>
         </Router>
     )
