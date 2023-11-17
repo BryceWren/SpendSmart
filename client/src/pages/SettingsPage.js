@@ -5,18 +5,14 @@ import { Button, Modal } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import { useCookies } from "react-cookie";
 import Axios from 'axios';
-// need to be able to save new password, email changes to acccount
-// deletion???
 
+//needs testing for functionality
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
-
-
-// work more on password field and recognition of the same password being entered
 
 export const SettingsPage = () => {
 
    // cookies inputting
-   const [cookies, setCookie] = useCookies(['userID, firstName, lastName, email, password']);
+   const [cookies] = useCookies(['userID, firstName, lastName, email, password']);
 
    const userID = cookies.userID;
    const [data, setData] = useState([]);
