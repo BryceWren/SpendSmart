@@ -1,47 +1,86 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import Navbar from "../components/Navbar";
 import { useCookies } from "react-cookie";
 import Axios from 'axios';
-// need to be able to save new password, email changes to acccount
-// deletion???
 
+//needs testing for functionality
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
-
-// work more on password field and recognition of the same password being entered
-
 export const SettingsPage = () => {
+
+   // cookies inputting
+   const [cookies] = useCookies(['userID, firstName, lastName, email, password']);
+
+   const userID = cookies.userID;
+   const [data, setData] = useState([]);
+ 
+   // just showing user information
+   const fName = cookies.firstName;
+   const lName = cookies.lastName;
+   const userEmail = cookies.email;
+   const userPass = cookies.password;
+
+  const [id, setId] = useState('');
+  const [email, setNewEmail] = useState('');
+  const [pass, setNewPass] = useState('');
+  // const [passConf, setNewPassConf] = useState('');
+
+  //showing modals once interacted with
+  const [showEmailEdit, setEmailEditShow] = useState(false);
+  const handleEmailClose = () => setEmailEditShow(false);
+  const handleEmailShow = (editEmailID, editOrigEmail) => {
+    setId(editEmailID)
+    setNewEmail(editOrigEmail)
+    setEmailEditShow(true)
+  }
   
-  const [show, setShow] = useState(false);
+  const [showPassEdit, setPassEditShow] = useState(false);
+  const handlePassClose = () => setPassEditShow(false);
+  const handlePassShow = (editPassID, editOrigPass) => {
+    setId(editPassID)
+    setNewPass(editOrigPass)
+    setPassEditShow(true)
+  }
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const [showDeleteAcc, setShowDeleteAcc] = useState(false);
+  const handleDeleteClose = () => setShowDeleteAcc (false);
+  const handleDeleteShow = (deleteUser) => {
+    setId(deleteUser)
+    setShowDeleteAcc(true)
+  }
 
-  const [showPass, setPassShow] = useState(false);
+  useEffect(() => {
+    Axios.get(API + "/users/" + userID).then(json => setData(json.data))
+  }, [userID])
 
-  const handlePassClose = () => setPassShow(false);
-  const handlePassShow = () => setPassShow(true);
+  const editEmail = async () => {
+    try {
+      const response = await Axios.put(API + "/email", {
+        userID: userID,
+        email: email
+      })
+      console.log(response)
+      window.location.reload(true)
+    } catch (error) {
+      console.error('An error occurred: ', error)
+    }
+  }
 
-  const [showEmail, setEmailShow] = useState(false);
-
-  const handleEmailClose = () => setEmailShow(false);
-  const handleEmailShow = () => setEmailShow(true);
-
-  const [newEmail, setNewEmail] = useState('');
-  const [newPass, setNewPass] = useState('');
-  const [newPassConf, setNewPassConf] = useState('');
-
-  const [cookies, setCookie] = useCookies(['userID, firstName, lastName, email, password']);
-
-  const fName = cookies.firstName;
-  const lName = cookies.lastName;
-  const userEmail = cookies.email;
-  const userPass = cookies.password;
-  const userID = cookies.userID
-
+  const editPassword = async () => {
+    try {
+      const response = await Axios.put(API + '/password', {
+        userID: userID,
+        pass: pass
+      })
+      console.log(response)
+      window.location.reload(true)
+    } catch (error) {
+      console.error('An error occurred:', error)
+    }
+  }
 
   const deleteUser = async () => {
     try {
@@ -53,7 +92,8 @@ export const SettingsPage = () => {
     } catch (error) {
         console.error('An error occurred:', error)
     }
-}
+  }
+
 
   return (
     <>
@@ -79,7 +119,7 @@ export const SettingsPage = () => {
                   </Button>
 
                   <Modal
-                    show={showEmail}
+                    show={showEmailEdit}
                     onHide={handleEmailClose}
                     backdrop="static"
                     keyboard={true}
@@ -94,7 +134,15 @@ export const SettingsPage = () => {
                     </Modal.Body>
 
                     <Modal.Body>
-                      <p className="label">Email</p>
+                      <form onSubmit={editEmail}>
+                        <label htmlFor="email">Email</label>
+                        <input required='required'
+                          type="email"
+                          className="form-control"
+                          value={email}
+                          onChange={(e) => setNewEmail(e.target.value)} id="email"></input>
+                      </form>
+                      {/* <p className="label">Email</p>
                       <input 
                         value={newEmail}
                         onChange={(e) => setNewEmail(e.target.value)}
@@ -102,14 +150,13 @@ export const SettingsPage = () => {
                         name="newEmail"
                         placeholder="New Email Address"
                         className="form-control border-secondary fw-light"
-                      />
+                      /> */}
                     </Modal.Body>
 
                   <Modal.Footer>
                     {/* Needs to save changes */}
-                    <Button variant="outline-success" onClick={handleEmailClose}>
-                      Save Changes
-                    </Button>
+                    <button className="btn btn-warning-outline" onClick={handleEmailClose}>No, Cancel</button>
+                    <Button variant="outline-success" onClick={() => editEmail}>Save Changes</Button>
                   </Modal.Footer>
                 </Modal>
             </div>
@@ -125,7 +172,7 @@ export const SettingsPage = () => {
                   </Button>
 
                   <Modal
-                    show={showPass}
+                    show={showPassEdit}
                     onHide={handlePassClose}
                     backdrop="static"
                     keyboard={true}
@@ -140,7 +187,17 @@ export const SettingsPage = () => {
                     </Modal.Body>
 
                     <Modal.Body>
-                      <p className="label">Password</p>
+                      <form onSubmit={editPassword}>
+                        <label htmlFor="password">Password</label>
+                        <input required='required'
+                          type="password"
+                          className="form-control"
+                          value={pass}
+                          onChange={(e) => setNewPass(e.target.value)} id="pass"
+                        />
+                      </form>
+            
+                      {/* <p className="label">Password</p>
                       <input 
                         type={newPass? 'password':'text'}
                         name="password"
@@ -148,10 +205,10 @@ export const SettingsPage = () => {
                         value={newPass}
                         onChange={(e) => setNewPass(e.target.value)}
                         className="form-control border-secondary fw-light"
-                      />
+                      /> */}
                     </Modal.Body>
 
-                    <Modal.Body>
+                    {/* <Modal.Body>
                     <p className="label">Confirm Password</p>
                       <input 
                         type={newPassConf? 'password':'text'}
@@ -161,11 +218,11 @@ export const SettingsPage = () => {
                         onChange={(e) => setNewPassConf(e.target.value)}
                         className="form-control border-secondary fw-light"
                       />
-                    </Modal.Body>
+                    </Modal.Body> */}
                   <Modal.Footer>
 
                     {/* Needs to save changes */}
-                    <Button variant="outline-success" onClick={handlePassClose}>
+                    <Button variant="outline-success" onClick={() => editPassword}>
                       Save Changes
                     </Button>
                   </Modal.Footer>
@@ -176,13 +233,13 @@ export const SettingsPage = () => {
 
           {/* // dealing with pop up to delete account */}
           <div className="mt-5">
-            <Button variant="danger" onClick={handleShow}>
+            <Button variant="danger" onClick={handleDeleteShow}>
               Delete Account
             </Button>
 
             <Modal
-              show={show}
-              onHide={handleClose}
+              show={showDeleteAcc}
+              onHide={handleDeleteClose}
               backdrop="static"
               keyboard={false}
             >
@@ -199,12 +256,12 @@ export const SettingsPage = () => {
                 <Link
                   className="btn btn-outline-danger"
                   role="button"
-                  onClick={deleteUser} //***********added this line to see if it would work* ***********
+                  onClick={() => deleteUser(id)} //***********added this line to see if it would work* ***********
                   to="/"
                 >
                   Yes, Delete Account
                 </Link>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" onClick={handleDeleteClose}>
                   Cancel Account Deletion
                 </Button>
               </Modal.Footer>
