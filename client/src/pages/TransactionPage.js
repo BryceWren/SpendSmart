@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react"
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
 import { useCookies } from 'react-cookie';
+import Expenses from '../components/Expenses';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
@@ -44,6 +45,17 @@ export const TransactionPage = () => {
         setId(deleteID)
         setShowDelete(true)
     }
+
+    //calculate expenses for budget page
+    const calculateTotalExpenses = () => {
+        let totalExpenses = 0;
+        data.forEach(t => {
+            totalExpenses += parseFloat(t.amount);
+        });
+        return totalExpenses.toFixed(2);
+        <Expenses totalExpenses={calculateTotalExpenses()} />
+    };
+    
 
     useEffect(() => { 
         Axios.get(API + "/transactions/" + userID).then(json => setData(json.data)) 
@@ -115,8 +127,11 @@ export const TransactionPage = () => {
                     </span>
                 </td>
             </tr>
+            
           )
+          
         })
+    
     }
 
     const renderCategories = () => {
@@ -155,6 +170,8 @@ export const TransactionPage = () => {
                         </table>
                     </div>
                 </div>
+
+                <Expenses totalExpenses={calculateTotalExpenses()} />
 
                 {/* Pop Up to Add Transaction */}
                 <Modal show={showAdd} onHide={handleCloseAdd} backdrop="static" keyboard={false}>

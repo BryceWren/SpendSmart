@@ -1,11 +1,14 @@
 import React from 'react';
 
-const Expenses = () => {
-	return (
-		<div className='alert alert-secondary'>
-			<span>Expenses: $1000</span>
-		</div>
-	);
+//pull from transactions
+
+const Expenses = ({ totalExpenses }) => {
+    return (
+        <div className='alert alert-secondary'>
+            <span>Expenses: ${totalExpenses}</span>
+        </div>
+    );
 };
+
 
 export default Expenses;
