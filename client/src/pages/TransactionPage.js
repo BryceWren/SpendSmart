@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react"
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
 import { useCookies } from 'react-cookie';
+import Expenses from '../components/Expenses';
+
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
@@ -205,6 +207,7 @@ export const TransactionPage = () => {
                 </Modal>
 
                 {/* Expenses component */}
+                <Expenses expenses={data} />
 
                 {/* Pop Up to Edit Transaction */}
                 <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>

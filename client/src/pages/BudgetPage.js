@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Income from '../components/Income';
-//import Expenses from '../components/Expenses';
+import Expenses from '../components/Expenses';
 import Remaining from '../components/Remaining';
 import Navbar from '../components/Navbar';
 import PieChartTransactions from '../components/PieChartTransactions';
 
 export const BudgetPage = () => {
+  // State to store expenses data
+  const [expensesData, setExpensesData] = useState([]);
+
+  useEffect(() => {
+   setExpensesData(expensesData);
+  }, []); 
 
   return (
     <div>
@@ -20,7 +26,8 @@ export const BudgetPage = () => {
           <div className='col-sm'>
           </div>
           <div className='col-sm'>
-            <Expenses />
+            {/* Pass expensesData as a prop to Expenses component */}
+            <Expenses expenses={expensesData} />
           </div>
           <div className='col-sm'>
             <Remaining />
