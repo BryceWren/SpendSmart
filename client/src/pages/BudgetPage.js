@@ -34,7 +34,10 @@ export const BudgetPage = () => {
         <div>
           <PieChartTransactions />
         </div>
-        
+        <TransactionPage
+            totalExpenses={totalExpenses}
+            handleTransactionChange={handleTransactionChange}
+          />
       </div>
     </div>
   );
