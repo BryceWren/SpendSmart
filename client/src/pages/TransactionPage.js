@@ -6,7 +6,6 @@ import { Modal } from "react-bootstrap";
 import { useCookies } from 'react-cookie';
 import Expenses from '../components/Expenses';
 
-
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
 export const TransactionPage = () => {
@@ -16,6 +15,8 @@ export const TransactionPage = () => {
 
     const [data, setData] = useState([])
     const [categories, setCategories] = useState([])
+
+    const [totalExpenses, setTotalExpenses] = useState(0);
 
     const [id, setId] = useState('')
     const [date, setDate] = useState('')
@@ -50,7 +51,13 @@ export const TransactionPage = () => {
     useEffect(() => { 
         Axios.get(API + "/transactions/" + userID).then(json => setData(json.data));
         Axios.get(API + "/categories/" + userID).then(json => setCategories(json.data));
-    }, [userID])
+    }, [userID]);
+
+    useEffect(() => {
+        // Calculate total expenses whenever data changes
+        const expenses = data.reduce((total, transaction) => total + parseFloat(transaction.amount), 0);
+        setTotalExpenses(expenses);
+      }, [data]);
 
     // BACKEND SERVER CALLS
     const addTransaction = async () => {
@@ -65,7 +72,7 @@ export const TransactionPage = () => {
                 note: note
             })
             console.log(response);
-            window.reload(true);
+            window.location.reload(true)
 
         } catch (error) {
             console.error('An error occurred:', error)
@@ -83,7 +90,7 @@ export const TransactionPage = () => {
                 note: note
             })
             console.log(response)
-            window.reload(true)
+            window.location.reload(true)
         } catch (error) {
             console.error('An error occurred:', error)
         }
@@ -118,9 +125,7 @@ export const TransactionPage = () => {
                     </span>
                 </td>
             </tr>
-            
           )
-          
         })
     }
 
@@ -207,7 +212,7 @@ export const TransactionPage = () => {
                 </Modal>
 
                 {/* Expenses component */}
-                <Expenses expenses={data} />
+                <Expenses totalExpenses={totalExpenses} />
 
                 {/* Pop Up to Edit Transaction */}
                 <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>

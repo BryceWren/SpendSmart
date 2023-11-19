@@ -6,12 +6,6 @@ import Navbar from '../components/Navbar';
 import PieChartTransactions from '../components/PieChartTransactions';
 
 export const BudgetPage = () => {
-  // State to store expenses data
-  const [expensesData, setExpensesData] = useState([]);
-
-  useEffect(() => {
-   setExpensesData(expensesData);
-  }, []); 
 
   return (
     <div>
@@ -26,8 +20,7 @@ export const BudgetPage = () => {
           <div className='col-sm'>
           </div>
           <div className='col-sm'>
-            {/* Pass expensesData as a prop to Expenses component */}
-            <Expenses expenses={expensesData} />
+            <Expenses />
           </div>
           <div className='col-sm'>
             <Remaining />

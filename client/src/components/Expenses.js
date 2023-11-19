@@ -1,14 +1,10 @@
 import React from 'react';
 
-const Expenses = ({ expenses }) => {
-
-const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
-  // Calculate total expenses
-  const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0);
-
+const Expenses = ({ totalExpenses }) => {
   return (
-    <div>
-		<Expenses totalExpenses />
+    <div className="mt-3">
+      <h4>Expenses</h4>
+      <p>{`$${totalExpenses.toFixed(2)}`}</p>
     </div>
   );
 };
