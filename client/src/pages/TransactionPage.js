@@ -8,7 +8,7 @@ import Expenses from '../components/Expenses';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
-export const TransactionPage = ({totalExpenses}) => {
+export const TransactionPage = ({totalExpenses, handleTransactionChange}) => {
 
     const [cookies] = useCookies(['userID']);
     const userID = cookies.userID;
@@ -76,12 +76,13 @@ export const TransactionPage = ({totalExpenses}) => {
 				category: category,
                 note: note
             })
-            console.log(response)
-            window.location.reload(true)
+            console.log(response);
 
-            await Axios.get(API + '/transactions/' + userID).then((json) => setData(json.data));
-      const newTotalExpenses = calculateTotalExpenses();
-      totalExpenses(newTotalExpenses);
+            const newTransactions = await Axios.get(API + "/transactions/" + userID).then((json) => json.data);
+            setData(newTransactions);
+
+            handleCloseAdd();
+            
         } catch (error) {
             console.error('An error occurred:', error)
         }
@@ -178,7 +179,6 @@ export const TransactionPage = ({totalExpenses}) => {
                     </div>
                 </div>
 
-                <Expenses totalExpenses={totalExpenses} /> 
 
                 {/* Pop Up to Add Transaction */}
                 <Modal show={showAdd} onHide={handleCloseAdd} backdrop="static" keyboard={false}>

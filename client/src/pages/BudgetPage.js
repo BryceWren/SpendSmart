@@ -4,6 +4,7 @@ import Expenses from '../components/Expenses';
 import Remaining from '../components/Remaining';
 import Navbar from '../components/Navbar';
 import PieChartTransactions from "../components/PieChartTransactions";
+import { TransactionPage } from './TransactionPage';
 
 export const BudgetPage = () => {
     const[totalExpenses, setTotalExpenses] = useState(0);
@@ -24,7 +25,7 @@ export const BudgetPage = () => {
           </div>
           <div className='col-sm'>
             {/* Pass totalExpenses to Expenses component in BudgetPage */}
-            <Expenses totalExpenses={totalExpenses} />
+            <TransactionPage totalExpenses={totalExpenses} handleTransactionChange={handleTransactionChange} />
           </div>
           <div className='col-sm'>
             <Remaining />
@@ -33,6 +34,7 @@ export const BudgetPage = () => {
         <div>
           <PieChartTransactions />
         </div>
+        
       </div>
     </div>
   );
