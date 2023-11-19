@@ -1,7 +1,7 @@
 import React from 'react';
-//import { TransactionPage } from '../pages/TransactionPage';
 
 const Expenses = ({ totalExpenses }) => {
+  // You can use totalExpenses in this component as needed
   return (
     <div className='alert alert-secondary'>
       <span>Expenses: ${totalExpenses}</span>
