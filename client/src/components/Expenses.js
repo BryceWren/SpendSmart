@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 //pull from transactions
 
 const Expenses = ({ totalExpenses }) => {
