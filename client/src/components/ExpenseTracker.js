@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import Navbar from './Navbar';
 import TransactionPage from './TransactionPage';
 import Expenses from './Expenses';
 import BudgetPage from './BudgetPage';
-import Navbar from '../components/Navbar';
 import Axios from 'axios';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
 
-const ExpenseTracker = () => {
+const ExpenseTracker = ({ userID }) => {
   const [totalExpenses, setTotalExpenses] = useState(0);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const ExpenseTracker = () => {
         setTotalExpenses(expenses.toFixed(2));
       })
       .catch(error => console.error('An error occurred:', error));
-  }, []);
+  }, [userID]);
 
   return (
     <div>
@@ -36,4 +36,5 @@ const ExpenseTracker = () => {
 };
 
 export default ExpenseTracker;
+
 
