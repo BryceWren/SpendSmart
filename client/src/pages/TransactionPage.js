@@ -4,11 +4,10 @@ import React, { useState, useEffect } from "react"
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
 import { useCookies } from 'react-cookie';
-import Expenses from '../components/Expenses';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
-export const TransactionPage = ({totalExpenses, handleTransactionChange}) => {
+export const TransactionPage = ({ onTotalExpensesChange}) => {
 
     const [cookies] = useCookies(['userID']);
     const userID = cookies.userID;
@@ -46,23 +45,20 @@ export const TransactionPage = ({totalExpenses, handleTransactionChange}) => {
         setShowDelete(true)
     }
 
-
-    
-    //calculate expenses for budget page
     const calculateTotalExpenses = () => {
         let totalExpenses = 0;
-        data.forEach(t => {
+        data.forEach((t) => {
             totalExpenses += parseFloat(t.amount);
         });
         return totalExpenses.toFixed(2);
-        <Expenses totalExpenses={calculateTotalExpenses()} />
-    };
-    
+    }
+
 
     useEffect(() => { 
-        Axios.get(API + "/transactions/" + userID).then(json => setData(json.data)) 
-        Axios.get(API + "/categories/" + userID).then(json => setCategories(json.data))
-    }, [userID])
+        Axios.get(API + "/transactions/" + userID).then(json => setData(json.data));
+        Axios.get(API + "/categories/" + userID).then(json => setCategories(json.data));
+        onTotalExpensesChange(calculateTotalExpenses());
+    }, [userID, onTotalExpensesChange])
 
     // BACKEND SERVER CALLS
     const addTransaction = async () => {
@@ -77,12 +73,8 @@ export const TransactionPage = ({totalExpenses, handleTransactionChange}) => {
                 note: note
             })
             console.log(response);
+            window.reload(true);
 
-            const newTransactions = await Axios.get(API + "/transactions/" + userID).then((json) => json.data);
-            setData(newTransactions);
-
-            handleCloseAdd();
-            
         } catch (error) {
             console.error('An error occurred:', error)
         }
