@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import TransactionPage from './TransactionPage';
 import Expenses from './Expenses';
+import BudgetPage from './BudgetPage';
 import Navbar from '../components/Navbar';
 import Axios from 'axios';
 
@@ -28,9 +29,11 @@ const ExpenseTracker = () => {
         {/* Pass totalExpenses to both TransactionPage and Expenses */}
         <TransactionPage totalExpenses={totalExpenses} />
         <Expenses totalExpenses={totalExpenses} />
+        <BudgetPage totalExpenses={totalExpenses} />
       </div>
     </div>
   );
 };
 
 export default ExpenseTracker;
+

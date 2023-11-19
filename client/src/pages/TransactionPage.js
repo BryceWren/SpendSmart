@@ -8,7 +8,7 @@ import Expenses from '../components/Expenses';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
-export const TransactionPage = () => {
+export const TransactionPage = ({totalExpenses}) => {
 
     const [cookies] = useCookies(['userID']);
     const userID = cookies.userID;
@@ -148,6 +148,7 @@ export const TransactionPage = () => {
         <div>
             <Navbar />
             <div className='container'>
+                <Expenses totalExpenses={totalExpenses} /> 
                 <h3 className='mt-3'>Transactions</h3>
                 <button className='btn btn-success mt-3 float-right' onClick={handleShowAdd}>Add Transaction</button>
                 
@@ -171,7 +172,7 @@ export const TransactionPage = () => {
                     </div>
                 </div>
 
-                <Expenses totalExpenses={calculateTotalExpenses()} />
+                
 
                 {/* Pop Up to Add Transaction */}
                 <Modal show={showAdd} onHide={handleCloseAdd} backdrop="static" keyboard={false}>
