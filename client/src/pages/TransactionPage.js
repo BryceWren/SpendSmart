@@ -219,6 +219,8 @@ export const TransactionPage = ({ onTotalExpensesChange}) => {
                     </Modal.Footer>
                 </Modal>
 
+                {/* Expenses component */}
+
                 {/* Pop Up to Edit Transaction */}
                 <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
                     <Modal.Header closeButton>

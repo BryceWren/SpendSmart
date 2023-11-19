@@ -4,7 +4,6 @@ import Expenses from '../components/Expenses';
 import Remaining from '../components/Remaining';
 import Navbar from '../components/Navbar';
 import PieChartTransactions from '../components/PieChartTransactions';
-import { TransactionPage } from './TransactionPage';
 
 export const BudgetPage = () => {
   const [totalExpenses, setTotalExpenses] = useState(0);
@@ -25,8 +24,6 @@ export const BudgetPage = () => {
             <Income />
           </div>
           <div className='col-sm'>
-            {/* Pass the function to update total expenses to TransactionPage */}
-            <TransactionPage onExpensesChange={handleExpensesChange} />
           </div>
           <div className='col-sm'>
             {/* Pass the totalExpenses state to Expenses component */}
