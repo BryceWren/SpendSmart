@@ -1,11 +1,17 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Income from '../components/Income';
 import Expenses from '../components/Expenses';
 import Remaining from '../components/Remaining';
 import Navbar from '../components/Navbar';
 import PieChartTransactions from "../components/PieChartTransactions";
 
-export const BudgetPage = ({ totalExpenses }) => {
+export const BudgetPage = () => {
+    const[totalExpenses, setTotalExpenses] = useState(0);
+    
+    const handleTransactionChange = (newTotalExpenses) => {
+        setTotalExpenses(newTotalExpenses);
+    };
+
   return (
     <div>
       <Navbar />

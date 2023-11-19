@@ -46,6 +46,8 @@ export const TransactionPage = ({totalExpenses}) => {
         setShowDelete(true)
     }
 
+
+    
     //calculate expenses for budget page
     const calculateTotalExpenses = () => {
         let totalExpenses = 0;
@@ -76,6 +78,10 @@ export const TransactionPage = ({totalExpenses}) => {
             })
             console.log(response)
             window.location.reload(true)
+
+            await Axios.get(API + '/transactions/' + userID).then((json) => setData(json.data));
+      const newTotalExpenses = calculateTotalExpenses();
+      totalExpenses(newTotalExpenses);
         } catch (error) {
             console.error('An error occurred:', error)
         }
@@ -148,7 +154,7 @@ export const TransactionPage = ({totalExpenses}) => {
         <div>
             <Navbar />
             <div className='container'>
-                <Expenses totalExpenses={totalExpenses} /> 
+                
                 <h3 className='mt-3'>Transactions</h3>
                 <button className='btn btn-success mt-3 float-right' onClick={handleShowAdd}>Add Transaction</button>
                 
@@ -172,7 +178,7 @@ export const TransactionPage = ({totalExpenses}) => {
                     </div>
                 </div>
 
-                
+                <Expenses totalExpenses={totalExpenses} /> 
 
                 {/* Pop Up to Add Transaction */}
                 <Modal show={showAdd} onHide={handleCloseAdd} backdrop="static" keyboard={false}>
