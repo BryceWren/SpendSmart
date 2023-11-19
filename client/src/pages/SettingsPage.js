@@ -21,7 +21,6 @@ export const SettingsPage = () => {
    const fName = cookies.firstName;
    const lName = cookies.lastName;
    const userEmail = cookies.email;
-   const userPass = cookies.password;
 
   const [id, setId] = useState('');
   const [email, setNewEmail] = useState('');
@@ -58,7 +57,7 @@ export const SettingsPage = () => {
 
   const editEmail = async () => {
     try {
-      const response = await Axios.put(API + "/email", {
+      const response = await Axios.put(API + "users/email", {
         userID: userID,
         email: email
       })
@@ -71,7 +70,7 @@ export const SettingsPage = () => {
 
   const editPassword = async () => {
     try {
-      const response = await Axios.put(API + '/password', {
+      const response = await Axios.put(API + 'users/password', {
         userID: userID,
         pass: pass
       })
@@ -84,11 +83,11 @@ export const SettingsPage = () => {
 
   const deleteUser = async () => {
     try {
-        const response = await Axios.delete(API + "/delete", {
+        const response = await Axios.delete(API + "users/delete", {
           data: { userID: userID }
         })
         console.log(response)
-        
+        window.location.reload(true)        
     } catch (error) {
         console.error('An error occurred:', error)
     }
@@ -164,7 +163,7 @@ export const SettingsPage = () => {
             <p></p>
             <div className="form-group">
               <label htmlFor="">Password:</label>
-                <p className="form-control border-dark fw-light">{userPass}</p>
+                <p className="form-control border-dark fw-light">***********</p>
             </div>
             <div className="form-group">
                   <Button variant="outline-primary" onClick={handlePassShow}>
@@ -222,6 +221,7 @@ export const SettingsPage = () => {
                   <Modal.Footer>
 
                     {/* Needs to save changes */}
+                    <button className="btn btn-warning-outline" onClick={handlePassClose}>No, Cancel</button>
                     <Button variant="outline-success" onClick={() => editPassword}>
                       Save Changes
                     </Button>
