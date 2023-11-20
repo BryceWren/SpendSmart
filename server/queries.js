@@ -97,7 +97,7 @@ const getCalendarTransactions = async (request, response) => {
   const client = await pool.connect()
   try {
     const result = await client.query(
-      'SELECT * FROM repeatTransactions t join category c on t."categoryID" = c."categoryID" WHERE t."userID" = $1 ORDER BY date desc',
+      'SELECT * FROM "repeatTransactions" t left outer join category c on t."categoryID" = c."categoryID" WHERE t."userID" = $1 ORDER BY date desc',
       [userID])
     console.log('returned ' + result.rows.length + ' repeat transactions')
     response.status(200).json(result.rows)
@@ -112,17 +112,17 @@ const getCalendarTransactions = async (request, response) => {
 const addCalendarTransaction = async (request, response) => {
   const userID = parseInt(request.body.userID)
   const desc = request.body.desc
-  const amount = parseInt(request.body.amount)
+  const amount = request.body.amount ? parseInt(request.body.amount) : 0
   const date = request.body.date
-  const repeat = parseInt(request.body.repeat)
-  const category = parseInt(request.body.category)
+  const repeat = request.body.repeat ? parseInt(request.body.repeat) : 0
+  const category = request.body.category ? parseInt(request.body.category) : 0
   const notes = request.body.note
 
 
   const client = await pool.connect()
   try {
     const result = await client.query(
-      'INSERT INTO repeatTransactions (description, amount, date, repeat, "categoryID", notes, "userID") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "recurringID"',
+      'INSERT INTO "repeatTransactions" (description, amount, date, repeat, "categoryID", notes, "userID") VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "recurringID"',
       [desc, amount, date, repeat, category, notes, userID])
     console.log('added repeat transaction ' + result.rows[0][0])
     response.status(200).send('added repeat transaction ' + result.rows[0][0])
@@ -137,16 +137,16 @@ const addCalendarTransaction = async (request, response) => {
 const editCalendarTransaction = async (request, response) => {
   const recurringID = parseInt(request.body.recurringID)
   const desc = request.body.desc
-  const amount = parseInt(request.body.amount)
+  const amount = request.body.amount ? parseInt(request.body.amount) : 0
   const date = request.body.date
-  const repeat = parseInt(request.body.repeat)
-  const category = parseInt(request.body.category)
+  const repeat = request.body.repeat ? parseInt(request.body.repeat) : 0
+  const category = request.body.category ? parseInt(request.body.category) : 0
   const notes = request.body.note
 
   const client = await pool.connect()
   try {
     const result = await client.query(
-      'UPDATE repeatTransactions SET description=$1, amount=$2, date=$3, "categoryID"=$4, notes=$5, repeat=$6 WHERE "recurringID"=$7',
+      'UPDATE "repeatTransactions" SET description=$1, amount=$2, date=$3, "categoryID"=$4, notes=$5, repeat=$6 WHERE "recurringID"=$7',
       [desc, amount, date, category, notes, repeat, recurringID])
     console.log('updated repeat transaction ' + recurringID)
     response.status(200).send('updated repeat transaction ' + recurringID)
@@ -164,7 +164,7 @@ const deleteCalendarTransaction = async (request, response) => {
   const client = await pool.connect()
   try {
     const result = await client.query(
-      'DELETE FROM repeatTransactions WHERE "recurringID"=$1',
+      'DELETE FROM "repeatTransactions" WHERE "recurringID"=$1',
       [recurringID])
     console.log('deleted repeat transaction ' + recurringID)
     response.status(200).send('deleted repeat transaction ' + recurringID)
