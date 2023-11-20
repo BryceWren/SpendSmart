@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import IncomeEdit from './IncomeEdit';
-//import Expenses from './Expenses';
-//import Remaining from './Remaining';
 
-const Income = () => {
+function Income() {
   const [editing, setEditing] = useState(false);
   const [income, setIncome] = useState(0);
 
@@ -24,7 +21,22 @@ const Income = () => {
   return (
     <div className='alert alert-success'>
       {editing ? (
-        <IncomeEdit income={income} handleSaveClick={handleSaveClick} handleCancelClick={handleCancelClick} />
+        <div>
+          <input
+            required='required'
+            type='number'
+            className='form-control mr-3'
+            id='name'
+            value={income}
+            onChange={(event) => setIncome(event.target.value)} />
+          <button
+            type='button'
+            className='btn btn-primary'
+            onClick={() => handleSaveClick(income)}
+          >
+            Save
+          </button>
+        </div>
       ) : (
         <div>
           <span>Income: ${income}</span>
@@ -39,6 +51,7 @@ const Income = () => {
       )}
     </div>
   );
-};
+}
 
 export default Income;
+
