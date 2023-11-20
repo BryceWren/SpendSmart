@@ -83,6 +83,7 @@ app.post('/login', db.verifyLogin)
 app.post('/register', db.registerUser)
 app.put('/user/email', db.editEmail)
 app.put('/user/pass', db.editPassword)
+app.put('/resetpassword', db.resetPassword)
 app.delete('/delete', db.deleteUser)
 //app.get('/confirmation/', (req, res) => {
   // Handle GET requests here (if needed)
