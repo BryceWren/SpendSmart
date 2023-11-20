@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Remaining = ({income}) => {
+const Remaining = ({income, expenses}) => {
 
 	const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0);
 	

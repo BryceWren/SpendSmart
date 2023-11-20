@@ -35,7 +35,7 @@ const Income = () => {
           >
             Edit Your Income
           </button>
-          <Expenses income={income} />
+          <Expenses totalExpenses={income} />
           <Remaining income={income} />
         </div>
       )}
