@@ -1,9 +1,14 @@
 import React from 'react';
 
-const Remaining = () => {
+const Remaining = ({income}) => {
+
+	const totalExpenses = expenses.reduce((total, expense) => total + expense.amount, 0);
+	
+	const remaining = income - totalExpenses;
+
 	return (
 		<div className='alert alert-primary'>
-			<span>Remaining: $1000</span>
+			<span>Remaining: ${remaining.toFixed(2)}</span>
 		</div>
 	);
 };
