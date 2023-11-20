@@ -20,8 +20,6 @@ export const BudgetPage = () => {
             <Income />
           </div>
           <div className='col-sm'>
-          </div>
-          <div className='col-sm'>
             <Expenses />
           </div>
           <div className='col-sm'>
