@@ -2,8 +2,13 @@ import Income from '../components/Income';
 import Expenses from '../components/Expenses';
 import Remaining from '../components/Remaining';
 
-export const BudgetPage = () => {
+//TODO: ability to add/edit categories; calculate expenses per category --> pull from db
+
+
+const BudgetPage = () => {
     return (
+      <div>
+      <Navbar />
         <div className='container'>
             <h3 className='mt-3'>Budget</h3>
 
@@ -19,5 +24,6 @@ export const BudgetPage = () => {
                 </div>
             </div>
         </div>
+      </div>
     )
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Income() {
+const Income = () => {
   const [editing, setEditing] = useState(false);
   const [income, setIncome] = useState(0);
 
@@ -9,7 +9,6 @@ function Income() {
   };
 
   const handleSaveClick = (newIncome) => {
-    // TODO: Add logic to send the updated income to the server
     setIncome(newIncome);
     setEditing(false);
   };
