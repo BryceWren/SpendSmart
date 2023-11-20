@@ -3,8 +3,7 @@ import React from 'react';
 const Expenses = ({ totalExpenses }) => {
   return (
     <div className="mt-3">
-      <h4>Expenses</h4>
-      <p>{`$${totalExpenses.toFixed(2)}`}</p>
+      <h4>Expenses {`$${totalExpenses.toFixed(2)}`} </h4>
     </div>
   );
 };
