@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Income from '../components/Income';
-import Expenses from '../components/Expenses';
-import Remaining from '../components/Remaining';
+//import Expenses from '../components/Expenses';
+//import Remaining from '../components/Remaining';
 import Navbar from '../components/Navbar';
 import PieChartTransactions from '../components/PieChartTransactions';
 
-const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
+//const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
 export const BudgetPage = () => {
 
@@ -20,10 +20,10 @@ export const BudgetPage = () => {
             <Income />
           </div>
           <div className='col-sm'>
-            <Expenses />
+            
           </div>
           <div className='col-sm'>
-            <Remaining />
+            
           </div>
         </div>
         <div>

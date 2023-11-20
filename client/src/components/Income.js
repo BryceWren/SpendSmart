@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import IncomeEdit from './IncomeEdit';
-import Expenses from './Expenses';
-import Remaining from './Remaining';
+//import Expenses from './Expenses';
+//import Remaining from './Remaining';
 
 const Income = () => {
   const [editing, setEditing] = useState(false);
@@ -35,8 +35,6 @@ const Income = () => {
           >
             Edit Your Income
           </button>
-          <Expenses totalExpenses={income} />
-          <Remaining income={income} />
         </div>
       )}
     </div>
