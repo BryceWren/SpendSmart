@@ -5,6 +5,8 @@ import Remaining from '../components/Remaining';
 import Navbar from '../components/Navbar';
 import PieChartTransactions from '../components/PieChartTransactions';
 
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
+
 export const BudgetPage = () => {
 
   return (
