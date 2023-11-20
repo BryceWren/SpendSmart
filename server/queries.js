@@ -314,10 +314,14 @@ const editEmail = async (request, response) => {
   const userID = parseInt(request.body.userID)
   const email = request.body.email
 
+  console.log("editing email")
+    console.log("userID = " + userID)
+    console.log("email = " + email)
+
   const client = await pool.connect()
   try {
     await client.query(
-      'UPDATE users SET email=$1 WHERE "userID"=$2',
+      'UPDATE users SET email=$1 WHERE "id"=$2',
       [email, userID])
     console.log('updated email for user ' + userID)
     response.status(200).send('updated email for user ' + userID)
@@ -331,15 +335,53 @@ const editEmail = async (request, response) => {
 
 const editPassword = async (request, response) => {
   const userID = parseInt(request.body.userID)
-  const pass = request.body.email
+  const pass = request.body.pass
+  const newPlain = request.body.new
+
+  let newHashed = ""
+  bcrypt
+  .hash(newPlain, 10)
+  .then(hash => {
+    newHashed = hash
+    console.log('Hash ', hash)
+  })
+  .catch(err => console.error(err.message))
 
   const client = await pool.connect()
   try {
     await client.query(
-      'UPDATE users SET pass=$1 WHERE "userID"=$2',
-      [pass, userID])
+      'UPDATE users SET password=$1 WHERE "id"=$2 AND password=$3',
+      [newHashed, userID, pass])
     console.log('updated pass for user ' + userID)
-    response.status(200).send('updated pass for user ' + userID)
+    response.status(200).json(newHashed)
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
+}
+
+const resetPassword = async (request, response) => {
+  const email = parseInt(request.body.email)
+  const passPlain = request.body.pass
+
+  let newPass = ""
+  bcrypt
+  .hash(passPlain, 10)
+  .then(hash => {
+    newPass = hash
+    console.log('Hash ', hash)
+  })
+  .catch(err => console.error(err.message))
+
+  const client = await pool.connect()
+  try {
+    await client.query(
+      'UPDATE users SET password=$1 WHERE "email"=$2',
+      [newPass, email])
+    console.log('updated pass for ' + email)
+    response.status(200).send('updated pass for ' + email)
   } catch (error) {
     console.error(error)
     response.status(500).json(error) // 500: internal server error
@@ -517,6 +559,7 @@ module.exports = {
   registerUser,
   verifyLogin,
   resendVerify,
+  resetPassword,
   editEmail,
   editPassword,
   deleteUser,
