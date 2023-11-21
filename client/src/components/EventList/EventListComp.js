@@ -87,7 +87,7 @@ const EventListComp = ({ events, categories }) => {
                                 <strong>Title:</strong> {event.description}
                             </p>
                             <p>
-                                <strong>Amount:</strong> {event.amount}
+                                <strong>Amount:</strong> ${event.amount}
                             </p>
                             <p>
                                 <strong>Description:</strong> {event.notes}
@@ -96,8 +96,14 @@ const EventListComp = ({ events, categories }) => {
                                 <strong>Category:</strong> {event.categoryName}
                             </p>
                             <span className='align-right'>
-                                <BsFillPencilFill className="editEvent-btn" onClick={() => handleShowEdit(event.recurringID, new Date(event.date).toLocaleDateString('en-CA'), event.description, event.amount, event.categoryID, event.notes)} />
-                                <BsFillTrashFill className="deleteEvent-btn" onClick={() => handleShowDelete(event.recurringID)} />
+                                <p>
+                                    <BsFillPencilFill className="editEvent-btn" onClick={() => handleShowEdit(event.recurringID, new Date(event.date).toLocaleDateString('en-CA'), event.description, event.amount, event.categoryID, event.notes)} />
+                                    Edit Event
+                                </p>                          
+                                <p>
+                                    <BsFillTrashFill className="deleteEvent-btn" onClick={() => handleShowDelete(event.recurringID)} />
+                                    Delete Event
+                                </p>
                             </span>
                         </li>
                     ))}
