@@ -251,6 +251,61 @@ const resendVerify = async (request, response) => {
   }
 }
 
+const forgotpassword = async (request, response) => {
+  const email = request.body.email
+  console.log(email)
+
+  const client = await pool.connect()
+  try {
+    const result = await client.query(
+      'SELECT * FROM users WHERE email = $1',
+      [email])
+
+      //console.log(result.rows)
+    smtp.emailPassReset(email, "Password Reset");
+    //console.log('resent verification email')
+    response.status(200).send('resent verification email')
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
+}
+
+const resetPassword = async (request, response) => {
+  const userEmail = request.body.email;
+  const newPass = request.body.pass;
+  let pass = newPass
+  bcrypt
+  .hash(newPass, 10)
+  .then(hash => {
+    pass = hash
+    console.log('Hash ', hash)
+  })
+  .catch(err => console.error(err.message))
+  client = await pool.connect()
+  try {
+    const result = await client.query(
+      'SELECT * FROM users WHERE  email = $1', [userEmail]
+    )
+    console.log(result.rows[0].email)
+
+    if (result.rows[0].email == userEmail) {
+      await client.query(
+        'UPDATE users SET password = $1 WHERE email = $2', [pass, userEmail]
+      )
+      console.log("email for user [" + result.rows[0].email + "] has been confirmed ")
+      }
+  } catch (error) {
+    console.error(error)
+    response.status(500).json(error) // 500: internal server error
+  } finally {
+    client.release()
+  }
+}
+
+
 const verifyLogin = async (request, response) => {
   const email = request.body.backEmail
   const pass = request.body.backPassword
@@ -521,6 +576,8 @@ module.exports = {
   editPassword,
   deleteUser,
   confirmUser,
+  forgotpassword, //password reset link
+  resetPassword, //actually change the password
   // categories
   getCategories,
   getCategoryTypes,

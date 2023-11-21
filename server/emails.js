@@ -33,8 +33,27 @@ const sendMail = (email, subject, id) => {
     });
 }
 
+const emailPassReset = (email, subject) => {
+    const mailOptions = {
+        from: 'do-not-reply@spendsmart.com',
+        to: email,
+        subject: subject,
+        
+        html: `Please click this link to change your password: <a href="${URL}/reset/${email}">Confirmation Link</a>`
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log(error);
+        } else {
+            //console.log(`${URL}/confirmation/${id}`)
+            console.log('Email sent: ' + info.response);
+        }
+    });
+}
 
 //sendMail("addirm@yahoo.com", "test sub", "body of email")
 module.exports = {
-    sendMail
+    sendMail,
+    emailPassReset
 }

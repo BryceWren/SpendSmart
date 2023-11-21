@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
 
+
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
 export const ForgotPassword = () => {
@@ -13,6 +14,7 @@ export const ForgotPassword = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(email); // Do something with the email, like sending a reset password link
+        sendResetLink();
     };
 
     const sendResetLink = async () => {

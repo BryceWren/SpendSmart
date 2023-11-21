@@ -1,24 +1,27 @@
 import React, { useState } from "react"
 import '../../style/auth.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Axios from 'axios'
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
 export const Reset = () => {
-    const email = "testing@email.com"; //TODO: pull from url or something
+    const { email } = useParams(); //TODO: pull from url or something
     const [pass, setPass] = useState('');
     const [confPass, setConfPass] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
+        resetPassword();
+
         //TO DO
     };
 
     const resetPassword = async () => {
         try {
-            const response = await Axios.post(API + "/resetpassword", {
+            console.log("im in resetPassword front end")
+            const response = await Axios.put(API + "/resetpassword", {
                 email: email,
                 pass: pass
             });

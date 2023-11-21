@@ -84,13 +84,10 @@ app.post('/register', db.registerUser)
 app.put('/user/email', db.editEmail)
 app.put('/user/pass', db.editPassword)
 app.delete('/delete', db.deleteUser)
-//app.get('/confirmation/', (req, res) => {
-  // Handle GET requests here (if needed)
-  //res.send(req.query.token);
-  //res.send('GET request to confirmation route');
-//});
 app.post('/resendVerify', db.resendVerify)
-app.put('/confirmation/:token', db.confirmUser) //using this as a confirmation link later to be added in queries
+app.put('/confirmation/:token', db.confirmUser)
+app.post('/forgotpassword', db.forgotpassword) //send the email
+app.put('/resetpassword', db.resetPassword)
 
 // categories
 app.get('/loadChart/:userID', db.loadChartByCategory)

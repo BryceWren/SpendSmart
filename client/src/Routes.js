@@ -24,7 +24,7 @@ export const AppRoutes = () => {
                 <Route path='/verify' element={<VerifyEmail />} />
                 <Route path='/confirmation/:token' element={<Confirmation />} />
                 <Route path="/forgotpassword" element={<ForgotPassword />}/>
-                <Route path="/reset" element={<Reset />}/>
+                <Route path="/reset/:email" element={<Reset />}/>
 
                 {/* will reroute to login if user is not logged in */}
                 <Route path="/home" element={cookies ? <DashboardPage /> : <Navigate to="/login" />} />
