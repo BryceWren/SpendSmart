@@ -88,7 +88,7 @@ app.delete('/delete', db.deleteUser)
 app.post('/resendVerify', db.resendVerify)
 app.put('/confirmation/:token', db.confirmUser)
 app.post('/forgotpassword', db.forgotpassword) //send the email
-app.put('/resetpassword', db.resetPassword)
+app.put('/resetpassword', db.resetPassFromEmail)
 
 // categories
 app.get('/loadChart/:userID', db.loadChartByCategory)

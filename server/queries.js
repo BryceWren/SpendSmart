@@ -273,7 +273,7 @@ const forgotpassword = async (request, response) => {
   }
 }
 
-const resetPassword = async (request, response) => {
+const resetPassFromEmail = async (request, response) => {
   const userEmail = request.body.email;
   const newPass = request.body.pass;
   let pass = newPass
@@ -620,7 +620,7 @@ module.exports = {
   deleteUser,
   confirmUser,
   forgotpassword, //password reset link
-  resetPassword, //actually change the password
+  resetPassFromEmail, //actually change the password
   // categories
   getCategories,
   getCategoryTypes,
