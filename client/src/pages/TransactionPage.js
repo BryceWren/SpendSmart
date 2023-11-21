@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react"
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
 import { useCookies } from 'react-cookie';
+import Expenses from '../components/Expenses';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
@@ -14,6 +15,8 @@ export const TransactionPage = () => {
 
     const [data, setData] = useState([])
     const [categories, setCategories] = useState([])
+
+    const [totalExpenses, setTotalExpenses] = useState(0);
 
     const [id, setId] = useState('')
     const [date, setDate] = useState('')
@@ -46,9 +49,16 @@ export const TransactionPage = () => {
     }
 
     useEffect(() => { 
-        Axios.get(API + "/transactions/" + userID).then(json => setData(json.data)) 
-        Axios.get(API + "/categories/" + userID).then(json => setCategories(json.data))
-    }, [userID])
+        Axios.get(API + "/transactions/" + userID).then(json => setData(json.data));
+        Axios.get(API + "/categories/" + userID).then(json => setCategories(json.data));
+    }, [userID]);
+
+    useEffect(() => {
+        // Calculate total expenses whenever data changes
+        //need to adjust for paycheck/income
+        const expenses = data.reduce((total, transaction) => total + parseFloat(transaction.amount), 0);
+        setTotalExpenses(expenses);
+      }, [data]);
 
     // BACKEND SERVER CALLS
     const addTransaction = async () => {
@@ -62,8 +72,9 @@ export const TransactionPage = () => {
 				category: category,
                 note: note
             })
-            console.log(response)
+            console.log(response);
             window.location.reload(true)
+
         } catch (error) {
             console.error('An error occurred:', error)
         }
@@ -128,11 +139,11 @@ export const TransactionPage = () => {
             }
         })
     }
-
     return (
         <div>
             <Navbar />
             <div className='container'>
+                
                 <h3 className='mt-3'>Transactions</h3>
                 <button className='btn btn-success mt-3 float-right' onClick={handleShowAdd}>Add Transaction</button>
                 
@@ -150,7 +161,6 @@ export const TransactionPage = () => {
                                     <th />
                                 </tr>
                             </thead>
-                            
                             <tbody>{renderTable()}</tbody>
                         </table>
                     </div>
@@ -201,6 +211,9 @@ export const TransactionPage = () => {
                         <button className="btn btn-success" onClick={addTransaction}>Save</button>
                     </Modal.Footer>
                 </Modal>
+
+                {/* Expenses component */}
+                <Expenses totalExpenses={totalExpenses} />
 
                 {/* Pop Up to Edit Transaction */}
                 <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
@@ -253,12 +266,9 @@ export const TransactionPage = () => {
                     <Modal.Header closeButton>
                         <Modal.Title>Deleting Transaction</Modal.Title>
                     </Modal.Header>
-
                     <Modal.Body>
                         Deleting this transaction will remove it from our database. This action can not be undone.
                     </Modal.Body>
-
-
                     <Modal.Footer>
                         <button className="btn btn-warning-outline" onClick={handleCloseDelete}>No, Cancel</button>
                         <button className="btn btn-warning" onClick={() => deleteTransaction(id)}>Yes, Delete</button>

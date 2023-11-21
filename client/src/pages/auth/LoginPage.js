@@ -40,12 +40,12 @@ export const Login = () => {
             })
         } catch (error) {
             response = error.response
-            if (response.status !== 401 && response.status !== 423) {
+            if (response && (response.status !== 401 && response.status !== 423)) {
                 console.error('An error occurred:', error);
             }
         }
 
-            if (response.status === 200) {
+            if (response && response.status === 200) {
                 setCookie('userID', response.data['id'], { path: '/' });
                 setCookie('firstName', response.data['firstName'], { path: '/' });
                 setCookie('lastName', response.data['lastName'], { path: '/' });
@@ -54,7 +54,7 @@ export const Login = () => {
 
                 console.log('Successfully logged in ' + email);
                 navigate('/home');
-            } else if (response.status === 423) {
+            } else if (response && response.status === 423) {
                 setCookie('email', email, { path: '/' });
                 navigate('/verify');
             } else {
