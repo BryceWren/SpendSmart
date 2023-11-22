@@ -55,10 +55,12 @@ export const TransactionPage = () => {
 
     useEffect(() => {
         // Calculate total expenses whenever data changes
-        //need to adjust for paycheck/income
-        const expenses = data.reduce((total, transaction) => total + parseFloat(transaction.amount), 0);
+        //need to adjust for paycheck tp not add to expenses
+        const expenses = data.reduce((total, transaction) => {
+                return total + parseFloat(transaction.amount);
+        }, 0);
         setTotalExpenses(expenses);
-      }, [data]);
+    }, [data]);
 
     // BACKEND SERVER CALLS
     const addTransaction = async () => {
