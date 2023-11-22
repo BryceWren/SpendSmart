@@ -10,7 +10,7 @@ const Income = () => {
 
   const handleSaveClick = (newIncome) => {
     setIncome(newIncome);
-    setEditing(false);
+    setEditing(true);
   };
 
   const handleCancelClick = () => {
