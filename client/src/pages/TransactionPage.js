@@ -124,6 +124,7 @@ export const TransactionPage = () => {
                 <td>
                     <span>
                         <BsFillPencilFill className="edit-btn" onClick={() => handleShowEdit(t.transactionID, new Date(t.date).toLocaleDateString('en-CA'), t.description, t.amount, t.categoryID, t.notes)} />
+                        {" "}
                         <BsFillTrashFill className="delete-btn" onClick={() => handleShowDelete(t.transactionID)} />
                     </span>
                 </td>
