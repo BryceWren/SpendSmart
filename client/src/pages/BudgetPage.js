@@ -73,12 +73,11 @@ export const BudgetPage = () => {
         setShowEditCategory(true);
     };
 
-    const editCategory = async (e) => {
-        e.preventDefault();
+    const editCategory = async () => {
         try {
-            const response = await Axios.put(API + '/categories/edit', {
+            const response = await Axios.put(API + "/categories/edit", {
                 categoryID: editCategoryID,
-                categoryName: editCategoryName,
+                categoryName: editCategoryName
             });
             console.log(response);
             handleCloseEditCategory();
@@ -87,6 +86,7 @@ export const BudgetPage = () => {
             console.error('An error occurred:', error);
         }
     };
+    
 
 
     const deleteCategory = async () => {
@@ -103,19 +103,14 @@ export const BudgetPage = () => {
     };
 
     const [categoryExpenses, setCategoryExpenses] = useState({});
-    const [expenses, setTotalExpenses] = useState(0);
+    const [totalExpenses, setTotalExpenses] = useState(0);
 
     useEffect(() => {
-        // Calculate total expenses excluding transactions with category "Paycheck"
-        const expenses = data.reduce((total, transaction) => {
-            // Exclude transactions with category "Paycheck"
-            if (transaction.categoryID !== 1) {
+        const totalExpenses = data.reduce((total, transaction) => {
                 return total + parseFloat(transaction.amount);
-            }
-            return total;
         }, 0);
 
-        setTotalExpenses(expenses);
+        setTotalExpenses(totalExpenses);
     }, [data]);
 
 
@@ -138,16 +133,20 @@ export const BudgetPage = () => {
 
     const saveIncome = async (income) => {
         try {
+            console.log('Before Axios call');
             const response = await Axios.post(API + '/income/add', {
                 userID: userID,
                 incomeAmount: income,
             });
+            console.log('After Axios call');
             console.log(response);
             setIncome(income);
         } catch (error) {
             console.error('An error occurred:', error);
         }
     };
+    
+    
 
     const renderCategories = () => {
         return categories.map((c) => (
@@ -180,7 +179,7 @@ export const BudgetPage = () => {
                     {/* Expenses Section */}
                     <div className="col-sm-4">
                         <h4>Total Expenses</h4>
-                        <Expenses />
+                        <Expenses totalExpenses={totalExpenses}/>
                     </div>
 
                     {/* Remaining Section */}

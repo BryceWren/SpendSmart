@@ -5,7 +5,7 @@ const Expenses = ({ totalExpenses }) => {
     return (
         <div className='alert alert-success'>
                 <div>
-                    <span>Expenses: ${totalExpenses.toFixed(2)}</span>
+                    <span>Expenses: ${totalExpenses}</span>
                 </div>
         </div>
     )
