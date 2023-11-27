@@ -108,7 +108,7 @@ const CalendarComp = () => {
                             <div className='col-sm'>
                                 <label htmlFor='date'>Date</label>
                                 <input required='required' type='date' className='form-control'
-                                    value={date} onChange={(e) => setDate(e.target.value)} id='date'></input>
+                                    value={date} onChange={(e) => setDate(new Date(e.target.value).toLocaleDateString('en-CA'))} id='date'></input>
                             </div>
                             <div className='col-sm'>
                                 <label htmlFor='title'>Title</label>

@@ -10,7 +10,7 @@ const EventListComp = ({ events, categories }) => {
     const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
     const [id, setId] = useState('')
-    const [date, setDate] = useState('')
+    const [date, setDate] = useState(new Date())
     const [title, setTitle] = useState('')
     const [amount, setAmount] = useState(0)
     const [category, setCategory] = useState(0)
@@ -126,7 +126,7 @@ const EventListComp = ({ events, categories }) => {
                             <div className='col-sm'>
                                 <label htmlFor='date'>Date</label>
                                 <input required='required' type='date' className='form-control'
-                                    value={date} onChange={(e) => setDate(e.target.value)} id='date'></input>
+                                    value={date} onChange={(e) => setDate(new Date(e.target.value).toLocaleDateString('en-CA'))} id='date'></input>
                             </div>
                             <div className='col-sm'>
                                 <label htmlFor='title'>Title</label>
