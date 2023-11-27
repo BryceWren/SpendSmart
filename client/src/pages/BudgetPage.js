@@ -1,195 +1,160 @@
-import Navbar from '../components/Navbar';
-import Axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { BsFillTrashFill, BsFillPencilFill } from 'react-icons/bs';
-import { Modal } from 'react-bootstrap';
-import { useCookies } from 'react-cookie';
-import Expenses from '../components/Expenses';
-import Income from '../components/Income';
-import Remaining from '../components/Remaining';
+import Navbar from '../components/Navbar'
+import Axios from 'axios'
+import React, { useState, useEffect } from 'react'
+import { BsFillTrashFill, BsFillPencilFill } from 'react-icons/bs'
+import { Modal } from 'react-bootstrap'
+import { useCookies } from 'react-cookie'
+import Budget from '../components/Budget'
 
-const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001';
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
 export const BudgetPage = () => {
 
-    const [cookies] = useCookies(['userID']);
-    const userID = cookies.userID;
+    // cookies (global)
+    const [cookies] = useCookies(['userID'])
+    const userID = cookies.userID
 
-    const [data, setData] = useState([])
+    // all transactions (to get actual)
+    // const [data, setData] = useState([])
 
-    const [categories, setCategories] = useState([]);
-    const [categoryName, setCategoryName] = useState('');
+    // all categories
+    const [categories, setCategories] = useState([])
 
+    // category specific variables (for add/edit/delete)
+    const [categoryID, setCategoryID] = useState(0)
+    const [categoryName, setCategoryName] = useState('')
+    const [categoryType, setCategoryType] = useState(0)
+    const [categoryAmount, setCategoryAmount] = useState(0)
 
-    const [showAddCategory, setShowAddCategory] = useState(false);
-    const handleCloseAddCategory = () => setShowAddCategory(false);
-    const handleShowAddCategory = () => setShowAddCategory(true);
+    // handle add form
+    const [showAdd, setShowAdd] = useState(false)
+    const handleShowAdd = () => setShowAdd(true)
+    const handleCloseAdd = () => {
+        setCategoryID(0)
+        setCategoryName('')
+        setCategoryType(0)
+        setCategoryAmount(0)
+        setShowAdd(false)
+    }
 
+    // handle edit form
+    const [showEdit, setShowEdit] = useState(false)
+    const handleShowEdit = (id, name, type, amount) => {
+        setCategoryID(id)
+        setCategoryName(name)
+        setCategoryType(type)
+        setCategoryAmount(amount)
+        setShowEdit(true)
+    }
+    const handleCloseEdit = () => {
+        setCategoryID(0)
+        setCategoryName('')
+        setCategoryType(0)
+        setCategoryAmount(0)
+        setShowEdit(false)
+    }
 
-    const [categoryIDToDelete, setCategoryIDToDelete] = useState('');
-    const [showDeleteCategory, setShowDeleteCategory] = useState(false);
-    const handleCloseDeleteCategory = () => setShowDeleteCategory(false);
-    const handleShowDeleteCategory = (categoryID) => {
-        setCategoryIDToDelete(categoryID);
-        setShowDeleteCategory(true);
-    };
+    // handle delete warning
+    const [showDelete, setShowDelete] = useState(false)
+    const handleShowDelete = (id) => {
+        setCategoryID(id)
+        setShowDelete(true)
+    }
+    const handleCloseDelete = () => {
+        setCategoryID(0)
+        setShowDelete(false)
+    }
 
-    const [editCategoryID, setEditCategoryID] = useState('');
-    const [editCategoryName, setEditCategoryName] = useState('');
-
-
-
+    // initial load of data
     useEffect(() => {
-        Axios.get(API + "/transactions/" + userID).then(json => setData(json.data));
-        Axios.get(API + "/categories/" + userID).then(json => setCategories(json.data));
-    }, [userID, categories]);
+        // Axios.get(API + "/transactions/" + userID).then(json => setData(json.data))
+        Axios.get(API + "/categories/" + userID).then(json => setCategories(json.data))
+    }, [userID])
 
+    // BACKEND SERVER CALLS
     const addCategory = async () => {
         try {
             const response = await Axios.post(API + '/categories/add', {
                 userID: userID,
                 categoryName: categoryName,
-            });
-            console.log(response);
-            handleCloseAddCategory();
-            window.location.reload(true);
+                type: categoryType,
+                amount: categoryAmount
+            })
+            console.log(response)
+            handleCloseAdd()
+            window.location.reload(true)
         } catch (error) {
-            console.error('An error occurred:', error);
+            console.error('An error occurred:', error)
         }
-    };
-
-
-    const [showEditCategory, setShowEditCategory] = useState(false);
-
-    const handleCloseEditCategory = () => {
-        setEditCategoryID('');
-        setEditCategoryName('');
-        setShowEditCategory(false);
-    };
-
-    const handleShowEditCategory = (categoryID, categoryName) => {
-        setEditCategoryID(categoryID);
-        setEditCategoryName(categoryName);
-        setShowEditCategory(true);
-    };
+    }
 
     const editCategory = async () => {
         try {
             const response = await Axios.put(API + "/categories/edit", {
-                categoryID: editCategoryID,
-                categoryName: editCategoryName
-            });
-            console.log(response);
-            handleCloseEditCategory();
-            window.location.reload(true);
+                categoryID: categoryID,
+                categoryName: categoryName,
+                type: categoryType,
+                amount: categoryAmount
+            })
+            console.log(response)
+            handleCloseEdit()
+            window.location.reload(true)
         } catch (error) {
-            console.error('An error occurred:', error);
+            console.error('An error occurred:', error)
         }
-    };
-    
-
+    }
 
     const deleteCategory = async () => {
         try {
             const response = await Axios.delete(API + '/categories/delete', {
-                data: { categoryID: categoryIDToDelete },
-            });
-            console.log(response);
-            handleCloseDeleteCategory();
-            window.location.reload(true);
+                data: { categoryID: categoryID },
+            })
+            console.log(response)
+            handleCloseDelete()
+            window.location.reload(true)
         } catch (error) {
-            console.error('An error occurred:', error);
+            console.error('An error occurred:', error)
         }
-    };
-
-    const [categoryExpenses, setCategoryExpenses] = useState({});
-    const [totalExpenses, setTotalExpenses] = useState(0);
-
-    useEffect(() => {
-        const totalExpenses = data.reduce((total, transaction) => {
-                return total + parseFloat(transaction.amount);
-        }, 0);
-
-        setTotalExpenses(totalExpenses);
-    }, [data]);
+    }
 
 
-    useEffect(() => {
-        // Calculate total expenses for each category
-        const categoryExpensesData = categories.reduce((result, category) => {
-            const categoryTotalExpenses = data.reduce((total, transaction) => {
-                if (transaction.categoryID === category.categoryID) {
-                    return total + parseFloat(transaction.amount);
-                }
-                return total;
-            }, 0);
-            result[category.categoryID] = categoryTotalExpenses;
-            return result;
-        }, {});
-        setCategoryExpenses(categoryExpensesData);
-    }, [data, categories]);
-
-    const [income, setIncome] = useState(0);
-
-    const saveIncome = async (income) => {
-        try {
-            console.log('Before Axios call');
-            const response = await Axios.post(API + '/income/add', {
-                userID: userID,
-                incomeAmount: income,
-            });
-            console.log('After Axios call');
-            console.log(response);
-            setIncome(income);
-        } catch (error) {
-            console.error('An error occurred:', error);
-        }
-    };
-    
-    
-
-    const renderCategories = () => {
+    // loads categories into table
+    const renderTable = () => {
         return categories.map((c) => (
             <tr key={c.categoryID}>
                 <td>{c.categoryName}</td>
-                <td>{categoryExpenses[c.categoryID]}</td>
+                <td>{c.typeDesc}</td>
+                <td>{c.amount}</td>
+                {/* <td>{categoryExpenses[c.categoryID]}</td> */}
                 <td>
                     <span>
-                        <BsFillTrashFill className="delete-btn" onClick={() => handleShowDeleteCategory(c.categoryID)} />
-                        <BsFillPencilFill className="edit-btn" onClick={() => handleShowEditCategory(c.categoryID, c.categoryName)} />
+                        <BsFillTrashFill className="delete-btn" onClick={() => handleShowDelete(c.categoryID)} />
+                        <BsFillPencilFill className="edit-btn" onClick={() => handleShowEdit(c.categoryID, c.categoryName, c.type, c.amount)} />
                     </span>
                 </td>
             </tr>
-        ));
-    };
+        ))
+    }
 
+    const renderTypes = () => {
+        return categories.map(c => {
+            if (c.type === categoryType) {
+                return ( <option value={c.type} selected>{c.typeDesc}</option> )
+            } else {
+                return ( <option value={c.type}>{c.typeDesc}</option> )
+            }
+        })
+    }
 
     return (
         <div>
             <Navbar />
             <div className="container">
-                {/* Income, Expenses, Remaining Sections */}
-                <div className="row mt-3">
-                    {/* Income Section */}
-                    <div className="col-sm-4">
-                        <h4>Income</h4>
-                        <Income onSaveIncome={saveIncome} />
-                    </div>
 
-                    {/* Expenses Section */}
-                    <div className="col-sm-4">
-                        <h4>Total Expenses</h4>
-                        <Expenses totalExpenses={totalExpenses}/>
-                    </div>
+                <Budget categories={categories} />
 
-                    {/* Remaining Section */}
-                    <div className="col-sm-4">
-                        <h4>Remaining Balance</h4>
-                         <Remaining />
-                    </div>
-                </div>
                 <h3 className="mt-3">Budget Categories</h3>
-                <button className="btn btn-success mt-3 float-right" onClick={handleShowAddCategory}>
+                <button className="btn btn-success mt-3 float-right" onClick={handleShowAdd}>
                     Add Category
                 </button>
 
@@ -198,24 +163,26 @@ export const BudgetPage = () => {
                     <div className="col-sm">
                         <table className="table">
                             <thead>
-                            <tr>
-                                <th>Category Name</th>
-                                <th>Amount</th>
-                            </tr>
+                                <tr>
+                                    <th>Category Name</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th />
+                                </tr>
                             </thead>
-                            <tbody>{renderCategories()}</tbody>
+                            <tbody>{renderTable()}</tbody>
                         </table>
                     </div>
                 </div>
 
                 {/* Pop Up to Add Category */}
-                <Modal show={showAddCategory} onHide={handleCloseAddCategory} backdrop="static" keyboard={false}>
+                <Modal show={showAdd} onHide={handleCloseAdd} backdrop="static" keyboard={false}>
                     <Modal.Header closeButton>
                         <Modal.Title>Add Category</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
-                        <form onSubmit={addCategory}>
+                        <form>
                             <div className="col-sm">
                                 <div className="col-sm">
                                     <label htmlFor="categoryName">Category Name</label>
@@ -229,11 +196,32 @@ export const BudgetPage = () => {
                                     ></input>
                                 </div>
                             </div>
+
+                            <div className='col-sm'>
+                                <label htmlFor='type'>Category Type</label>
+                                <br />
+                                <select 
+                                    htmlFor='type' name='type' onChange={(e) => setCategoryType(e.target.value)} id='type'>
+                                    {renderTypes()}
+                                </select>
+                            </div>
+
+                            <div className='col-sm'>
+                                <label htmlFor='amount'>Amount</label>
+                                <input
+                                    required='required'
+                                    type='text'
+                                    className='form-control'
+                                    value={categoryAmount}
+                                    onChange={(e) => setCategoryAmount(e.target.value)}
+                                    id='amount'
+                                ></input>
+                            </div>
                         </form>
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <button className="btn btn-success-outline" onClick={handleCloseAddCategory}>
+                        <button className="btn btn-success-outline" onClick={handleCloseAdd}>
                             Cancel
                         </button>
                         <button className="btn btn-success" onClick={addCategory}>
@@ -241,23 +229,44 @@ export const BudgetPage = () => {
                         </button>
                     </Modal.Footer>
                 </Modal>
-                <Modal show={showEditCategory} onHide={handleCloseEditCategory} backdrop="static" keyboard={false}>
+                <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>
                     <Modal.Header closeButton>
                         <Modal.Title>Edit Category</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
-                        <form onSubmit={editCategory}>
+                        <form>
                             <div className="col-sm">
                                 <div className="col-sm">
-                                    <label htmlFor="editCategoryName">Category Name</label>
+                                    <label htmlFor="EditName">Category Name</label>
                                     <input
                                         required="required"
                                         type="text"
                                         className="form-control"
-                                        value={editCategoryName}
-                                        onChange={(e) => setEditCategoryName(e.target.value)}
-                                        id="editCategoryName"
+                                        value={categoryName}
+                                        onChange={(e) => setCategoryName(e.target.value)}
+                                        id="EditName"
+                                    ></input>
+                                </div>
+
+                                <div className='col-sm'>
+                                    <label htmlFor='type'>Category Type</label>
+                                    <br />
+                                    <select
+                                        htmlFor='type' name='type' onChange={(e) => setCategoryType(e.target.value)} id='type'>
+                                        {renderTypes()}
+                                    </select>
+                                </div>
+
+                                <div className='col-sm'>
+                                    <label htmlFor='amount'>Amount</label>
+                                    <input
+                                        required='required'
+                                        type='text'
+                                        className='form-control'
+                                        value={categoryAmount}
+                                        onChange={(e) => setCategoryAmount(e.target.value)}
+                                        id='amount'
                                     ></input>
                                 </div>
                             </div>
@@ -265,7 +274,7 @@ export const BudgetPage = () => {
                     </Modal.Body>
 
                     <Modal.Footer>
-                        <button className="btn btn-success-outline" onClick={handleCloseEditCategory}>
+                        <button className="btn btn-success-outline" onClick={handleCloseEdit}>
                             Cancel
                         </button>
                         <button className="btn btn-success" onClick={editCategory}>
@@ -277,8 +286,8 @@ export const BudgetPage = () => {
 
                 {/* Pop Up to Confirm Category Deletion */}
                 <Modal
-                    show={showDeleteCategory}
-                    onHide={handleCloseDeleteCategory}
+                    show={showDelete}
+                    onHide={handleCloseDelete}
                     backdrop="static"
                     keyboard={false}
                 >
@@ -289,7 +298,7 @@ export const BudgetPage = () => {
                         Are you sure you want to delete?
                     </Modal.Body>
                     <Modal.Footer>
-                        <button className="btn btn-warning-outline" onClick={handleCloseDeleteCategory}>
+                        <button className="btn btn-warning-outline" onClick={handleCloseDelete}>
                             Cancel
                         </button>
                         <button className="btn btn-warning" onClick={deleteCategory}>
@@ -299,5 +308,5 @@ export const BudgetPage = () => {
                 </Modal>
             </div>
         </div>
-    );
-};
+    )
+}

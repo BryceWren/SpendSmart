@@ -531,13 +531,14 @@ const loadChartByCategory = async (request, response) => {
 }
 
 const addCategory = async (request, response) => {
+  console.log(request.body)
   const userID = parseInt(request.body.userID)
   const categoryName = request.body.categoryName
   const type = parseInt(request.body.type)
   // possible values: 1=income, 2=needs, 3=wants, 4=debts, 5=savings
-  const duration = parseInt(request.body.duration)
+  const duration = request.body.duration ? parseInt(request.body.duration) : 1
   // possible values: 1=monthly, 2=weekly, 3=bi-weekly, 4=bi=monthly, 5=quarterly, 6=semester, 7=yearly, 8=until date
-  const amount = parseFloat(request.body.amount)
+  const amount = request.body.amount ? parseFloat(request.body.amount) : 0
 
   const client = await pool.connect()
   try {
@@ -555,13 +556,14 @@ const addCategory = async (request, response) => {
 }
 
 const editCategory = async (request, response) => {
+  console.log(request.body)
   const categoryID = parseInt(request.body.categoryID)
   const categoryName = request.body.categoryName
   const type = parseInt(request.body.type)
   // possible values: 1=income, 2=needs, 3=wants, 4=debts, 5=savings
-  const duration = parseInt(request.body.duration)
+  const duration = request.body.duration ? parseInt(request.body.duration) : 1
   // possible values: 1=monthly, 2=weekly, 3=bi-weekly, 4=bi=monthly, 5=quarterly, 6=semester, 7=yearly, 8=until date
-  const amount = parseFloat(request.body.amount)
+  const amount = request.body.amount ? parseFloat(request.body.amount) : 0
 
   const client = await pool.connect()
   try {
@@ -579,6 +581,7 @@ const editCategory = async (request, response) => {
 }
 
 const deleteCategory = async (request, response) => {
+  console.log(request.body)
   const categoryID = parseInt(request.body.categoryID)
 
   const client = await pool.connect()
