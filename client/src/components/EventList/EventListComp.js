@@ -131,7 +131,7 @@ const EventListComp = ({ events, categories }) => {
                             <div className='col-sm'>
                                 <label htmlFor='title'>Title</label>
                                 <input required='required' type='text' className='form-control'
-                                    value={title} onChange={(e) => setDesc(e.target.value)} id='title'></input>
+                                    value={title} onChange={(e) => setTitle(e.target.value)} id='title'></input>
                             </div>
                             <div className='col-sm'>
                                 <label htmlFor='amount'>Amount</label>
