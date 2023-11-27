@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react"
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
 import { useCookies } from 'react-cookie';
-import Expenses from '../components/Expenses';
 
 const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001'
 
@@ -16,6 +15,7 @@ export const TransactionPage = () => {
     const [data, setData] = useState([])
     const [categories, setCategories] = useState([])
 
+    const [totalIncome, setTotalIncome] = useState(0);
     const [totalExpenses, setTotalExpenses] = useState(0);
 
     const [id, setId] = useState('')
@@ -50,22 +50,29 @@ export const TransactionPage = () => {
 
     useEffect(() => { 
         Axios.get(API + "/transactions/" + userID).then(json => setData(json.data));
-        Axios.get(API + "/categories/" + userID).then(json => setCategories(json.data));
+        Axios.get(API + "/categories/" + userID).then(json => {
+            setCategories(json.data)
+            setCategory(json.data[0].categoryID)
+        });
+        
     }, [userID]);
 
     useEffect(() => {
-        // Calculate total expenses whenever data changes
-        //need to adjust for paycheck tp not add to expenses
-        const expenses = data.reduce((total, transaction) => {
-                return total + parseFloat(transaction.amount);
-        }, 0);
-        setTotalExpenses(expenses);
+        const result = data.reduce((totals, t) => {
+            if (t.type === 1) {
+                totals.income += parseFloat(t.amount);
+            } else {
+                totals.expenses += parseFloat(t.amount);
+            }
+            return totals;
+        }, { income: 0, expenses: 0 });
+        setTotalIncome(result.income)
+        setTotalExpenses(result.expenses)
     }, [data]);
 
     // BACKEND SERVER CALLS
     const addTransaction = async () => {
         try {
-            //console.log(category)
             const response = await Axios.post(API + "/transactions/add", {
                 userID: userID,
                 date: date,
@@ -142,12 +149,26 @@ export const TransactionPage = () => {
             }
         })
     }
+
     return (
         <div>
             <Navbar />
             <div className='container'>
                 
                 <h3 className='mt-3'>Transactions</h3>
+
+                <div className='alert alert-success'>
+                        <div>
+                            <span>Total Income: ${totalIncome}</span>
+                        </div>
+                </div>
+
+                <div className='alert alert-warning'>
+                        <div>
+                            <span>Total Expenses: ${totalExpenses}</span>
+                        </div>
+                </div>
+
                 <button className='btn btn-success mt-3 float-right' onClick={handleShowAdd}>Add Transaction</button>
                 
                 {/* Transaction Table */}
@@ -214,9 +235,6 @@ export const TransactionPage = () => {
                         <button className="btn btn-success" onClick={addTransaction}>Save</button>
                     </Modal.Footer>
                 </Modal>
-
-                {/* Expenses component */}
-                <Expenses totalExpenses={totalExpenses} />
 
                 {/* Pop Up to Edit Transaction */}
                 <Modal show={showEdit} onHide={handleCloseEdit} backdrop="static" keyboard={false}>

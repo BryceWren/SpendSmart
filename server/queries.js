@@ -28,7 +28,7 @@ const addTransaction = async (request, response) => {
   const userID = parseInt(request.body.userID)
   const date = request.body.date
   const desc = request.body.desc
-  const amount = parseInt(request.body.amount)
+  const amount = parseFloat(request.body.amount)
   const category = parseInt(request.body.category)
   const note = request.body.note
 
@@ -53,7 +53,7 @@ const editTransaction = async (request, response) => {
   const desc = request.body.desc
   const amount = parseInt(request.body.amount)
   const date = request.body.date
-  const category = parseInt(request.body.category)
+  const category = parseFloat(request.body.category)
   const notes = request.body.note
 
   const client = await pool.connect()
