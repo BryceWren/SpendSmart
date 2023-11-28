@@ -187,7 +187,7 @@ const registerUser = async (request, response) => {
 
   // hashing the password to store in db
   let pass = ""
-  bcrypt
+  await bcrypt
   .hash(password, 10)
   .then(hash => {
     pass = hash
@@ -277,7 +277,7 @@ const resetPassFromEmail = async (request, response) => {
   const userEmail = request.body.email;
   const newPass = request.body.pass;
   let pass = newPass
-  bcrypt
+  await bcrypt
   .hash(newPass, 10)
   .then(hash => {
     pass = hash
@@ -316,7 +316,7 @@ const verifyLogin = async (request, response) => {
       'SELECT * FROM users WHERE email = $1',
       [email])
 
-    if (result.rows.length > 0 && bcrypt.compare(pass, result.rows[0].password)) { // aka valid credentials
+    if (result.rows.length > 0 && await bcrypt.compare(pass, result.rows[0].password)) { // aka valid credentials
       
       if (result.rows[0].verified) { // user validated
 
@@ -394,26 +394,42 @@ const editPassword = async (request, response) => {
   const newPlain = request.body.new
 
   let newHashed = ""
-  bcrypt
+  await bcrypt
   .hash(newPlain, 10)
   .then(hash => {
     newHashed = hash
-    console.log('Hash ', hash)
+    // console.log('Hash ', hash)
   })
   .catch(err => console.error(err.message))
 
-  const client = await pool.connect()
-  try {
-    await client.query(
-      'UPDATE users SET password=$1 WHERE "id"=$2 AND password=$3',
-      [newHashed, userID, pass])
-    console.log('updated pass for user ' + userID)
-    response.status(200).json(newHashed)
-  } catch (error) {
-    console.error(error)
-    response.status(500).json(error) // 500: internal server error
-  } finally {
-    client.release()
+  if (await bcrypt.compare(pass, newHashed)) { // aka same password
+    console.log("no change")
+    response.status(423).json({ message: 'New password must be different than current. Please try again.' })
+  } else {
+    const client = await pool.connect()
+    try {
+      const result = await client.query(
+        'SELECT * FROM users WHERE "id" = $1',
+        [userID])
+
+      if (result.rows.length > 0 && await bcrypt.compare(pass, result.rows[0].password)) { // aka valid credentials
+        await client.query(
+          'UPDATE users SET password=$1 WHERE "id"=$2',
+          [newHashed, userID])
+        console.log('updated pass for user ' + userID)
+        response.status(200).json(newHashed)
+
+      } else { // user not validated
+        console.log("invalid")
+        response.status(423).json({ message: 'Current password incorrect. Please try again.' }) // 423: locked (user needs to verify email first)        
+      }
+
+    } catch (error) {
+      console.error(error)
+      response.status(500).json(error) // 500: internal server error
+    } finally {
+      client.release()
+    }
   }
 }
 
@@ -422,7 +438,7 @@ const resetPassword = async (request, response) => {
   const passPlain = request.body.pass
 
   let newPass = ""
-  bcrypt
+  await bcrypt
   .hash(passPlain, 10)
   .then(hash => {
     newPass = hash

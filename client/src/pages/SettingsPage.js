@@ -30,11 +30,19 @@ export const SettingsPage = () => {
   const handleEmailShow = () => setEmailEditShow(true)
 
   const [showPassEdit, setPassEditShow] = useState(false)
-  const handlePassClose = () => setPassEditShow(false)
+  const handlePassClose = () => {
+    setPassEditShow(false)
+    setCurrPass('')
+    setNewPass1('')
+    setNewPass2('')
+  }
   const handlePassShow = () => setPassEditShow(true)
 
   const [showDeleteAcc, setShowDeleteAcc] = useState(false)
-  const handleDeleteClose = () => setShowDeleteAcc(false)
+  const handleDeleteClose = () => {
+    setShowDeleteAcc(false)
+    setNewEmail('')
+  }
   const handleDeleteShow = () => setShowDeleteAcc(true)
 
   // backend API
@@ -53,26 +61,28 @@ export const SettingsPage = () => {
   }
 
   const editPassword = async () => {
-    console.log("edit password start")
+    let response = ''
+
     if (pass1 !== pass2) {
-      console.log("no match")
       alert("Passwords do not match. Please try again.")
     } else {
-      console.log("match")
       try {
-        const response = await Axios.put(API + '/user/pass', {
+        response = await Axios.put(API + '/user/pass', {
           userID: userID,
           pass: currPass,
           new: pass1
         })
-        console.log(response)
         setCookie("password", response.data)
-        window.location.reload(true)
+        handlePassClose()
       } catch (error) {
-        console.error('An error occurred:', error)
+        response = error.response
+        if (response && response.status === 423) {
+          alert(response.data.message)
+        } else {
+          console.error('An error occurred:', error)
+        }
       }
     }
-    console.log("password changed.")
   }
 
   const deleteUser = async () => {
