@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import '../../style/auth.css';
+import './auth.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from "react-router-dom";
 import Axios from 'axios'
